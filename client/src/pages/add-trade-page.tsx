@@ -14,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { invalidateAllTradeRelatedQueries } from "@/lib/cache-utils";
 import { ArrowLeft, Plus, TrendingUp, TrendingDown } from "lucide-react";
 import { Sidebar } from "@/components/sidebar";
 
@@ -57,8 +58,8 @@ export default function AddTradePage() {
         title: "Trade Added",
         description: "Your trade has been successfully recorded.",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/trades"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
+      // Use centralized cache invalidation for data sync
+      invalidateAllTradeRelatedQueries(queryClient);
       setLocation("/dashboard");
     },
     onError: (error: Error) => {

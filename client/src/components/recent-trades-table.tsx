@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Edit, Trash2, Filter, Download } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { invalidateAllTradeRelatedQueries } from "@/lib/cache-utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,8 +33,8 @@ export function RecentTradesTable({ trades }: RecentTradesTableProps) {
       await apiRequest("DELETE", `/api/trades/${tradeId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/trades"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
+      // Use centralized cache invalidation for data sync
+      invalidateAllTradeRelatedQueries(queryClient);
       toast({
         title: "Trade deleted",
         description: "The trade has been removed from your journal.",

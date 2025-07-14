@@ -112,7 +112,7 @@ export default function DashboardPage() {
                 ))}
               </div>
               
-              <Button variant="outline" className="w-full mt-4">
+              <Button variant="outline" className="w-full mt-4" onClick={() => window.location.href = "/trade-history"}>
                 View All Trades
               </Button>
             </div>

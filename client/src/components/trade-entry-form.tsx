@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, TrendingUp, TrendingDown, Crown } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { invalidateAllTradeRelatedQueries } from "@/lib/cache-utils";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 
@@ -53,9 +54,8 @@ export function TradeEntryForm({ subscriptionStatus }: TradeEntryFormProps) {
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/trades"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/subscription-status"] });
+      // Use centralized cache invalidation for data sync
+      invalidateAllTradeRelatedQueries(queryClient);
       toast({
         title: "Trade added successfully",
         description: "Your trade has been recorded in your journal.",

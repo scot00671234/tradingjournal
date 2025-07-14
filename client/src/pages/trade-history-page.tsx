@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { invalidateAllTradeRelatedQueries } from "@/lib/cache-utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +18,8 @@ export default function TradeHistoryPage() {
   const { user } = useAuth();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: trades, isLoading } = useQuery({
     queryKey: ["/api/trades"],
@@ -27,14 +32,40 @@ export default function TradeHistoryPage() {
     return matchesSearch && matchesFilter;
   }) || [];
 
+  const deleteTradeMutation = useMutation({
+    mutationFn: async (tradeId: number) => {
+      const res = await apiRequest("DELETE", `/api/trades/${tradeId}`);
+      return res;
+    },
+    onSuccess: () => {
+      // Use centralized cache invalidation for data sync
+      invalidateAllTradeRelatedQueries(queryClient);
+      toast({
+        title: "Trade Deleted",
+        description: "Trade has been successfully removed from your journal.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleDeleteTrade = (tradeId: number) => {
-    // Implementation for deleting trade
-    console.log("Delete trade:", tradeId);
+    if (window.confirm("Are you sure you want to delete this trade?")) {
+      deleteTradeMutation.mutate(tradeId);
+    }
   };
 
   const handleEditTrade = (tradeId: number) => {
-    // Implementation for editing trade
-    console.log("Edit trade:", tradeId);
+    // For now, just show a toast - can be enhanced later
+    toast({
+      title: "Edit Trade",
+      description: "Edit functionality will be available soon.",
+    });
   };
 
   return (

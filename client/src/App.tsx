@@ -11,6 +11,11 @@ import DashboardPage from "@/pages/dashboard-page";
 import SettingsPage from "@/pages/settings-page";
 import SubscribePage from "@/pages/subscribe-page";
 import LandingPage from "@/pages/landing-page";
+import AddTradePage from "@/pages/add-trade-page";
+import TradeHistoryPage from "@/pages/trade-history-page";
+import AnalyticsPage from "@/pages/analytics-page";
+import TagsPage from "@/pages/tags-page";
+import ExportDataPage from "@/pages/export-data-page";
 import { ProtectedRoute } from "./lib/protected-route";
 
 function Router() {
@@ -18,6 +23,11 @@ function Router() {
     <Switch>
       <Route path="/" component={LandingPage} />
       <ProtectedRoute path="/dashboard" component={DashboardPage} />
+      <ProtectedRoute path="/add-trade" component={AddTradePage} />
+      <ProtectedRoute path="/trades" component={TradeHistoryPage} />
+      <ProtectedRoute path="/analytics" component={AnalyticsPage} />
+      <ProtectedRoute path="/tags" component={TagsPage} />
+      <ProtectedRoute path="/export" component={ExportDataPage} />
       <ProtectedRoute path="/settings" component={SettingsPage} />
       <ProtectedRoute path="/subscribe" component={SubscribePage} />
       <Route path="/auth" component={AuthPage} />

@@ -90,9 +90,9 @@ export default function AddTradePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex bg-background">
       <Sidebar />
-      <div className="pl-64">
+      <main className="flex-1 overflow-y-auto">
         <div className="px-6 py-8">
           <div className="flex items-center space-x-4 mb-8">
             <Button
@@ -352,7 +352,7 @@ export default function AddTradePage() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

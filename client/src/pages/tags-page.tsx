@@ -74,7 +74,7 @@ export default function TagsPage() {
     <div className="min-h-screen bg-background">
       <Sidebar />
       <div className="pl-64">
-        <div className="container mx-auto px-6 py-8">
+        <div className="px-6 py-8">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold flex items-center space-x-2">

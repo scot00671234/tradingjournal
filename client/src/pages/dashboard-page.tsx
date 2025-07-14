@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Sidebar } from "@/components/sidebar";
 import { TradeStatsCards } from "@/components/trade-stats-cards";
-import { TradeEntryForm } from "@/components/trade-entry-form";
+import { UnifiedTradeEntry } from "@/components/unified-trade-entry";
 import { RecentTradesTable } from "@/components/recent-trades-table";
 import { useAuth } from "@/hooks/use-auth";
 import { Bell, Moon, Sun } from "lucide-react";
@@ -74,7 +74,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Trade Entry Form */}
             <div className="lg:col-span-2">
-              <TradeEntryForm subscriptionStatus={subscriptionStatus} />
+              <UnifiedTradeEntry subscriptionStatus={subscriptionStatus} />
             </div>
 
             {/* Recent Performance */}

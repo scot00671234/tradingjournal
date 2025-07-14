@@ -22,27 +22,45 @@ export default function AnalyticsPage() {
     enabled: !!user,
   });
 
-  // Generate sample performance data (replace with real data)
-  const performanceData = [
-    { date: "Jan", pnl: 120 },
-    { date: "Feb", pnl: -45 },
-    { date: "Mar", pnl: 200 },
-    { date: "Apr", pnl: 89 },
-    { date: "May", pnl: -67 },
-    { date: "Jun", pnl: 234 },
-  ];
+  // Generate performance data from real trades
+  const performanceData = trades ? trades.reduce((acc: any[], trade: any) => {
+    const date = new Date(trade.createdAt).toLocaleDateString('en-US', { month: 'short' });
+    const existingEntry = acc.find(entry => entry.date === date);
+    
+    if (existingEntry) {
+      existingEntry.pnl += parseFloat(trade.pnl || 0);
+    } else {
+      acc.push({ date, pnl: parseFloat(trade.pnl || 0) });
+    }
+    
+    return acc;
+  }, []) : [];
 
-  const assetData = [
-    { asset: "AAPL", trades: 12, pnl: 450 },
-    { asset: "MSFT", trades: 8, pnl: -120 },
-    { asset: "GOOGL", trades: 15, pnl: 320 },
-    { asset: "TSLA", trades: 6, pnl: 89 },
-  ];
+  // Generate asset data from real trades
+  const assetData = trades ? trades.reduce((acc: any[], trade: any) => {
+    const existingEntry = acc.find(entry => entry.asset === trade.asset);
+    
+    if (existingEntry) {
+      existingEntry.trades += 1;
+      existingEntry.pnl += parseFloat(trade.pnl || 0);
+    } else {
+      acc.push({ asset: trade.asset, trades: 1, pnl: parseFloat(trade.pnl || 0) });
+    }
+    
+    return acc;
+  }, []) : [];
 
-  const directionData = [
-    { name: "Long", value: 65, color: "#10b981" },
-    { name: "Short", value: 35, color: "#ef4444" },
-  ];
+  // Generate direction data from real trades
+  const directionData = trades ? (() => {
+    const longTrades = trades.filter((trade: any) => trade.direction === 'long').length;
+    const shortTrades = trades.filter((trade: any) => trade.direction === 'short').length;
+    const total = longTrades + shortTrades;
+    
+    return total > 0 ? [
+      { name: "Long", value: Math.round((longTrades / total) * 100), color: "#10b981" },
+      { name: "Short", value: Math.round((shortTrades / total) * 100), color: "#ef4444" },
+    ] : [];
+  })() : [];
 
   return (
     <div className="min-h-screen flex bg-background">

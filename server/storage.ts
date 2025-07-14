@@ -122,6 +122,8 @@ export class DatabaseStorage implements IStorage {
       .insert(trades)
       .values({
         ...trade,
+        entryPrice: trade.entryPrice.toString(),
+        exitPrice: trade.exitPrice ? trade.exitPrice.toString() : null,
         pnl,
         isCompleted: !!(trade.exitPrice),
       })

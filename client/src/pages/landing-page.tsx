@@ -15,6 +15,8 @@ import luxuryCar from "@assets/pexels-pixabay-326259_1753623060677.jpg";
 import luxuryRoom from "@assets/pexels-joao-gustavo-rezende-15265-68389_1753623060676.jpg";
 import watchCollection from "@assets/pexels-bemistermister-380782_1753623060677.jpg";
 import penthouseView from "@assets/pexels-rpnickson-2417842_1753623060678.jpg";
+import tradingCharts from "@assets/pexels-energepic-com-27411-159888_1753623332929.jpg";
+import bmwTrading from "@assets/pexels-dvaughnbell-2068664_1753623332929.jpg";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();
@@ -186,7 +188,7 @@ export default function LandingPage() {
           
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => {
-              const featureImages = [watchCollection, luxuryRoom, penthouseView];
+              const featureImages = [tradingCharts, luxuryRoom, bmwTrading];
               return (
                 <motion.div
                   key={index}
@@ -229,8 +231,64 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Aesthetic Section - Luxury Symbols */}
+      <section className="py-16 bg-white dark:bg-black relative overflow-hidden">
+        {/* Floating luxury symbols */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-10 w-24 h-24 opacity-5 dark:opacity-10">
+            <img src={watchCollection} alt="" className="w-full h-full object-cover rounded-full" />
+          </div>
+          <div className="absolute bottom-20 right-10 w-32 h-20 opacity-5 dark:opacity-10">
+            <img src={penthouseView} alt="" className="w-full h-full object-cover rounded-lg" />
+          </div>
+        </div>
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-2xl lg:text-4xl font-bold text-black dark:text-white mb-6 tracking-tight">
+              What serious traders unlock
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="space-y-4">
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Precision timing. Calculated risks. Systematic wealth building.
+                </p>
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                  The lifestyle you envision isn't just a dream—it's the inevitable result of disciplined trading.
+                </p>
+              </div>
+              <div className="relative">
+                <div className="grid grid-cols-2 gap-4">
+                  <motion.div 
+                    className="relative h-32 rounded-lg overflow-hidden"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img src={watchCollection} alt="Luxury timepieces" className="w-full h-full object-cover opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                  </motion.div>
+                  <motion.div 
+                    className="relative h-32 rounded-lg overflow-hidden"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img src={penthouseView} alt="Luxury lifestyle" className="w-full h-full object-cover opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
-      <section id="pricing" className="py-24">
+      <section id="pricing" className="py-24 bg-gray-50/50 dark:bg-gray-950/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
@@ -335,9 +393,19 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-gray-800 py-12">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      {/* Footer with Subtle Luxury Accents */}
+      <footer className="relative border-t border-gray-200 dark:border-gray-800 py-12 overflow-hidden">
+        {/* Subtle background luxury elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-16 h-16 opacity-3 dark:opacity-5">
+            <img src={watchCollection} alt="" className="w-full h-full object-cover rounded-full blur-sm" />
+          </div>
+          <div className="absolute bottom-0 right-1/4 w-20 h-12 opacity-3 dark:opacity-5">
+            <img src={luxuryRoom} alt="" className="w-full h-full object-cover rounded-lg blur-sm" />
+          </div>
+        </div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center">
             <div className="text-xl font-semibold text-black dark:text-white mb-4">
               CoinFeedly

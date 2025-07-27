@@ -62,7 +62,11 @@ export class DatabaseStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values({
+        email: insertUser.email,
+        password: insertUser.password,
+        username: insertUser.email.split('@')[0], // Generate username from email
+      })
       .returning();
     return user;
   }
@@ -103,12 +107,12 @@ export class DatabaseStorage implements IStorage {
     return await query;
   }
 
-  async createTrade(trade: InsertTrade & { userId: number }): Promise<Trade> {
+  async createTrade(trade: any): Promise<Trade> {
     // Calculate P&L if both entry and exit prices are provided
     let pnl = null;
     if (trade.entryPrice && trade.exitPrice) {
-      const entryPrice = parseFloat(trade.entryPrice.toString());
-      const exitPrice = parseFloat(trade.exitPrice.toString());
+      const entryPrice = typeof trade.entryPrice === 'string' ? parseFloat(trade.entryPrice) : trade.entryPrice;
+      const exitPrice = typeof trade.exitPrice === 'string' ? parseFloat(trade.exitPrice) : trade.exitPrice;
       const size = trade.size;
       
       if (trade.direction === 'long') {
@@ -121,9 +125,16 @@ export class DatabaseStorage implements IStorage {
     const [newTrade] = await db
       .insert(trades)
       .values({
-        ...trade,
-        entryPrice: trade.entryPrice.toString(),
-        exitPrice: trade.exitPrice ? trade.exitPrice.toString() : null,
+        userId: trade.userId,
+        asset: trade.asset,
+        direction: trade.direction,
+        entryPrice: typeof trade.entryPrice === 'string' ? trade.entryPrice : trade.entryPrice.toString(),
+        exitPrice: trade.exitPrice ? (typeof trade.exitPrice === 'string' ? trade.exitPrice : trade.exitPrice.toString()) : null,
+        size: trade.size,
+        notes: trade.notes || null,
+        tags: trade.tags || null,
+        imageUrl: trade.imageUrl || null,
+        tradeDate: new Date(trade.tradeDate),
         pnl,
         isCompleted: !!(trade.exitPrice),
       })

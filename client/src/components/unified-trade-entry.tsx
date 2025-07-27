@@ -64,8 +64,8 @@ export function UnifiedTradeEntry({
         direction,
         tags,
         tradeDate: new Date(data.tradeDate).toISOString(),
-        entryPrice: parseFloat(data.entryPrice),
-        exitPrice: data.exitPrice ? parseFloat(data.exitPrice) : undefined,
+        entryPrice: data.entryPrice,
+        exitPrice: data.exitPrice || undefined,
       };
       
       const res = await apiRequest("POST", "/api/trades", tradeData);

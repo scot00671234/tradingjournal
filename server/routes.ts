@@ -44,10 +44,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const validatedData = insertTradeSchema.parse(req.body);
-      const trade = await storage.createTrade({
+      
+      // Convert string prices to numbers for database storage
+      const tradeData = {
         ...validatedData,
         userId: req.user.id,
-      });
+        entryPrice: parseFloat(validatedData.entryPrice),
+        exitPrice: validatedData.exitPrice ? parseFloat(validatedData.exitPrice) : undefined,
+      };
+      
+      const trade = await storage.createTrade(tradeData);
       
       res.status(201).json(trade);
     } catch (error: any) {

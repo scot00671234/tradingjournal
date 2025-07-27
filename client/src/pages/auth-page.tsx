@@ -12,6 +12,7 @@ import { insertUserSchema, type InsertUser } from "@shared/schema";
 import { z } from "zod";
 import { TrendingUp, Shield, BarChart3, Target } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import barclayneLogo from "@assets/Barclayne capital (1)_1753635928970.png";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -75,10 +76,12 @@ export default function AuthPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-6">
           <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-black dark:bg-white rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-white dark:text-black" />
-              </div>
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <img 
+                src={barclayneLogo} 
+                alt="Barclayne Capital" 
+                className="h-10 w-auto"
+              />
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">CoinFeedly</h1>
             </div>
             <p className="text-gray-600 dark:text-gray-400">Track your trades. Analyze your performance.</p>

@@ -22,6 +22,7 @@ import rolexWatch from "@assets/pexels-pixabay-364822_1753624512469.jpg";
 import porscheSports from "@assets/pexels-adrian-dorobantu-989175-2127740_1753624512469.jpg";
 import tropicalVilla from "@assets/pexels-asadphoto-3155666_1753624512470.jpg";
 import heroVideo from "@assets/Copy of Black and White Modern Quote Motivation Success Video_1753634070768.mp4";
+import barclayneLogo from "@assets/Barclayne capital (1)_1753635928970.png";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();
@@ -85,8 +86,15 @@ export default function LandingPage() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-black/60 backdrop-blur-2xl border-b border-white/20 dark:border-gray-700/30 shadow-lg shadow-black/5 dark:shadow-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="text-xl font-semibold text-black dark:text-white">
-              CoinFeedly
+            <div className="flex items-center">
+              <img 
+                src={barclayneLogo} 
+                alt="Barclayne Capital" 
+                className="h-8 w-auto"
+              />
+              <span className="ml-3 text-xl font-semibold text-black dark:text-white">
+                CoinFeedly
+              </span>
             </div>
             <nav className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Features</a>

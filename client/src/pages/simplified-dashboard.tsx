@@ -18,6 +18,7 @@ import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 import "react-grid-layout/css/styles.css";
 //@ts-ignore
 import GridLayout from "react-grid-layout";
+import barclayneLogo from "@assets/Barclayne capital (1)_1753635928970.png";
 
 export default function SimplifiedDashboard() {
   const { user, logoutMutation } = useAuth();
@@ -115,9 +116,11 @@ export default function SimplifiedDashboard() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white dark:text-black" />
-              </div>
+              <img 
+                src={barclayneLogo} 
+                alt="Barclayne Capital" 
+                className="h-8 w-auto"
+              />
               <div>
                 <h1 className="text-lg font-bold text-gray-900 dark:text-white">CoinFeedly</h1>
               </div>

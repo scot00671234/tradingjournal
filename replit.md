@@ -1,8 +1,17 @@
-# Trading Journal Application
+# CoinFeedly - Clean, Simple Trading Journal
 
 ## Overview
 
-This is a full-stack trading journal application built with React, Express, and PostgreSQL. The application allows users to track their trading activities, analyze performance metrics, and manage their trading data with a subscription-based model using Stripe integration.
+CoinFeedly is a beautiful, Notion-style trading journal with automatic trade sync and powerful insights. Built with React, Express, and PostgreSQL, it provides a clean, minimalist interface focused on clarity and speed for cryptocurrency traders.
+
+**Tagline**: A beautiful, Notion-style trading journal with automatic trade sync and powerful insights.
+
+## Recent Changes (January 27, 2025)
+- ✓ Successfully migrated from Replit Agent to Replit environment
+- ✓ Configured PostgreSQL database with proper environment variables  
+- ✓ Resolved all dependency issues and server startup problems
+- ✓ Verified full-stack application running on port 5000
+- → Now transforming into CoinFeedly with Notion-style UI and enhanced features
 
 ## User Preferences
 

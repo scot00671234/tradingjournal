@@ -652,8 +652,10 @@ export default function BlogPostPage() {
                 .replace(/^### (.*$)/gm, '<h3 class="text-xl font-semibold text-black dark:text-white mt-6 mb-3">$1</h3>')
                 .replace(/^## (.*$)/gm, '<h2 class="text-2xl font-bold text-black dark:text-white mt-8 mb-4">$1</h2>')
                 .replace(/^# (.*$)/gm, '<h1 class="text-3xl font-bold text-black dark:text-white mt-10 mb-6">$1</h1>')
-                .replace(/^- (.*$)/gm, '<li class="ml-6 mb-2 list-disc">$1</li>')
-                .replace(/^\d+\. (.*$)/gm, '<li class="ml-6 mb-2 list-decimal">$1</li>')
+                .replace(/((?:^\d+\. .*$\n?)+)/gm, '<ol class="list-decimal ml-6 mb-4 space-y-2">$1</ol>')
+                .replace(/^(\d+)\. (.*$)/gm, '<li class="mb-1">$2</li>')
+                .replace(/((?:^- .*$\n?)+)/gm, '<ul class="list-disc ml-6 mb-4 space-y-2">$1</ul>')
+                .replace(/^- (.*$)/gm, '<li class="mb-1">$1</li>')
                 .replace(/\n\n/g, '</p><p class="mb-4">')
                 .replace(/\n/g, '<br/>')
             }}

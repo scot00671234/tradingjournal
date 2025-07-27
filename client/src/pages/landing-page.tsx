@@ -357,6 +357,19 @@ export default function LandingPage() {
               );
             })}
           </div>
+          
+          {/* Trial Information After Features */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-center mt-16"
+          >
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              All plans include a 7-day free trial. No hidden fees or complicated tiers.
+            </p>
+          </motion.div>
         </div>
       </section>
 

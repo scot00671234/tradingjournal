@@ -357,14 +357,89 @@ export default function LandingPage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-24 bg-gray-50/50 dark:bg-gray-950/50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-6 tracking-tight">
+              The price of this journal is nothing.
+            </h2>
+            <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-12 font-light max-w-3xl mx-auto">
+              Compared to what your mistakes are costing you.
+            </p>
+          </div>
           
-          {/* Trial Information After Features */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {pricingPlans.map((plan, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className={`relative border shadow-sm hover:shadow-md transition-shadow duration-200 ${
+                  plan.popular 
+                    ? 'border-black dark:border-white' 
+                    : 'border-gray-200 dark:border-gray-800'
+                }`}>
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <span className="bg-black dark:bg-white text-white dark:text-black text-xs font-medium px-3 py-1 rounded-full">
+                        Most Popular
+                      </span>
+                    </div>
+                  )}
+                  
+                  <CardHeader className="text-center pb-4">
+                    <CardTitle className="text-2xl font-bold text-black dark:text-white">
+                      {plan.name}
+                    </CardTitle>
+                    <div className="mt-4">
+                      <span className="text-4xl font-bold text-black dark:text-white">{plan.price}</span>
+                      <span className="text-gray-500 dark:text-gray-400">/{plan.period}</span>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400 mt-2">
+                      {plan.description}
+                    </p>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <ul className="space-y-3 mb-8">
+                      {plan.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-center text-gray-700 dark:text-gray-300">
+                          <Check className="h-4 w-4 text-black dark:text-white mr-3 flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <Button 
+                      className={`w-full ${
+                        plan.popular 
+                          ? 'bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black' 
+                          : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 text-black dark:text-white'
+                      }`}
+                      onClick={() => setLocation("/auth")}
+                    >
+                      {plan.buttonText}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Trial Information Below Cards */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-center mt-16"
+            className="text-center mt-12"
           >
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               All plans include a 7-day free trial. No hidden fees or complicated tiers.
@@ -526,82 +601,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-24 bg-gray-50/50 dark:bg-gray-950/50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-6 tracking-tight">
-              The price of this journal is nothing.
-            </h2>
-            <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-12 font-light max-w-3xl mx-auto">
-              Compared to what your mistakes are costing you.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {pricingPlans.map((plan, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className={`relative border shadow-sm hover:shadow-md transition-shadow duration-200 ${
-                  plan.popular 
-                    ? 'border-black dark:border-white' 
-                    : 'border-gray-200 dark:border-gray-800'
-                }`}>
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-black dark:bg-white text-white dark:text-black text-xs font-medium px-3 py-1 rounded-full">
-                        Most Popular
-                      </span>
-                    </div>
-                  )}
-                  
-                  <CardHeader className="text-center pb-4">
-                    <CardTitle className="text-2xl font-bold text-black dark:text-white">
-                      {plan.name}
-                    </CardTitle>
-                    <div className="mt-4">
-                      <span className="text-4xl font-bold text-black dark:text-white">{plan.price}</span>
-                      <span className="text-gray-500 dark:text-gray-400">/{plan.period}</span>
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400 mt-2">
-                      {plan.description}
-                    </p>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <ul className="space-y-3 mb-8">
-                      {plan.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center text-gray-700 dark:text-gray-300">
-                          <Check className="h-4 w-4 text-black dark:text-white mr-3 flex-shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <Button 
-                      className={`w-full ${
-                        plan.popular 
-                          ? 'bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black' 
-                          : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 text-black dark:text-white'
-                      }`}
-                      onClick={() => setLocation("/auth")}
-                    >
-                      {plan.buttonText}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-          
 
-        </div>
-      </section>
 
       {/* CTA Section with Penthouse Background */}
       <section className="relative py-24 overflow-hidden">

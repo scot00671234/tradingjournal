@@ -23,70 +23,66 @@ export default function LandingPage() {
   const features = [
     {
       icon: TrendingUp,
-      title: "Manual Trade Entry",
-      description: "Quick and easy trade logging with asset, direction, entry/exit prices, and position sizing.",
+      title: "Manual Logging",
+      description: "Fast entry for trades (pair, entry/exit, P&L, notes). Clean, minimal interface.",
     },
     {
-      icon: BarChart3,
-      title: "Advanced Analytics",
-      description: "Win rate, risk/reward ratios, P&L tracking, and performance insights.",
+      icon: Zap,
+      title: "Auto-Sync",
+      description: "Connect exchange (e.g., Binance, Bybit) or import CSV to auto-log trades.",
     },
     {
       icon: Target,
-      title: "Risk Management",
-      description: "Track your risk exposure and monitor drawdown patterns.",
+      title: "Tag & Strategy Tracking",
+      description: "Categorize trades and view strategy breakdowns. Identify your best setups.",
     },
     {
       icon: FileText,
-      title: "Trade Notes & Tags",
-      description: "Organize trades with custom tags and detailed notes for each position.",
+      title: "Notes & Charts",
+      description: "Attach screenshots or thoughts to each trade. Visual documentation made easy.",
+    },
+    {
+      icon: BarChart3,
+      title: "Dashboard",
+      description: "Key metrics (P&L, win rate, drawdown, strategy ROI). Notion-level clean.",
     },
     {
       icon: PieChart,
-      title: "Performance Reports",
-      description: "Daily, weekly, and monthly performance summaries with visual charts.",
-    },
-    {
-      icon: Shield,
-      title: "Secure & Private",
-      description: "Your trading data is encrypted and stored securely.",
+      title: "Export",
+      description: "CSV + PDF exports. Take your data anywhere.",
     },
   ];
 
   const pricingPlans = [
     {
-      name: "Free",
-      price: "$0",
-      period: "forever",
-      description: "Perfect for new traders",
-      features: [
-        "Up to 5 trades",
-        "Basic analytics",
-        "Win rate tracking",
-        "P&L overview",
-      ],
-      buttonText: "Get Started",
-      buttonVariant: "outline" as const,
-      popular: false,
-    },
-    {
       name: "Pro",
-      price: "$19",
+      price: "$29",
       period: "month",
-      description: "For serious traders",
+      description: "Clean manual journal",
       features: [
-        "Unlimited trades",
-        "Advanced analytics suite",
-        "Chart/image uploads",
-        "CSV export",
-        "Trade editing & tagging",
-        "Advanced filters",
-        "Priority support",
-        "Data sync & backup",
+        "Clean manual journal",
+        "Auto trade sync",
+        "Strategy tracking",
+        "Export tools",
       ],
       buttonText: "Start Free Trial",
       buttonVariant: "default" as const,
       popular: true,
+    },
+    {
+      name: "Advanced",
+      price: "$49",
+      period: "month",
+      description: "Multiple dashboards & filters",
+      features: [
+        "Multiple dashboards",
+        "Advanced filters (by pair, time, tags)",
+        "Custom data views",
+        "Priority support",
+      ],
+      buttonText: "Get Advanced",
+      buttonVariant: "outline" as const,
+      popular: false,
     },
   ];
 
@@ -122,8 +118,8 @@ export default function LandingPage() {
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">TradeJournal</h1>
-                <span className="text-xs text-slate-400">Professional Trading Analytics</span>
+                <h1 className="text-xl font-bold text-white">CoinFeedly</h1>
+                <span className="text-xs text-slate-400">Clean, Simple Trading Journal</span>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -154,13 +150,13 @@ export default function LandingPage() {
           </Badge>
           
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Master Your Trading
-            <span className="text-emerald-400"> Performance</span>
+            CoinFeedly
+            <span className="text-emerald-400"> Clean, Simple Trading Journal</span>
           </h1>
           
           <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            The professional trading journal that helps serious traders analyze, 
-            improve, and scale their trading strategies with data-driven insights.
+            A beautiful, Notion-style trading journal with automatic trade sync and powerful insights. 
+            Most tools are outdated or ugly → CoinFeedly is Notion-level clean.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

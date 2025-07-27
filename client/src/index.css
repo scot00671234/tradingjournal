@@ -3,58 +3,60 @@
 @tailwind utilities;
 
 :root {
+  /* Notion-style clean colors */
   --background: hsl(0, 0%, 100%);
-  --foreground: hsl(224, 71%, 4%);
-  --muted: hsl(220, 14%, 96%);
-  --muted-foreground: hsl(220, 8%, 46%);
+  --foreground: hsl(0, 0%, 9%);
+  --muted: hsl(0, 0%, 96%);
+  --muted-foreground: hsl(0, 0%, 45%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(224, 71%, 4%);
+  --popover-foreground: hsl(0, 0%, 9%);
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(224, 71%, 4%);
-  --border: hsl(220, 13%, 91%);
-  --input: hsl(220, 13%, 91%);
-  --primary: hsl(262, 83%, 58%);
-  --primary-foreground: hsl(210, 20%, 98%);
-  --secondary: hsl(220, 14%, 96%);
-  --secondary-foreground: hsl(220, 9%, 46%);
-  --accent: hsl(220, 14%, 96%);
-  --accent-foreground: hsl(220, 9%, 46%);
+  --card-foreground: hsl(0, 0%, 9%);
+  --border: hsl(0, 0%, 90%);
+  --input: hsl(0, 0%, 90%);
+  --primary: hsl(0, 0%, 9%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(0, 0%, 96%);
+  --secondary-foreground: hsl(0, 0%, 9%);
+  --accent: hsl(0, 0%, 96%);
+  --accent-foreground: hsl(0, 0%, 9%);
   --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(210, 20%, 98%);
-  --ring: hsl(262, 83%, 58%);
-  --radius: 0.5rem;
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(0, 0%, 9%);
+  --radius: 0.75rem;
 
-  /* Trading-specific colors */
-  --profit: hsl(142, 76%, 36%);
+  /* CoinFeedly trading colors */
+  --profit: hsl(134, 61%, 41%);
   --loss: hsl(0, 84%, 60%);
-  --neutral: hsl(215, 20%, 65%);
+  --neutral: hsl(0, 0%, 64%);
 }
 
 .dark {
-  --background: hsl(224, 71%, 4%);
-  --foreground: hsl(210, 20%, 98%);
-  --muted: hsl(215, 28%, 17%);
-  --muted-foreground: hsl(217, 10%, 65%);
-  --popover: hsl(224, 71%, 4%);
-  --popover-foreground: hsl(210, 20%, 98%);
-  --card: hsl(215, 28%, 17%);
-  --card-foreground: hsl(210, 20%, 98%);
-  --border: hsl(215, 28%, 17%);
-  --input: hsl(215, 28%, 17%);
-  --primary: hsl(142, 76%, 36%);
-  --primary-foreground: hsl(210, 20%, 98%);
-  --secondary: hsl(215, 28%, 17%);
-  --secondary-foreground: hsl(210, 20%, 98%);
-  --accent: hsl(215, 28%, 17%);
-  --accent-foreground: hsl(210, 20%, 98%);
+  /* Notion-style dark mode */
+  --background: hsl(0, 0%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 14.9%);
+  --muted-foreground: hsl(0, 0%, 63.9%);
+  --popover: hsl(0, 0%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 14.9%);
+  --input: hsl(0, 0%, 14.9%);
+  --primary: hsl(0, 0%, 98%);
+  --primary-foreground: hsl(0, 0%, 9%);
+  --secondary: hsl(0, 0%, 14.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(0, 0%, 14.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
   --destructive: hsl(0, 62%, 30%);
-  --destructive-foreground: hsl(210, 20%, 98%);
-  --ring: hsl(142, 76%, 36%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(0, 0%, 83.1%);
 
-  /* Trading-specific colors for dark mode */
-  --profit: hsl(142, 76%, 36%);
+  /* CoinFeedly trading colors for dark mode */
+  --profit: hsl(134, 61%, 41%);
   --loss: hsl(0, 84%, 60%);
-  --neutral: hsl(215, 20%, 65%);
+  --neutral: hsl(0, 0%, 64%);
 }
 
 @layer base {

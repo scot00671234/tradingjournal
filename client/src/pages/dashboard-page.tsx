@@ -7,22 +7,23 @@ import { useAuth } from "@/hooks/use-auth";
 import { Bell, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/ui/theme-provider";
+import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
-  const { data: stats } = useQuery({
+  const { data: stats } = useQuery<TradeStats>({
     queryKey: ["/api/stats"],
     enabled: !!user,
   });
 
-  const { data: trades } = useQuery({
+  const { data: trades } = useQuery<Trade[]>({
     queryKey: ["/api/trades"],
     enabled: !!user,
   });
 
-  const { data: subscriptionStatus } = useQuery({
+  const { data: subscriptionStatus } = useQuery<SubscriptionStatus>({
     queryKey: ["/api/subscription-status"],
     enabled: !!user,
   });
@@ -36,7 +37,7 @@ export default function DashboardPage() {
         <header className="bg-card border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-foreground">Trading Dashboard</h2>
+              <h2 className="text-2xl font-bold text-foreground">Dashboard</h2>
               <p className="text-muted-foreground">
                 Welcome back, <span className="text-foreground">{user?.username}</span>
               </p>

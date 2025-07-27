@@ -72,3 +72,20 @@ export type User = typeof users.$inferSelect;
 export type InsertTrade = z.infer<typeof insertTradeSchema>;
 export type UpdateTrade = z.infer<typeof updateTradeSchema>;
 export type Trade = typeof trades.$inferSelect;
+
+// Additional types for API responses
+export type TradeStats = {
+  totalTrades: number;
+  totalPnL: number;
+  winRate: number;
+  avgRiskReward: number;
+  largestWin: number;
+  largestLoss: number;
+  maxDrawdown: number;
+};
+
+export type SubscriptionStatus = {
+  plan: string;
+  tradeCount: number;
+  tradeLimit: number | null;
+};

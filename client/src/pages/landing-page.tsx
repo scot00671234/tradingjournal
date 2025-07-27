@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Play
 } from "lucide-react";
+import oceanWaves from "@assets/pexels-pok-rie-33563-2064749_1753621776275.jpg";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();
@@ -95,7 +96,7 @@ export default function LandingPage() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/attached_assets/pexels-pok-rie-33563-2064749_1753621776275.jpg" 
+            src={oceanWaves} 
             alt="Ocean waves" 
             className="w-full h-full object-cover opacity-20"
           />

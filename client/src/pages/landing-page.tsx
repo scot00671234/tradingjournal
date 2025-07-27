@@ -253,7 +253,7 @@ export default function LandingPage() {
             className="text-center mb-20"
           >
             <h2 className="text-4xl lg:text-6xl font-bold text-black dark:text-white mb-8 tracking-tight leading-tight">
-              The destination
+              Unlock Your Potential
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
               Precision timing. Calculated risks. Systematic wealth building.
@@ -359,7 +359,7 @@ export default function LandingPage() {
             className="text-center mt-20"
           >
             <p className="text-lg text-gray-500 dark:text-gray-500 italic max-w-2xl mx-auto">
-              The lifestyle you envision isn't just a dream—it's the inevitable result of disciplined trading.
+              The goal you envision isn't just a dream. It's the inevitable result of disciplined trading.
             </p>
           </motion.div>
         </div>

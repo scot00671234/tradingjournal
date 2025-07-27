@@ -1,7 +1,8 @@
-import { useState } from "react";
+
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
-import { Bell, Moon, Sun, Plus, TrendingUp, BarChart3, Filter, Search, Settings, LogOut, Calendar, Target, Award, Activity } from "lucide-react";
+import { Bell, Moon, Sun, Plus, Filter, Search, Settings, LogOut, Layout, LayoutDashboard, TrendingUp, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -9,8 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useTheme } from "@/components/ui/theme-provider";
 import { UnifiedTradeEntry } from "@/components/unified-trade-entry";
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { EquityCurveWidget } from "@/components/dashboard-widgets/equity-curve-widget";
+import { DrawdownWidget } from "@/components/dashboard-widgets/drawdown-widget";
+import { PerformanceMetricsWidget } from "@/components/dashboard-widgets/performance-metrics-widget";
+import { TradeListWidget } from "@/components/dashboard-widgets/trade-list-widget";
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
+import "react-grid-layout/css/styles.css";
+//@ts-ignore
+import GridLayout from "react-grid-layout";
 
 export default function SimplifiedDashboard() {
   const { user, logoutMutation } = useAuth();
@@ -20,6 +27,13 @@ export default function SimplifiedDashboard() {
   const [filterDirection, setFilterDirection] = useState<string>("all");
   const [filterAsset, setFilterAsset] = useState<string>("all");
   const [filterTimeframe, setFilterTimeframe] = useState<string>("all");
+  const [isCustomizing, setIsCustomizing] = useState(false);
+  const [layouts, setLayouts] = useState([
+    { i: "equity-curve", x: 0, y: 0, w: 6, h: 4, minW: 4, minH: 3 },
+    { i: "drawdown", x: 6, y: 0, w: 6, h: 4, minW: 4, minH: 3 },
+    { i: "performance-metrics", x: 0, y: 4, w: 6, h: 4, minW: 4, minH: 3 },
+    { i: "trade-list", x: 6, y: 4, w: 6, h: 4, minW: 4, minH: 3 },
+  ]);
 
   const { data: stats } = useQuery<TradeStats>({
     queryKey: ["/api/stats"],
@@ -71,28 +85,27 @@ export default function SimplifiedDashboard() {
   // Get unique assets for filter dropdown
   const uniqueAssets = Array.from(new Set(trades?.map(trade => trade.asset) || []));
 
-  // Prepare chart data
-  const chartData = trades?.map((trade, index) => ({
-    index: index + 1,
-    pnl: parseFloat(trade.pnl || '0'),
-    cumulativePnl: trades.slice(0, index + 1).reduce((sum, t) => sum + parseFloat(t.pnl || '0'), 0),
-    date: new Date(trade.createdAt).toLocaleDateString(),
-    asset: trade.asset,
-    direction: trade.direction
-  })) || [];
+  // Widget rendering function
+  const renderWidget = (key: string) => {
+    if (!trades) return null;
+    
+    switch (key) {
+      case "equity-curve":
+        return <EquityCurveWidget trades={filteredTrades} />;
+      case "drawdown":
+        return <DrawdownWidget trades={filteredTrades} />;
+      case "performance-metrics":
+        return <PerformanceMetricsWidget trades={filteredTrades} />;
+      case "trade-list":
+        return <TradeListWidget trades={filteredTrades} />;
+      default:
+        return null;
+    }
+  };
 
-  // Win/Loss pie chart data
-  const winLossData = [
-    { name: 'Wins', value: trades?.filter(t => parseFloat(t.pnl || '0') > 0).length || 0, color: '#10b981' },
-    { name: 'Losses', value: trades?.filter(t => parseFloat(t.pnl || '0') < 0).length || 0, color: '#ef4444' },
-    { name: 'Breakeven', value: trades?.filter(t => parseFloat(t.pnl || '0') === 0).length || 0, color: '#6b7280' }
-  ];
-
-  // Direction breakdown
-  const directionData = [
-    { name: 'Long', value: trades?.filter(t => t.direction === 'long').length || 0, color: '#059669' },
-    { name: 'Short', value: trades?.filter(t => t.direction === 'short').length || 0, color: '#dc2626' }
-  ];
+  const handleLayoutChange = (layout: any) => {
+    setLayouts(layout);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
@@ -132,6 +145,19 @@ export default function SimplifiedDashboard() {
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Trade
+              </Button>
+              
+              <Button
+                variant={isCustomizing ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setIsCustomizing(!isCustomizing)}
+                className={isCustomizing 
+                  ? "bg-blue-600 text-white hover:bg-blue-700" 
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }
+              >
+                <LayoutDashboard className="w-4 h-4 mr-2" />
+                {isCustomizing ? "Done" : "Customize"}
               </Button>
               
               <Button variant="ghost" size="sm" onClick={toggleTheme}>
@@ -248,143 +274,67 @@ export default function SimplifiedDashboard() {
             </div>
           )}
 
-          {/* Charts Section */}
+          {/* Customization Notice */}
+          {isCustomizing && (
+            <div className="mb-6 p-4 bg-blue-50/80 dark:bg-blue-900/20 backdrop-blur-xl border border-blue-200/50 dark:border-blue-700/50 rounded-xl">
+              <div className="flex items-center text-blue-800 dark:text-blue-200">
+                <Layout className="w-5 h-5 mr-2" />
+                <span className="font-medium">Customization Mode</span>
+                <span className="ml-2 text-sm opacity-75">Drag widgets to rearrange your dashboard</span>
+              </div>
+            </div>
+          )}
+
+          {/* Drag-and-Drop Dashboard */}
           {trades && trades.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              {/* P&L Curve */}
-              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                  <Activity className="w-5 h-5 mr-2 text-blue-500" />
-                  Cumulative P&L
-                </h3>
-                <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="index" stroke="#6b7280" />
-                    <YAxis stroke="#6b7280" />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'rgba(255, 255, 255, 0.9)', 
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px'
-                      }}
-                      formatter={(value: number) => [`$${value.toFixed(2)}`, 'Cumulative P&L']}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="cumulativePnl" 
-                      stroke="#3b82f6" 
-                      fill="url(#colorPnl)"
-                      strokeWidth={2}
-                    />
-                    <defs>
-                      <linearGradient id="colorPnl" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Win/Loss Distribution */}
-              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                  <Target className="w-5 h-5 mr-2 text-green-500" />
-                  Win/Loss Distribution
-                </h3>
-                <ResponsiveContainer width="100%" height={200}>
-                  <PieChart>
-                    <Pie
-                      data={winLossData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {winLossData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value: number) => [value, 'Trades']} />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="flex justify-center space-x-4 mt-4">
-                  {winLossData.map((entry, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <div 
-                        className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: entry.color }}
-                      />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {entry.name}: {entry.value}
-                      </span>
-                    </div>
-                  ))}
+            <div className="mb-8">
+              <GridLayout
+                className="layout"
+                layout={layouts}
+                cols={12}
+                rowHeight={60}
+                width={1200}
+                isDraggable={isCustomizing}
+                isResizable={isCustomizing}
+                onLayoutChange={handleLayoutChange}
+                margin={[24, 24]}
+                containerPadding={[0, 0]}
+                useCSSTransforms={true}
+              >
+                <div key="equity-curve" className={isCustomizing ? "drag-handle" : ""}>
+                  {renderWidget("equity-curve")}
                 </div>
-              </div>
+                <div key="drawdown" className={isCustomizing ? "drag-handle" : ""}>
+                  {renderWidget("drawdown")}
+                </div>
+                <div key="performance-metrics" className={isCustomizing ? "drag-handle" : ""}>
+                  {renderWidget("performance-metrics")}
+                </div>
+                <div key="trade-list" className={isCustomizing ? "drag-handle" : ""}>
+                  {renderWidget("trade-list")}
+                </div>
+              </GridLayout>
+            </div>
+          )}
 
-              {/* Long vs Short Performance */}
-              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                  <BarChart3 className="w-5 h-5 mr-2 text-purple-500" />
-                  Direction Breakdown
+          {/* Empty State */}
+          {(!trades || trades.length === 0) && (
+            <div className="text-center py-16">
+              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-12 shadow-lg">
+                <BarChart3 className="w-16 h-16 mx-auto mb-6 text-gray-400" />
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  Start Your Trading Journey
                 </h3>
-                <ResponsiveContainer width="100%" height={200}>
-                  <BarChart data={directionData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="name" stroke="#6b7280" />
-                    <YAxis stroke="#6b7280" />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'rgba(255, 255, 255, 0.9)', 
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px'
-                      }}
-                      formatter={(value: number) => [value, 'Trades']}
-                    />
-                    <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                      {directionData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Individual Trade P&L */}
-              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                  <Award className="w-5 h-5 mr-2 text-yellow-500" />
-                  Individual Trade P&L
-                </h3>
-                <ResponsiveContainer width="100%" height={200}>
-                  <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="index" stroke="#6b7280" />
-                    <YAxis stroke="#6b7280" />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'rgba(255, 255, 255, 0.9)', 
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px'
-                      }}
-                      formatter={(value: number) => [`$${value.toFixed(2)}`, 'P&L']}
-                      labelFormatter={(label) => `Trade #${label}`}
-                    />
-                    <Bar 
-                      dataKey="pnl" 
-                      radius={[2, 2, 0, 0]}
-                      fill={(entry: any) => entry.pnl >= 0 ? '#10b981' : '#ef4444'}
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.pnl >= 0 ? '#10b981' : '#ef4444'} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  Add your first trade to see powerful analytics and insights
+                </p>
+                <Button
+                  onClick={() => setShowTradeEntry(true)}
+                  className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Your First Trade
+                </Button>
               </div>
             </div>
           )}

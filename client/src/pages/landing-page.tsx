@@ -21,6 +21,7 @@ import modernVilla from "@assets/pexels-alex-staudinger-829197-1732414_175362451
 import rolexWatch from "@assets/pexels-pixabay-364822_1753624512469.jpg";
 import porscheSports from "@assets/pexels-adrian-dorobantu-989175-2127740_1753624512469.jpg";
 import tropicalVilla from "@assets/pexels-asadphoto-3155666_1753624512470.jpg";
+import heroVideo from "@assets/Copy of Black and White Modern Quote Motivation Success Video_1753634070768.mp4";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();
@@ -100,11 +101,14 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
-        {/* Luxury Car Hero Background */}
+        {/* Hero Video Background */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src={luxuryCar} 
-            alt="Luxury car interior" 
+          <video 
+            src={heroVideo} 
+            autoPlay 
+            muted 
+            loop 
+            playsInline
             className="w-full h-full object-cover opacity-30 dark:opacity-25"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/60 to-white/90 dark:from-black/80 dark:via-black/60 dark:to-black/90"></div>
@@ -138,7 +142,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-2xl lg:text-3xl text-gray-600 dark:text-gray-400 mb-8 font-light italic"
           >
-            Losers just remember.
+            Losers just forget.
           </motion.p>
 
           <motion.p 

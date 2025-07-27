@@ -2,53 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Premium Glass Morphism Effects */
+/* Clean Vercel-style utilities */
 @layer utilities {
-  .glass-morphism {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  }
-  
-  .dark .glass-morphism {
-    background: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  }
-  
-  /* Enhanced animations */
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-  
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-  
-  /* Custom gradient text */
-  .gradient-text {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
   /* Smooth scroll behavior */
   html {
     scroll-behavior: smooth;
   }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-@keyframes glow {
-  from { box-shadow: 0 0 20px rgba(0, 255, 194, 0.3); }
-  to { box-shadow: 0 0 30px rgba(0, 255, 194, 0.6), 0 0 40px rgba(0, 255, 194, 0.3); }
+  
+  /* Clean backdrop blur */
+  .backdrop-blur-clean {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
 }
 
 

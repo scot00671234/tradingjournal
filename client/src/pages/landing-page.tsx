@@ -526,9 +526,15 @@ export default function LandingPage() {
       <section id="pricing" className="py-24 bg-gray-50/50 dark:bg-gray-950/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
-              Simple, honest pricing
+            <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-6 tracking-tight">
+              The price of this journal is nothing.
             </h2>
+            <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-8 font-light max-w-3xl mx-auto">
+              Compared to what your mistakes are costing you.
+            </p>
+            <p className="text-lg lg:text-xl text-black dark:text-white mb-8 font-medium">
+              Track. Learn. Win.
+            </p>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               All plans include a 7-day free trial. No hidden fees or complicated tiers.
             </p>

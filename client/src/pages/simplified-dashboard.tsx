@@ -30,12 +30,20 @@ export default function SimplifiedDashboard() {
   const [filterAsset, setFilterAsset] = useState<string>("all");
   const [filterTimeframe, setFilterTimeframe] = useState<string>("all");
   const [isCustomizing, setIsCustomizing] = useState(false);
+  const [showWidgetSelector, setShowWidgetSelector] = useState(false);
   const [layouts, setLayouts] = useState([
     { i: "equity-curve", x: 0, y: 0, w: 6, h: 4, minW: 4, minH: 3 },
     { i: "drawdown", x: 6, y: 0, w: 6, h: 4, minW: 4, minH: 3 },
     { i: "performance-metrics", x: 0, y: 4, w: 6, h: 4, minW: 4, minH: 3 },
     { i: "trade-list", x: 6, y: 4, w: 6, h: 4, minW: 4, minH: 3 },
   ]);
+  
+  const availableWidgets = [
+    { id: "equity-curve", name: "Equity Curve", icon: TrendingUp },
+    { id: "drawdown", name: "Drawdown Analysis", icon: BarChart3 },
+    { id: "performance-metrics", name: "Performance Metrics", icon: LayoutDashboard },
+    { id: "trade-list", name: "Recent Trades", icon: Layout },
+  ];
 
   const { data: stats } = useQuery<TradeStats>({
     queryKey: ["/api/stats"],
@@ -53,8 +61,11 @@ export default function SimplifiedDashboard() {
   });
 
   const filteredTrades = trades?.filter(trade => {
-    const matchesSearch = trade.asset.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      trade.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesSearch = searchTerm === "" || 
+      trade.asset.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      trade.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      trade.notes?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      trade.direction.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesDirection = filterDirection === "all" || trade.direction === filterDirection;
     const matchesAsset = filterAsset === "all" || trade.asset === filterAsset;
@@ -297,7 +308,7 @@ export default function SimplifiedDashboard() {
 
           {/* Drag-and-Drop Dashboard */}
           {trades && trades.length > 0 && (
-            <div className="mb-8">
+            <div className="mb-8 relative">
               <GridLayout
                 className="layout"
                 layout={layouts}
@@ -311,19 +322,61 @@ export default function SimplifiedDashboard() {
                 containerPadding={[0, 0]}
                 useCSSTransforms={true}
               >
-                <div key="equity-curve" className={isCustomizing ? "drag-handle" : ""}>
+                <div key="equity-curve" className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all" : ""}>
                   {renderWidget("equity-curve")}
                 </div>
-                <div key="drawdown" className={isCustomizing ? "drag-handle" : ""}>
+                <div key="drawdown" className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all" : ""}>
                   {renderWidget("drawdown")}
                 </div>
-                <div key="performance-metrics" className={isCustomizing ? "drag-handle" : ""}>
+                <div key="performance-metrics" className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all" : ""}>
                   {renderWidget("performance-metrics")}
                 </div>
-                <div key="trade-list" className={isCustomizing ? "drag-handle" : ""}>
+                <div key="trade-list" className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all" : ""}>
                   {renderWidget("trade-list")}
                 </div>
               </GridLayout>
+              
+              {/* Widget Selector Button */}
+              <Button
+                onClick={() => setShowWidgetSelector(!showWidgetSelector)}
+                className="fixed bottom-6 right-6 z-50 bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 rounded-full w-14 h-14 transition-all duration-300"
+                size="lg"
+              >
+                <Plus className="w-6 h-6" />
+              </Button>
+              
+              {/* Widget Selector Panel */}
+              {showWidgetSelector && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40 bg-black/20" 
+                    onClick={() => setShowWidgetSelector(false)}
+                  />
+                  <div className="fixed bottom-24 right-6 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-4 shadow-lg min-w-[200px]">
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-3">Add Widget</h4>
+                    <div className="space-y-2">
+                      {availableWidgets.map((widget) => {
+                        const Icon = widget.icon;
+                        return (
+                          <Button
+                            key={widget.id}
+                            variant="ghost"
+                            size="sm"
+                            className="w-full justify-start hover:bg-yellow-50 dark:hover:bg-yellow-950/30"
+                            onClick={() => {
+                              // Add widget logic here - currently just closes for demo
+                              setShowWidgetSelector(false);
+                            }}
+                          >
+                            <Icon className="w-4 h-4 mr-2" />
+                            {widget.name}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           )}
 

@@ -106,10 +106,20 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Updated pricing headline to "The price of this journal is nothing. Compared to what your mistakes are costing you."
   - Positioned trial information strategically for better conversion flow
   - Removed em dash from quote section for cleaner typography
-- ✓ Added favicon and updated site branding (January 27, 2025):
-  - Implemented CoinFeedly golden logo as favicon
+- ✓ Enhanced favicon and site branding (January 27, 2025):
+  - Implemented CoinFeedly golden logo as favicon sized at 64x64 pixels for maximum visibility
   - Updated page title to "Coin Feedly - Your Trading Journal"
   - Enhanced SEO meta tags for better search visibility
+  - Added multiple favicon size specifications for optimal browser compatibility
+- ✓ Comprehensive dashboard UX improvements (January 27, 2025):
+  - Changed greeting from "Good night" to "Good evening" for better time accuracy
+  - Added dedicated crypto asset section with BTC, ETH, ADA, SOL, DOT, MATIC, AVAX, LINK
+  - Implemented editable custom asset system with add/remove functionality
+  - Enhanced search functionality to include assets, tags, notes, and trade direction
+  - Fixed widget overlapping issues during customization with visual borders and cursor feedback
+  - Added floating widget selector button in bottom-right corner with glassmorphism panel
+  - Improved customization mode with dashed borders and clear visual indicators
+  - Enhanced asset selection with distinct styling for stocks vs crypto vs custom assets
 
 ## User Preferences
 

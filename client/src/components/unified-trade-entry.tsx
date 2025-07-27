@@ -29,6 +29,7 @@ interface UnifiedTradeEntryProps {
 }
 
 const popularAssets = ["AAPL", "TSLA", "SPY", "QQQ", "MSFT", "NVDA", "AMZN", "GOOGL"];
+const cryptoAssets = ["BTC", "ETH", "ADA", "SOL", "DOT", "MATIC", "AVAX", "LINK"];
 
 export function UnifiedTradeEntry({ 
   subscriptionStatus, 
@@ -41,6 +42,8 @@ export function UnifiedTradeEntry({
   const [direction, setDirection] = useState<"long" | "short">("long");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
+  const [customAssets, setCustomAssets] = useState<string[]>([]);
+  const [newAsset, setNewAsset] = useState("");
 
   const form = useForm<InsertTrade>({
     resolver: zodResolver(insertTradeSchema),
@@ -122,6 +125,17 @@ export function UnifiedTradeEntry({
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
+  const addCustomAsset = () => {
+    if (newAsset.trim() && !customAssets.includes(newAsset.trim().toUpperCase())) {
+      setCustomAssets([...customAssets, newAsset.trim().toUpperCase()]);
+      setNewAsset("");
+    }
+  };
+
+  const removeCustomAsset = (assetToRemove: string) => {
+    setCustomAssets(customAssets.filter(asset => asset !== assetToRemove));
+  };
+
   const isFreeLimitReached = subscriptionStatus?.plan === 'free' && 
     subscriptionStatus.tradeCount >= (subscriptionStatus.tradeLimit || 5);
 
@@ -151,23 +165,97 @@ export function UnifiedTradeEntry({
           {/* Asset Selection */}
           <div className="space-y-2">
             <Label htmlFor="asset">Asset</Label>
-            <div className="flex flex-wrap gap-2 mb-2">
-              {popularAssets.map((asset) => (
-                <Button
-                  key={asset}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => form.setValue("asset", asset)}
-                  className="text-xs"
-                >
-                  {asset}
-                </Button>
-              ))}
+            
+            {/* Stocks Section */}
+            <div className="space-y-2">
+              <div className="text-xs text-gray-600 dark:text-gray-400">Popular Stocks</div>
+              <div className="flex flex-wrap gap-2">
+                {popularAssets.map((asset) => (
+                  <Button
+                    key={asset}
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => form.setValue("asset", asset)}
+                    className="text-xs"
+                  >
+                    {asset}
+                  </Button>
+                ))}
+              </div>
             </div>
+
+            {/* Crypto Section */}
+            <div className="space-y-2">
+              <div className="text-xs text-gray-600 dark:text-gray-400">Crypto</div>
+              <div className="flex flex-wrap gap-2">
+                {cryptoAssets.map((asset) => (
+                  <Button
+                    key={asset}
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => form.setValue("asset", asset)}
+                    className="text-xs bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800"
+                  >
+                    {asset}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Custom Assets Section */}
+            {customAssets.length > 0 && (
+              <div className="space-y-2">
+                <div className="text-xs text-gray-600 dark:text-gray-400">Custom Assets</div>
+                <div className="flex flex-wrap gap-2">
+                  {customAssets.map((asset) => (
+                    <div key={asset} className="relative group">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => form.setValue("asset", asset)}
+                        className="text-xs bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/30 dark:hover:bg-blue-900/30 border-blue-200 dark:border-blue-800 pr-8"
+                      >
+                        {asset}
+                      </Button>
+                      <button
+                        type="button"
+                        onClick={() => removeCustomAsset(asset)}
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Add Custom Asset */}
+            <div className="flex gap-2">
+              <Input
+                placeholder="Add custom asset (e.g., DOGE)"
+                value={newAsset}
+                onChange={(e) => setNewAsset(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomAsset())}
+                className="text-xs"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addCustomAsset}
+                className="shrink-0"
+              >
+                <Plus className="w-3 h-3" />
+              </Button>
+            </div>
+
             <Input
               id="asset"
-              placeholder="Enter asset symbol (e.g., AAPL, TSLA)"
+              placeholder="Enter asset symbol (e.g., AAPL, BTC, ETH)"
               {...form.register("asset")}
             />
             {form.formState.errors.asset && (

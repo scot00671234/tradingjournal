@@ -8,6 +8,6 @@ export function getGreeting(): string {
   } else if (hour >= 17 && hour < 22) {
     return "Good evening";
   } else {
-    return "Good night";
+    return "Good evening";
   }
 }

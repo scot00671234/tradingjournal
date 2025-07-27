@@ -293,7 +293,7 @@ export default function LandingPage() {
             transition={{ duration: 1, delay: 0.2 }}
           >
             <p className="text-2xl lg:text-4xl font-light text-white dark:text-black leading-relaxed tracking-wide">
-              You've wasted 100 hours watching charts — and learned nothing.
+              You've wasted 100 hours watching charts and learned nothing.
               <br />
               <span className="font-medium text-yellow-400 dark:text-yellow-600 mt-4 block">
                 Track 10 trades and you'll learn more than in 10 months.

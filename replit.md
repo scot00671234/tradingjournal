@@ -95,6 +95,12 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Created dedicated transformation section with three value proposition cards
   - Added glassmorphism design elements and smooth animations throughout
   - Improved content flow for better conversion optimization
+- ✓ Updated hero section with powerful psychological messaging (January 27, 2025):
+  - Changed hero headline to "You keep losing. And you don't even know why."
+  - Added compelling subtitle about the cycle of self-deception in trading
+  - Included solution-focused messaging about ending the cycle and gaining control
+  - Added impactful quotes throughout landing page for psychological triggers
+  - Enhanced typography and spacing for maximum emotional impact
 
 ## User Preferences
 

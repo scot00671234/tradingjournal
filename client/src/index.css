@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Glass morphism utilities */
+@layer utilities {
+  .glass {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20;
+  }
+  .glass-dark {
+    @apply dark:bg-black/10 dark:backdrop-blur-xl dark:border-black/20;
+  }
+  
+  /* Smooth animations for glass effects */
+  .glass-transition {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  /* Floating animation for cards */
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  /* Gentle pulsing glow effect */
+  .glass-glow {
+    @apply shadow-lg shadow-blue-500/10;
+  }
+}
+
 :root {
   /* Notion-style clean colors */
   --background: hsl(0, 0%, 100%);

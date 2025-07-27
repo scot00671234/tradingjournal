@@ -7,7 +7,7 @@ import { AuthProvider } from "./hooks/use-auth";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
-import DashboardPage from "@/pages/dashboard-page";
+import SimplifiedDashboard from "@/pages/simplified-dashboard";
 import SettingsPage from "@/pages/settings-page";
 import SubscribePage from "@/pages/subscribe-page";
 import LandingPage from "@/pages/landing-page";
@@ -22,7 +22,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={LandingPage} />
-      <ProtectedRoute path="/dashboard" component={DashboardPage} />
+      <ProtectedRoute path="/dashboard" component={SimplifiedDashboard} />
       <ProtectedRoute path="/add-trade" component={AddTradePage} />
       <ProtectedRoute path="/trades" component={TradeHistoryPage} />
       <ProtectedRoute path="/analytics" component={AnalyticsPage} />

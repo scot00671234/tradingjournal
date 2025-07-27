@@ -46,8 +46,15 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Clean header with logo left, navigation right
   - Professional, stable interface without overwhelming animations
   - Modern grid layouts and card designs
+- ✓ Completely rebuilt landing page with truthful feature representation (January 27, 2025):
+  - Removed all false features (mobile apps, integrations, AI analytics)
+  - Clean hero: "Trade Smarter. Your crypto journey, logged."
+  - Three core features only: Track trades, Analyze trends, Reflect & learn
+  - Minimal call-to-action section with simple "Join CoinFeedly" button
+  - Clean footer matching your image references
+  - Truthful, professional presentation of actual CoinFeedly capabilities
 - → Dashboard fully customizable with professional trading analytics
-- → Landing page optimized with premium, clean aesthetic
+- → Landing page honest and professional with clean aesthetic
 
 ## User Preferences
 

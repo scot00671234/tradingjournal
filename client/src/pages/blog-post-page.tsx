@@ -645,9 +645,17 @@ export default function BlogPostPage() {
           className="prose prose-lg dark:prose-invert max-w-none"
         >
           <div 
-            className="text-gray-700 dark:text-gray-300 leading-relaxed"
+            className="text-gray-700 dark:text-gray-300 leading-relaxed space-y-6"
             dangerouslySetInnerHTML={{ 
-              __html: post.content.replace(/\n/g, '<br/>').replace(/#{1,6}/g, match => `<h${match.length}>`) 
+              __html: post.content
+                .replace(/\n\n/g, '</p><p class="mb-4">')
+                .replace(/\n/g, '<br/>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-black dark:text-white">$1</strong>')
+                .replace(/^# (.*$)/gm, '<h1 class="text-3xl font-bold text-black dark:text-white mt-8 mb-4">$1</h1>')
+                .replace(/^## (.*$)/gm, '<h2 class="text-2xl font-bold text-black dark:text-white mt-6 mb-3">$1</h2>')
+                .replace(/^### (.*$)/gm, '<h3 class="text-xl font-semibold text-black dark:text-white mt-5 mb-2">$1</h3>')
+                .replace(/^- (.*$)/gm, '<li class="ml-4 mb-1">$1</li>')
+                .replace(/(\d+\. .*$)/gm, '<li class="ml-4 mb-1">$1</li>')
             }}
           />
         </motion.div>

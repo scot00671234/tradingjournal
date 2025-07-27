@@ -529,14 +529,8 @@ export default function LandingPage() {
             <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-6 tracking-tight">
               The price of this journal is nothing.
             </h2>
-            <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-8 font-light max-w-3xl mx-auto">
+            <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-12 font-light max-w-3xl mx-auto">
               Compared to what your mistakes are costing you.
-            </p>
-            <p className="text-lg lg:text-xl text-black dark:text-white mb-8 font-medium">
-              Track. Learn. Win.
-            </p>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              All plans include a 7-day free trial. No hidden fees or complicated tiers.
             </p>
           </div>
           
@@ -600,6 +594,19 @@ export default function LandingPage() {
               </motion.div>
             ))}
           </div>
+          
+          {/* Trial Information Below Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-center mt-12"
+          >
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              All plans include a 7-day free trial. No hidden fees or complicated tiers.
+            </p>
+          </motion.div>
         </div>
       </section>
 
@@ -617,10 +624,10 @@ export default function LandingPage() {
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
-            Ready to become consistently profitable?
+            Tired of emotional trades draining your account?
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Stop losing money to emotional trades. Start building the systematic approach that turns trading into wealth.
+            Build the system. Control your edge.
           </p>
           
           <Button 

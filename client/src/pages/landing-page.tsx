@@ -33,23 +33,8 @@ export default function LandingPage() {
 
   const pricingPlans = [
     {
-      name: "Free",
-      price: "$0",
-      period: "forever",
-      description: "Perfect for getting started",
-      features: [
-        "Up to 5 trades",
-        "Basic analytics",
-        "Manual trade entry",
-        "Simple performance charts"
-      ],
-      buttonText: "Start Free",
-      buttonVariant: "outline" as const,
-      popular: false
-    },
-    {
       name: "Pro",
-      price: "$12",
+      price: "$29",
       period: "month",
       description: "For serious traders",
       features: [
@@ -57,11 +42,29 @@ export default function LandingPage() {
         "Advanced analytics",
         "Trade screenshots",
         "Custom tags & notes",
-        "Export data"
+        "Export data",
+        "Performance insights"
       ],
-      buttonText: "Start Pro Trial",
+      buttonText: "Start 7-Day Free Trial",
       buttonVariant: "default" as const,
       popular: true
+    },
+    {
+      name: "Elite",
+      price: "$49",
+      period: "month",
+      description: "For professional traders",
+      features: [
+        "Everything in Pro +",
+        "Advanced risk metrics",
+        "Portfolio optimization",
+        "Custom strategy analysis",
+        "Priority support",
+        "API access"
+      ],
+      buttonText: "Start 7-Day Free Trial",
+      buttonVariant: "outline" as const,
+      popular: false
     }
   ];
 
@@ -76,7 +79,7 @@ export default function LandingPage() {
                 CoinFeedly
               </div>
             </div>
-            <nav className="hidden md:flex space-x-8">
+            <nav className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Features</a>
               <a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Pricing</a>
               <Button variant="outline" onClick={() => setLocation("/auth")}>
@@ -88,14 +91,24 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative py-20 lg:py-32 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/attached_assets/pexels-pok-rie-33563-2064749_1753621776275.jpg" 
+            alt="Ocean waves" 
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-white/40 dark:bg-black/40"></div>
+        </div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-6xl font-bold text-black dark:text-white mb-6 leading-tight">
-            Trade Smarter.
+            Serious traders journal.
             <br />
-            <span className="text-gray-600 dark:text-gray-400">Your crypto journey, logged.</span>
+            <span className="text-gray-700 dark:text-gray-300">Losers just 'remember.</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-700 dark:text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed">
             A clean, simple trading journal that helps you track trades, analyze performance, and learn from every decision.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -104,14 +117,14 @@ export default function LandingPage() {
               onClick={() => setLocation("/auth")}
               className="bg-[#00FFC2] hover:bg-[#00E6AF] text-black font-medium px-8 py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              Start Trading Journal
+              Start 7-Day Free Trial
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button 
               variant="ghost" 
               size="lg"
               onClick={() => setLocation("/dashboard")}
-              className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
+              className="text-gray-700 dark:text-gray-200 hover:text-black dark:hover:text-white bg-white/20 backdrop-blur-sm hover:bg-white/30"
             >
               <Play className="mr-2 h-4 w-4" />
               View Demo
@@ -182,7 +195,7 @@ export default function LandingPage() {
               Simple, honest pricing
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Start free and upgrade when you need more trades. No hidden fees or complicated tiers.
+              All plans include a 7-day free trial. No hidden fees or complicated tiers.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -251,7 +264,7 @@ export default function LandingPage() {
             onClick={() => setLocation("/auth")}
             className="bg-[#00FFC2] hover:bg-[#00E6AF] text-black font-medium px-8 py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
           >
-            Join CoinFeedly
+            Start 7-Day Free Trial
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

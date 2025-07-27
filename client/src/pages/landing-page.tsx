@@ -471,30 +471,76 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer with Subtle Luxury Accents */}
-      <footer className="relative border-t border-gray-200 dark:border-gray-800 py-12 overflow-hidden">
-        {/* Subtle background luxury elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-16 h-16 opacity-3 dark:opacity-5">
-            <img src={watchCollection} alt="" className="w-full h-full object-cover rounded-full blur-sm" />
-          </div>
-          <div className="absolute bottom-0 right-1/4 w-20 h-12 opacity-3 dark:opacity-5">
-            <img src={luxuryRoom} alt="" className="w-full h-full object-cover rounded-lg blur-sm" />
-          </div>
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center">
-            <div className="text-xl font-semibold text-black dark:text-white mb-4">
-              CoinFeedly
+      {/* Modern Clean Footer */}
+      <footer className="bg-white dark:bg-black border-t border-gray-100 dark:border-gray-900">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+            {/* Brand Column */}
+            <div className="md:col-span-1">
+              <div className="text-2xl font-bold text-black dark:text-white mb-4">
+                CoinFeedly
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6">
+                The professional trading journal for serious crypto traders who want to build systematic wealth.
+              </p>
+              <div className="flex space-x-4">
+                <Button 
+                  size="sm" 
+                  onClick={() => setLocation("/auth")}
+                  className="bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black text-sm"
+                >
+                  Start Free Trial
+                </Button>
+              </div>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              A clean, simple trading journal for crypto traders.
-            </p>
-            <div className="flex justify-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
-              <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Support</a>
+
+            {/* Product Column */}
+            <div>
+              <h3 className="font-semibold text-black dark:text-white mb-4">Product</h3>
+              <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                <li><a href="#features" className="hover:text-black dark:hover:text-white transition-colors">Features</a></li>
+                <li><a href="#pricing" className="hover:text-black dark:hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="/dashboard" className="hover:text-black dark:hover:text-white transition-colors">Dashboard</a></li>
+                <li><a href="/auth" className="hover:text-black dark:hover:text-white transition-colors">Sign Up</a></li>
+              </ul>
+            </div>
+
+            {/* Resources Column */}
+            <div>
+              <h3 className="font-semibold text-black dark:text-white mb-4">Resources</h3>
+              <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                <li><a href="/blog" className="hover:text-black dark:hover:text-white transition-colors">Trading Blog</a></li>
+                <li><a href="/blog/crypto-trading-psychology" className="hover:text-black dark:hover:text-white transition-colors">Trading Psychology</a></li>
+                <li><a href="/blog/risk-management-strategies" className="hover:text-black dark:hover:text-white transition-colors">Risk Management</a></li>
+                <li><a href="/blog/technical-analysis-guide" className="hover:text-black dark:hover:text-white transition-colors">Technical Analysis</a></li>
+              </ul>
+            </div>
+
+            {/* Company Column */}
+            <div>
+              <h3 className="font-semibold text-black dark:text-white mb-4">Company</h3>
+              <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                <li><a href="/about" className="hover:text-black dark:hover:text-white transition-colors">About</a></li>
+                <li><a href="/contact" className="hover:text-black dark:hover:text-white transition-colors">Contact</a></li>
+                <li><a href="/privacy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a></li>
+                <li><a href="/terms" className="hover:text-black dark:hover:text-white transition-colors">Terms</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="border-t border-gray-100 dark:border-gray-900 mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-sm text-gray-500 dark:text-gray-500 mb-4 md:mb-0">
+                © 2025 CoinFeedly. All rights reserved.
+              </p>
+              <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-500">
+                <span>Built for serious traders</span>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>All systems operational</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

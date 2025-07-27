@@ -256,7 +256,7 @@ export default function LandingPage() {
               Unlock Your Potential
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Precision timing. Calculated risks. Systematic wealth building.
+              Discipline your trades. Command your future.
             </p>
           </motion.div>
 

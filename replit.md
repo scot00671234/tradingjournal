@@ -53,8 +53,16 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Minimal call-to-action section with simple "Join CoinFeedly" button
   - Clean footer matching your image references
   - Truthful, professional presentation of actual CoinFeedly capabilities
+- ✓ Updated landing page with minimal design system (January 27, 2025):
+  - Inter font family as default typography
+  - #00FFC2 accent color for CTA buttons and highlights
+  - Minimal layout with soft shadows and clean typography
+  - Black/white color scheme with single accent color
+  - Lucide icons throughout for consistency
+  - Value-focused messaging over feature lists
+  - Mobile-responsive Tailwind implementation
 - → Dashboard fully customizable with professional trading analytics
-- → Landing page honest and professional with clean aesthetic
+- → Landing page follows minimal design system specifications
 
 ## User Preferences
 

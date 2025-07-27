@@ -1,569 +1,276 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLocation } from "wouter";
 import { 
   TrendingUp, 
   BarChart3, 
   Target, 
-  Shield, 
-  Crown, 
   Check, 
-  Users, 
-  Star,
   ArrowRight,
-  PieChart,
-  FileText,
-  Zap,
-  ChevronRight,
-  Sparkles,
-  Trophy,
-  Rocket,
-  Eye,
-  Brain,
-  DollarSign,
-  Play,
-  ArrowUpRight,
-  Smartphone,
-  Lock,
-  Award
+  Play
 } from "lucide-react";
-import { motion } from "framer-motion";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();
 
   const features = [
     {
-      icon: Brain,
-      title: "Smart Pattern Recognition",
-      description: "AI identifies your winning setups automatically. Know exactly which strategies print money.",
-      gradient: "from-purple-500 to-pink-500"
+      icon: BarChart3,
+      title: "Track Trades",
+      description: "Log every trade with entry, exit, and P&L. Build your trading history systematically."
     },
     {
-      icon: Zap,
-      title: "Instant Exchange Sync",
-      description: "Connect Binance, Bybit, or any exchange. Your trades appear in real-time. Zero manual work.",
-      gradient: "from-blue-500 to-cyan-500"
-    },
-    {
-      icon: DollarSign,
-      title: "Profit Factor Analytics",
-      description: "See exactly how much money each strategy makes. Stop bleeding cash on losing setups.",
-      gradient: "from-green-500 to-emerald-500"
+      icon: TrendingUp,
+      title: "Analyze Trends",
+      description: "See your performance over time with clear charts. Identify what's working and what isn't."
     },
     {
       icon: Target,
-      title: "Risk Management Dashboard",
-      description: "Prevent account blow-ups with real-time drawdown tracking. Your money is protected.",
-      gradient: "from-red-500 to-orange-500"
-    },
-    {
-      icon: Trophy,
-      title: "Performance Leaderboard",
-      description: "Compare your results with top traders. See how you rank and what to improve.",
-      gradient: "from-yellow-500 to-amber-500"
-    },
-    {
-      icon: Eye,
-      title: "Trade Screenshot Gallery",
-      description: "Visual proof of every setup. Build a library of winning trades to replicate success.",
-      gradient: "from-indigo-500 to-purple-500"
-    },
+      title: "Reflect & Learn",
+      description: "Add notes and tags to trades. Learn from mistakes and replicate successful patterns."
+    }
   ];
 
   const pricingPlans = [
     {
-      name: "Pro Trader",
-      price: "$29",
-      period: "month",
-      description: "For serious traders ready to scale",
+      name: "Free",
+      price: "$0",
+      period: "forever",
+      description: "Perfect for getting started",
       features: [
-        "Unlimited trade tracking",
-        "Exchange auto-sync (5 exchanges)",
-        "AI pattern recognition",
-        "Risk management alerts",
-        "Performance analytics",
-        "Export to tax software"
+        "Up to 5 trades",
+        "Basic analytics",
+        "Manual trade entry",
+        "Simple performance charts"
       ],
-      buttonText: "Start 14-Day Free Trial",
-      buttonVariant: "default" as const,
-      popular: true,
-      savings: "Save $120/year vs manual tracking"
-    },
-    {
-      name: "Elite Trader",
-      price: "$49",
-      period: "month",
-      description: "For professional day traders",
-      features: [
-        "Everything in Pro +",
-        "Unlimited exchanges & APIs",
-        "Custom strategy backtesting",
-        "Live performance leaderboard",
-        "Priority support & coaching",
-        "Tax optimization reports"
-      ],
-      buttonText: "Upgrade to Elite",
+      buttonText: "Start Free",
       buttonVariant: "outline" as const,
-      popular: false,
-      savings: "Used by 500+ profitable traders"
-    },
-  ];
-
-  const testimonials = [
-    {
-      name: "Alex Chen",
-      role: "Day Trader • $2.3M Portfolio",
-      content: "Increased my win rate from 52% to 71% in 3 months. The AI pattern recognition is insane - it found setups I didn't even know I was trading.",
-      rating: 5,
-      profit: "+$180K profit this quarter",
-      avatar: "AC"
+      popular: false
     },
     {
-      name: "Maria Rodriguez", 
-      role: "Crypto Trader • $890K Portfolio",
-      content: "Used to lose money on emotional trades. CoinFeedly's risk alerts saved me from a $50K loss last week. Worth every penny.",
-      rating: 5,
-      profit: "Prevented $127K in losses",
-      avatar: "MR"
-    },
-    {
-      name: "James Thompson",
-      role: "Swing Trader • $1.2M Portfolio", 
-      content: "My profit factor went from 1.2 to 2.8. The performance analytics showed me exactly which strategies were bleeding money.",
-      rating: 5,
-      profit: "2.3x profit increase in 6 months",
-      avatar: "JT"
-    },
+      name: "Pro",
+      price: "$12",
+      period: "month",
+      description: "For serious traders",
+      features: [
+        "Unlimited trades",
+        "Advanced analytics",
+        "Trade screenshots",
+        "Custom tags & notes",
+        "Export data"
+      ],
+      buttonText: "Start Pro Trial",
+      buttonVariant: "default" as const,
+      popular: true
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950">
-      {/* Subtle Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-gray-100/50 to-gray-200/50 dark:from-gray-800/20 dark:to-gray-700/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-br from-gray-200/50 to-gray-300/50 dark:from-gray-700/20 dark:to-gray-600/20 rounded-full blur-3xl"></div>
-      </div>
-
-      {/* Clean Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-950/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-black dark:bg-white rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-white dark:text-black" />
-              </div>
-              <div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white">CoinFeedly</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Clean, Simple Trading Journal</div>
+    <div className="min-h-screen bg-white dark:bg-black">
+      {/* Header */}
+      <header className="border-b border-gray-200 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <div className="text-xl font-semibold text-black dark:text-white">
+                CoinFeedly
               </div>
             </div>
-
-            {/* Navigation */}
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium"
-                onClick={() => setLocation("/auth")}
-              >
-                Login
+            <nav className="hidden md:flex space-x-8">
+              <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Features</a>
+              <a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Pricing</a>
+              <Button variant="outline" onClick={() => setLocation("/auth")}>
+                Sign In
               </Button>
-              <Button 
-                className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 font-medium px-6"
-                onClick={() => setLocation("/auth")}
-              >
-                Get Started
-              </Button>
-            </div>
+            </nav>
           </div>
         </div>
       </header>
 
-      {/* Hero Section - Clean Minimal Style */}
-      <section className="relative pt-32 pb-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h1 
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 dark:text-white tracking-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+      {/* Hero Section */}
+      <section className="py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl lg:text-6xl font-bold text-black dark:text-white mb-6 leading-tight">
             Trade Smarter.
             <br />
-            <span className="text-gray-500 dark:text-gray-400">
-              Your crypto journey, logged.
-            </span>
-          </motion.h1>
-          
-          <motion.div 
-            className="flex justify-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+            <span className="text-gray-600 dark:text-gray-400">Your crypto journey, logged.</span>
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+            A clean, simple trading journal that helps you track trades, analyze performance, and learn from every decision.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button 
               size="lg" 
-              className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 px-8 py-3 rounded-lg font-medium"
               onClick={() => setLocation("/auth")}
+              className="bg-[#00FFC2] hover:bg-[#00E6AF] text-black font-medium px-8 py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              Join CoinFeedly
+              Start Trading Journal
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-          </motion.div>
-
-          {/* Three Core Features - Clean Layout */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-6xl mx-auto"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            {/* Track Trades */}
-            <div className="text-center">
-              <div className="mb-6">
-                <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-2xl flex items-center justify-center mx-auto">
-                  <FileText className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                </div>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Track trades</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Easily log details of every coin trade with date, price, and notes for ongoing review.
-              </p>
-            </div>
-
-            {/* Analyze Trends */}
-            <div className="text-center">
-              <div className="mb-6">
-                <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 rounded-2xl flex items-center justify-center mx-auto">
-                  <BarChart3 className="w-8 h-8 text-green-600 dark:text-green-400" />
-                </div>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Analyze trends</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Spot trading patterns, review gains and losses, and develop smarter strategies.
-              </p>
-            </div>
-
-            {/* Reflect & Learn */}
-            <div className="text-center">
-              <div className="mb-6">
-                <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/20 border-2 border-purple-200 dark:border-purple-800 rounded-2xl flex items-center justify-center mx-auto">
-                  <Brain className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-                </div>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Reflect & learn</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Write reflections, record market sentiment, and keep improving long term.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Problem/Solution Section - Clean Cards */}
-      <section className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-            {/* Problems Column */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+            <Button 
+              variant="ghost" 
+              size="lg"
+              onClick={() => setLocation("/dashboard")}
+              className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
             >
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Sound familiar?</h2>
-              <div className="space-y-6">
-                {[
-                  'Lost money but don\'t know why?',
-                  'Forget your strategy mid-trade?',
-                  'No idea how your performance really looks?'
-                ].map((problem, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div className="w-2 h-2 bg-red-500 rounded-full mt-3 flex-shrink-0"></div>
-                    <p className="text-lg text-gray-700 dark:text-gray-300">{problem}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Solutions Column */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">CoinFeedly solves this:</h2>
-              <div className="space-y-6">
-                {[
-                  'Log trades with reason, entry, exit',
-                  'See P/L over time',
-                  'Track emotions & discipline',
-                  'See patterns → become a smarter trader'
-                ].map((solution, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <Check className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                    <p className="text-lg text-gray-700 dark:text-gray-300">{solution}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+              <Play className="mr-2 h-4 w-4" />
+              View Demo
+            </Button>
           </div>
-
-          {/* Used By Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="mt-24 text-center"
-          >
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-12">Used by:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
-              {[
-                'Day traders',
-                'Swing traders', 
-                'Crypto degens',
-                'Stock scalpers',
-                'Funded challenge traders'
-              ].map((trader, index) => (
-                <div key={index} className="flex items-center justify-center gap-2 py-3 px-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">{trader}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </section>
 
-      {/* Clean CTA Section */}
-      <section className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-2xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Start journaling today
+      {/* Features Section */}
+      <section id="features" className="py-20 bg-gray-50 dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-black dark:text-white mb-4">
+              Everything you need to improve your trading
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-              Elevate your portfolio with daily trade logs.
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Simple tools that help you understand your trading patterns and make better decisions.
             </p>
-            <Button 
-              size="lg" 
-              className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 px-8 py-3 rounded-lg font-medium"
-              onClick={() => setLocation("/auth")}
-            >
-              Join CoinFeedly
-            </Button>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Pricing Section - Clean Vercel Style */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div 
-            className="mb-16"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Simple pricing
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Start free, upgrade when you're ready for more.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {pricingPlans.map((plan, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className={`relative p-8 rounded-xl border ${
-                  plan.popular 
-                    ? 'border-black dark:border-white bg-gray-50 dark:bg-gray-800' 
-                    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900'
-                }`}>
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-black dark:bg-white text-white dark:text-black px-3 py-1 rounded-full text-sm font-medium">
-                        Most Popular
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="text-center mb-8">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
-                    <div className="mb-4">
-                      <span className="text-4xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
-                      <span className="text-gray-500 dark:text-gray-400">/{plan.period}</span>
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400">{plan.description}</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200 bg-white dark:bg-gray-900">
+                <CardHeader className="text-center pb-4">
+                  <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <feature.icon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
                   </div>
-                  
+                  <CardTitle className="text-xl font-semibold text-black dark:text-white">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Demo Section */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold text-black dark:text-white mb-4">
+            See your trading progress clearly
+          </h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+            Clean charts and simple metrics help you understand what's working in your trading strategy.
+          </p>
+          <div className="bg-gray-100 dark:bg-gray-900 rounded-2xl p-8 lg:p-12 shadow-lg">
+            <div className="aspect-video bg-white dark:bg-gray-800 rounded-lg shadow-inner flex items-center justify-center">
+              <div className="text-center">
+                <BarChart3 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">Dashboard Preview</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500">Clean analytics and trade history</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 bg-gray-50 dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-black dark:text-white mb-4">
+              Simple, honest pricing
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Start free and upgrade when you need more trades. No hidden fees or complicated tiers.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {pricingPlans.map((plan, index) => (
+              <Card key={index} className={`relative border-2 shadow-sm hover:shadow-md transition-all duration-200 ${
+                plan.popular 
+                  ? 'border-[#00FFC2] bg-white dark:bg-gray-900' 
+                  : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900'
+              }`}>
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-[#00FFC2] text-black text-sm font-medium px-3 py-1 rounded-full">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+                <CardHeader className="text-center pb-4">
+                  <CardTitle className="text-2xl font-bold text-black dark:text-white">
+                    {plan.name}
+                  </CardTitle>
+                  <div className="mt-4">
+                    <span className="text-4xl font-bold text-black dark:text-white">{plan.price}</span>
+                    <span className="text-gray-500 dark:text-gray-400">/{plan.period}</span>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">
+                    {plan.description}
+                  </p>
+                </CardHeader>
+                <CardContent>
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-3">
-                        <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                      <li key={featureIndex} className="flex items-center text-gray-700 dark:text-gray-300">
+                        <Check className="h-4 w-4 text-[#00FFC2] mr-3 flex-shrink-0" />
+                        {feature}
                       </li>
                     ))}
                   </ul>
-                  
                   <Button 
                     className={`w-full ${
                       plan.popular 
-                        ? 'bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100' 
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700'
+                        ? 'bg-[#00FFC2] hover:bg-[#00E6AF] text-black' 
+                        : 'bg-white hover:bg-gray-50 text-black border border-gray-300'
                     }`}
                     onClick={() => setLocation("/auth")}
                   >
                     {plan.buttonText}
                   </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div 
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-gray-500 dark:text-gray-400">
-              30-day money-back guarantee • Cancel anytime
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Testimonials Section - Clean Cards */}
-      <section className="py-24 px-6 bg-gray-50/50 dark:bg-gray-900/50">
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              What traders are saying
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Real feedback from our community.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  
-                  <blockquote className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    "{testimonial.content}"
-                  </blockquote>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-300 font-semibold">
-                      {testimonial.avatar}
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">{testimonial.role}</div>
-                      <div className="text-sm text-green-600 dark:text-green-400 font-medium">
-                        {testimonial.profit}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Final CTA Section - Clean */}
-      <section className="py-24 px-6 bg-black dark:bg-gray-900">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+      {/* CTA Section */}
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold text-black dark:text-white mb-4">
+            Ready to improve your trading?
+          </h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+            Join CoinFeedly today and start building better trading habits with a clean, simple journal.
+          </p>
+          <Button 
+            size="lg" 
+            onClick={() => setLocation("/auth")}
+            className="bg-[#00FFC2] hover:bg-[#00E6AF] text-black font-medium px-8 py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
           >
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-              Ready to start?
-            </h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              Join thousands of traders who've transformed their performance with CoinFeedly.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12">
-              <Button 
-                size="lg" 
-                className="bg-white text-black hover:bg-gray-100 px-8 py-3 font-medium transition-colors"
-                onClick={() => setLocation("/auth")}
-              >
-                Get Started
-              </Button>
-              <Button 
-                variant="outline"
-                size="lg" 
-                className="border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-3 font-medium transition-colors"
-                onClick={() => setLocation("/auth")}
-              >
-                Learn More
-              </Button>
-            </div>
-
-            <p className="text-gray-400 text-sm">
-              14-day free trial • No credit card required
-            </p>
-          </motion.div>
+            Join CoinFeedly
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       </section>
 
-      {/* Footer - Clean */}
-      <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center gap-3 mb-6 md:mb-0">
-              <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white dark:text-black" />
-              </div>
-              <div>
-                <span className="text-gray-900 dark:text-white font-bold text-lg">CoinFeedly</span>
-                <div className="text-gray-500 dark:text-gray-400 text-sm">Trading Journal</div>
-              </div>
+      {/* Footer */}
+      <footer className="border-t border-gray-200 dark:border-gray-800 py-12 bg-gray-50 dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="text-xl font-semibold text-black dark:text-white mb-4">
+              CoinFeedly
             </div>
-            <div className="text-gray-500 dark:text-gray-400 text-sm text-center md:text-right">
-              <div>© 2025 CoinFeedly. All rights reserved.</div>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
+              A clean, simple trading journal for crypto traders.
+            </p>
+            <div className="flex justify-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
+              <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
+              <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Terms</a>
+              <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Support</a>
             </div>
           </div>
         </div>

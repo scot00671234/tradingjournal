@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
-import { Bell, Moon, Sun, Plus, TrendingUp, BarChart3, Filter, Search, Settings, LogOut } from "lucide-react";
+import { Bell, Moon, Sun, Plus, TrendingUp, BarChart3, Filter, Search, Settings, LogOut, Calendar, Target, Award, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useTheme } from "@/components/ui/theme-provider";
 import { UnifiedTradeEntry } from "@/components/unified-trade-entry";
+import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 
 export default function SimplifiedDashboard() {
@@ -14,6 +17,9 @@ export default function SimplifiedDashboard() {
   const { theme, toggleTheme } = useTheme();
   const [showTradeEntry, setShowTradeEntry] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterDirection, setFilterDirection] = useState<string>("all");
+  const [filterAsset, setFilterAsset] = useState<string>("all");
+  const [filterTimeframe, setFilterTimeframe] = useState<string>("all");
 
   const { data: stats } = useQuery<TradeStats>({
     queryKey: ["/api/stats"],
@@ -30,10 +36,63 @@ export default function SimplifiedDashboard() {
     enabled: !!user,
   });
 
-  const filteredTrades = trades?.filter(trade => 
-    trade.asset.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    trade.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-  ) || [];
+  const filteredTrades = trades?.filter(trade => {
+    const matchesSearch = trade.asset.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      trade.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesDirection = filterDirection === "all" || trade.direction === filterDirection;
+    const matchesAsset = filterAsset === "all" || trade.asset === filterAsset;
+    
+    let matchesTimeframe = true;
+    if (filterTimeframe !== "all") {
+      const tradeDate = new Date(trade.createdAt);
+      const now = new Date();
+      const daysDiff = Math.floor((now.getTime() - tradeDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      switch (filterTimeframe) {
+        case "today":
+          matchesTimeframe = daysDiff === 0;
+          break;
+        case "week":
+          matchesTimeframe = daysDiff <= 7;
+          break;
+        case "month":
+          matchesTimeframe = daysDiff <= 30;
+          break;
+        case "quarter":
+          matchesTimeframe = daysDiff <= 90;
+          break;
+      }
+    }
+    
+    return matchesSearch && matchesDirection && matchesAsset && matchesTimeframe;
+  }) || [];
+
+  // Get unique assets for filter dropdown
+  const uniqueAssets = Array.from(new Set(trades?.map(trade => trade.asset) || []));
+
+  // Prepare chart data
+  const chartData = trades?.map((trade, index) => ({
+    index: index + 1,
+    pnl: parseFloat(trade.pnl || '0'),
+    cumulativePnl: trades.slice(0, index + 1).reduce((sum, t) => sum + parseFloat(t.pnl || '0'), 0),
+    date: new Date(trade.createdAt).toLocaleDateString(),
+    asset: trade.asset,
+    direction: trade.direction
+  })) || [];
+
+  // Win/Loss pie chart data
+  const winLossData = [
+    { name: 'Wins', value: trades?.filter(t => parseFloat(t.pnl || '0') > 0).length || 0, color: '#10b981' },
+    { name: 'Losses', value: trades?.filter(t => parseFloat(t.pnl || '0') < 0).length || 0, color: '#ef4444' },
+    { name: 'Breakeven', value: trades?.filter(t => parseFloat(t.pnl || '0') === 0).length || 0, color: '#6b7280' }
+  ];
+
+  // Direction breakdown
+  const directionData = [
+    { name: 'Long', value: trades?.filter(t => t.direction === 'long').length || 0, color: '#059669' },
+    { name: 'Short', value: trades?.filter(t => t.direction === 'short').length || 0, color: '#dc2626' }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
@@ -189,15 +248,225 @@ export default function SimplifiedDashboard() {
             </div>
           )}
 
+          {/* Charts Section */}
+          {trades && trades.length > 0 && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              {/* P&L Curve */}
+              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                  <Activity className="w-5 h-5 mr-2 text-blue-500" />
+                  Cumulative P&L
+                </h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <AreaChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="index" stroke="#6b7280" />
+                    <YAxis stroke="#6b7280" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px'
+                      }}
+                      formatter={(value: number) => [`$${value.toFixed(2)}`, 'Cumulative P&L']}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="cumulativePnl" 
+                      stroke="#3b82f6" 
+                      fill="url(#colorPnl)"
+                      strokeWidth={2}
+                    />
+                    <defs>
+                      <linearGradient id="colorPnl" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Win/Loss Distribution */}
+              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                  <Target className="w-5 h-5 mr-2 text-green-500" />
+                  Win/Loss Distribution
+                </h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <PieChart>
+                    <Pie
+                      data={winLossData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={40}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {winLossData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value: number) => [value, 'Trades']} />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="flex justify-center space-x-4 mt-4">
+                  {winLossData.map((entry, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <div 
+                        className="w-3 h-3 rounded-full" 
+                        style={{ backgroundColor: entry.color }}
+                      />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {entry.name}: {entry.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Long vs Short Performance */}
+              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                  <BarChart3 className="w-5 h-5 mr-2 text-purple-500" />
+                  Direction Breakdown
+                </h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={directionData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="name" stroke="#6b7280" />
+                    <YAxis stroke="#6b7280" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px'
+                      }}
+                      formatter={(value: number) => [value, 'Trades']}
+                    />
+                    <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                      {directionData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Individual Trade P&L */}
+              <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                  <Award className="w-5 h-5 mr-2 text-yellow-500" />
+                  Individual Trade P&L
+                </h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="index" stroke="#6b7280" />
+                    <YAxis stroke="#6b7280" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px'
+                      }}
+                      formatter={(value: number) => [`$${value.toFixed(2)}`, 'P&L']}
+                      labelFormatter={(label) => `Trade #${label}`}
+                    />
+                    <Bar 
+                      dataKey="pnl" 
+                      radius={[2, 2, 0, 0]}
+                      fill={(entry: any) => entry.pnl >= 0 ? '#10b981' : '#ef4444'}
+                    >
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.pnl >= 0 ? '#10b981' : '#ef4444'} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
+
           {/* Recent Trades with Glass Effect */}
           <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl">
             <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Trades</h3>
                 <div className="flex items-center space-x-2">
-                  <Button variant="ghost" size="sm">
-                    <Filter className="w-4 h-4" />
-                  </Button>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <Filter className="w-4 h-4" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50">
+                      <div className="space-y-4">
+                        <h4 className="font-medium text-gray-900 dark:text-white">Filter Trades</h4>
+                        
+                        <div className="space-y-2">
+                          <label className="text-sm text-gray-600 dark:text-gray-400">Direction</label>
+                          <Select value={filterDirection} onValueChange={setFilterDirection}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">All Directions</SelectItem>
+                              <SelectItem value="long">Long Only</SelectItem>
+                              <SelectItem value="short">Short Only</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm text-gray-600 dark:text-gray-400">Asset</label>
+                          <Select value={filterAsset} onValueChange={setFilterAsset}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">All Assets</SelectItem>
+                              {uniqueAssets.map(asset => (
+                                <SelectItem key={asset} value={asset}>{asset}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm text-gray-600 dark:text-gray-400">Time Period</label>
+                          <Select value={filterTimeframe} onValueChange={setFilterTimeframe}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">All Time</SelectItem>
+                              <SelectItem value="today">Today</SelectItem>
+                              <SelectItem value="week">Last Week</SelectItem>
+                              <SelectItem value="month">Last Month</SelectItem>
+                              <SelectItem value="quarter">Last Quarter</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => {
+                            setFilterDirection("all");
+                            setFilterAsset("all");
+                            setFilterTimeframe("all");
+                            setSearchTerm("");
+                          }}
+                          className="w-full"
+                        >
+                          Clear All Filters
+                        </Button>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  
                   <Badge variant="outline" className="text-xs">
                     {filteredTrades.length} trades
                   </Badge>

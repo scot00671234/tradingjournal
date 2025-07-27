@@ -12,7 +12,7 @@ import { insertUserSchema, type InsertUser } from "@shared/schema";
 import { z } from "zod";
 import { TrendingUp, Shield, BarChart3, Target } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import barclayneLogo from "@assets/Barclayne capital (1)_1753635928970.png";
+import barclayneLogo from "@assets/Barclayne capital (1) (1)_1753636103538.png";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -82,7 +82,9 @@ export default function AuthPage() {
                 alt="Barclayne Capital" 
                 className="h-10 w-auto"
               />
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">CoinFeedly</h1>
+              <h1 className="text-2xl font-light tracking-wider text-gray-900 dark:text-white">
+                Coin<span className="font-medium ml-1">Feedly</span>
+              </h1>
             </div>
             <p className="text-gray-600 dark:text-gray-400">Track your trades. Analyze your performance.</p>
           </div>
@@ -132,7 +134,7 @@ export default function AuthPage() {
                       />
                       <Button 
                         type="submit" 
-                        className="w-full" 
+                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300" 
                         disabled={loginMutation.isPending}
                       >
                         {loginMutation.isPending ? "Signing in..." : "Sign in"}
@@ -182,7 +184,7 @@ export default function AuthPage() {
                       />
                       <Button 
                         type="submit" 
-                        className="w-full" 
+                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300" 
                         disabled={registerMutation.isPending}
                       >
                         {registerMutation.isPending ? "Creating account..." : "Create account"}

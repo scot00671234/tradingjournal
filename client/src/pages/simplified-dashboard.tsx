@@ -18,7 +18,7 @@ import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 import "react-grid-layout/css/styles.css";
 //@ts-ignore
 import GridLayout from "react-grid-layout";
-import barclayneLogo from "@assets/Barclayne capital (1)_1753635928970.png";
+import barclayneLogo from "@assets/Barclayne capital (1) (1)_1753636103538.png";
 
 export default function SimplifiedDashboard() {
   const { user, logoutMutation } = useAuth();
@@ -112,7 +112,7 @@ export default function SimplifiedDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       {/* Floating Nav Bar */}
       <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-4">
-        <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl px-6 py-3 shadow-lg">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-blue-100/30 dark:border-blue-900/30 rounded-2xl px-6 py-3 shadow-lg shadow-blue-500/10 dark:shadow-blue-400/10">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
@@ -122,7 +122,9 @@ export default function SimplifiedDashboard() {
                 className="h-8 w-auto"
               />
               <div>
-                <h1 className="text-lg font-bold text-gray-900 dark:text-white">CoinFeedly</h1>
+                <h1 className="text-lg font-light tracking-wider text-gray-900 dark:text-white">
+                  Coin<span className="font-medium ml-1">Feedly</span>
+                </h1>
               </div>
             </div>
 
@@ -134,7 +136,7 @@ export default function SimplifiedDashboard() {
                   placeholder="Search trades, tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-gray-50/50 dark:bg-gray-800/50 border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm"
+                  className="pl-10 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/30 dark:border-blue-800/30 backdrop-blur-sm focus:border-blue-400 dark:focus:border-blue-600"
                 />
               </div>
             </div>
@@ -144,7 +146,7 @@ export default function SimplifiedDashboard() {
               <Button
                 size="sm"
                 onClick={() => setShowTradeEntry(!showTradeEntry)}
-                className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Trade

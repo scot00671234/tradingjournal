@@ -282,6 +282,27 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Quote Section 1 */}
+      <section className="py-20 bg-black dark:bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-gray-900 to-black dark:from-white dark:via-gray-100 dark:to-white"></div>
+        <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
+          >
+            <p className="text-2xl lg:text-4xl font-light text-white dark:text-black leading-relaxed tracking-wide">
+              You've wasted 100 hours watching charts — and learned nothing.
+              <br />
+              <span className="font-medium text-yellow-400 dark:text-yellow-600 mt-4 block">
+                Track 10 trades and you'll learn more than in 10 months.
+              </span>
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Features Section with Lifestyle Images */}
       <section id="features" className="py-24 bg-gray-50/50 dark:bg-gray-950/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -464,6 +485,29 @@ export default function LandingPage() {
           >
             <p className="text-lg text-gray-500 dark:text-gray-500 italic max-w-2xl mx-auto">
               The goal you envision isn't just a dream. It's the inevitable result of disciplined trading.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Quote Section 2 */}
+      <section className="py-20 bg-gradient-to-r from-gray-900 via-black to-gray-900 dark:from-gray-100 dark:via-white dark:to-gray-100 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-1/4 left-1/6 w-40 h-40 rounded-full bg-yellow-500 blur-3xl"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-32 h-32 rounded-full bg-amber-600 blur-3xl"></div>
+        </div>
+        <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, delay: 0.3 }}
+          >
+            <p className="text-2xl lg:text-4xl font-light text-white dark:text-black leading-relaxed tracking-wide mb-6">
+              The Market Doesn't Care About Your Feelings.
+            </p>
+            <p className="text-xl lg:text-3xl font-medium text-yellow-400 dark:text-yellow-600 leading-relaxed tracking-wide">
+              But your journal can discipline you towards fortune.
             </p>
           </motion.div>
         </div>

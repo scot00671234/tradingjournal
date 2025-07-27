@@ -510,9 +510,6 @@ export default function LandingPage() {
               <h3 className="font-semibold text-black dark:text-white mb-4">Resources</h3>
               <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
                 <li><a href="/blog" className="hover:text-black dark:hover:text-white transition-colors">Blog</a></li>
-                <li><a href="/blog/crypto-trading-psychology" className="hover:text-black dark:hover:text-white transition-colors">Trading Psychology</a></li>
-                <li><a href="/blog/risk-management-strategies" className="hover:text-black dark:hover:text-white transition-colors">Risk Management</a></li>
-                <li><a href="/blog/technical-analysis-guide" className="hover:text-black dark:hover:text-white transition-colors">Technical Analysis</a></li>
               </ul>
             </div>
 

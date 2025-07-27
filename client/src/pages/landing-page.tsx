@@ -17,6 +17,10 @@ import watchCollection from "@assets/pexels-bemistermister-380782_1753623060677.
 import penthouseView from "@assets/pexels-rpnickson-2417842_1753623060678.jpg";
 import tradingCharts from "@assets/pexels-energepic-com-27411-159888_1753623332929.jpg";
 import bmwTrading from "@assets/pexels-dvaughnbell-2068664_1753623332929.jpg";
+import modernVilla from "@assets/pexels-alex-staudinger-829197-1732414_1753624512468.jpg";
+import rolexWatch from "@assets/pexels-pixabay-364822_1753624512469.jpg";
+import porscheSports from "@assets/pexels-adrian-dorobantu-989175-2127740_1753624512469.jpg";
+import tropicalVilla from "@assets/pexels-asadphoto-3155666_1753624512470.jpg";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();
@@ -231,58 +235,132 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Aesthetic Section - Luxury Symbols */}
-      <section className="py-16 bg-white dark:bg-black relative overflow-hidden">
-        {/* Floating luxury symbols */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-24 h-24 opacity-5 dark:opacity-10">
-            <img src={watchCollection} alt="" className="w-full h-full object-cover rounded-full" />
-          </div>
-          <div className="absolute bottom-20 right-10 w-32 h-20 opacity-5 dark:opacity-10">
-            <img src={penthouseView} alt="" className="w-full h-full object-cover rounded-lg" />
-          </div>
+      {/* Lifestyle Gallery - Visual Aspirations */}
+      <section className="py-32 bg-gradient-to-b from-white to-gray-50/30 dark:from-black dark:to-gray-950/30 relative overflow-hidden">
+        {/* Subtle background patterns */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.02] dark:opacity-[0.05]">
+          <div className="absolute top-1/4 left-1/6 w-20 h-20 rounded-full bg-black dark:bg-white blur-xl"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-16 h-16 rounded-full bg-black dark:bg-white blur-xl"></div>
         </div>
         
-        <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+          {/* Header with improved spacing */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
           >
-            <h2 className="text-2xl lg:text-4xl font-bold text-black dark:text-white mb-6 tracking-tight">
-              What serious traders unlock
+            <h2 className="text-4xl lg:text-6xl font-bold text-black dark:text-white mb-8 tracking-tight leading-tight">
+              The destination
             </h2>
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="space-y-4">
-                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Precision timing. Calculated risks. Systematic wealth building.
-                </p>
-                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                  The lifestyle you envision isn't just a dream—it's the inevitable result of disciplined trading.
-                </p>
-              </div>
-              <div className="relative">
-                <div className="grid grid-cols-2 gap-4">
-                  <motion.div 
-                    className="relative h-32 rounded-lg overflow-hidden"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <img src={watchCollection} alt="Luxury timepieces" className="w-full h-full object-cover opacity-90" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                  </motion.div>
-                  <motion.div 
-                    className="relative h-32 rounded-lg overflow-hidden"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <img src={penthouseView} alt="Luxury lifestyle" className="w-full h-full object-cover opacity-90" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                  </motion.div>
-                </div>
-              </div>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              Precision timing. Calculated risks. Systematic wealth building.
+            </p>
+          </motion.div>
+
+          {/* Main Gallery Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-16">
+            {/* Hero Villa - Large */}
+            <motion.div 
+              className="lg:col-span-8 relative h-80 lg:h-96 rounded-2xl overflow-hidden group"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <img 
+                src={modernVilla} 
+                alt="Modern architecture"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+            </motion.div>
+
+            {/* Side Stack */}
+            <div className="lg:col-span-4 space-y-6">
+              <motion.div 
+                className="relative h-36 lg:h-44 rounded-2xl overflow-hidden group"
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                whileHover={{ scale: 1.03 }}
+              >
+                <img 
+                  src={rolexWatch} 
+                  alt="Precision craftsmanship"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+              </motion.div>
+
+              <motion.div 
+                className="relative h-36 lg:h-44 rounded-2xl overflow-hidden group"
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+                whileHover={{ scale: 1.03 }}
+              >
+                <img 
+                  src={porscheSports} 
+                  alt="Engineering excellence"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+              </motion.div>
             </div>
+          </div>
+
+          {/* Bottom Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div 
+              className="relative h-64 rounded-2xl overflow-hidden group"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <img 
+                src={tropicalVilla} 
+                alt="Freedom redefined"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+            </motion.div>
+
+            <motion.div 
+              className="relative h-64 rounded-2xl overflow-hidden group"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <img 
+                src={penthouseView} 
+                alt="Elevated perspective"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+            </motion.div>
+          </div>
+
+          {/* Subtle Call to Action */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="text-center mt-20"
+          >
+            <p className="text-lg text-gray-500 dark:text-gray-500 italic max-w-2xl mx-auto">
+              The lifestyle you envision isn't just a dream—it's the inevitable result of disciplined trading.
+            </p>
           </motion.div>
         </div>
       </section>

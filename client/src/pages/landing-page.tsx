@@ -21,7 +21,12 @@ import {
   Rocket,
   Eye,
   Brain,
-  DollarSign
+  DollarSign,
+  Play,
+  ArrowUpRight,
+  Smartphone,
+  Lock,
+  Award
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -176,72 +181,180 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section - Clean Vercel Style */}
-      <section className="pt-32 pb-32 px-6">
-        <div className="max-w-4xl mx-auto text-center">
+      {/* Hero Section - Premium Apple/Vercel Style */}
+      <section className="relative pt-24 pb-20 px-6 overflow-hidden">
+        {/* Premium gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.1),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.05),transparent_50%)]"></div>
+        
+        <div className="relative max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="mb-8"
+            >
+              <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 px-4 py-2 rounded-full text-sm text-gray-600 dark:text-gray-400 shadow-lg">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                Trusted by 47,000+ traders worldwide
+              </div>
+            </motion.div>
+
+            <motion.h1 
+              className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 text-gray-900 dark:text-white tracking-tight leading-[0.9]"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+            >
+              The trading journal
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 dark:from-blue-400 dark:via-purple-400 dark:to-blue-600">
+                professionals use
+              </span>
+            </motion.h1>
+            
+            <motion.p 
+              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed font-medium"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              Transform your trading with institutional-grade analytics, AI-powered insights, and the most beautiful interface ever created for traders.
+            </motion.p>
+
+            <motion.div 
+              className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                onClick={() => setLocation("/auth")}
+              >
+                <Sparkles className="w-5 h-5 mr-2" />
+                Start Trading Smarter
+                <ChevronRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button 
+                variant="outline"
+                size="lg" 
+                className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-8 py-4 rounded-xl font-semibold backdrop-blur-sm transition-all duration-300"
+                onClick={() => setLocation("/auth")}
+              >
+                <Play className="w-5 h-5 mr-2" />
+                Watch Demo
+              </Button>
+            </motion.div>
+
+            <motion.div 
+              className="flex justify-center items-center gap-8 text-sm text-gray-500 dark:text-gray-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-green-500" />
+                Enterprise security
+              </div>
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-blue-500" />
+                Real-time sync
+              </div>
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-purple-500" />
+                Award winning
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Dashboard Preview */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            className="relative max-w-6xl mx-auto"
+            initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-8"
+            transition={{ duration: 1.2, delay: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full text-sm text-gray-600 dark:text-gray-400">
-              Trusted by 47,000+ traders worldwide
+            <div className="relative">
+              {/* Glass container for dashboard */}
+              <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-2xl p-8">
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Live Dashboard Preview</h3>
+                    <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      Real-time data
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Mock dashboard content */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Performance Chart */}
+                  <div className="lg:col-span-2 bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-gray-900 dark:text-white">Portfolio Performance</h4>
+                      <div className="text-sm text-green-600 dark:text-green-400 font-medium">+23.4%</div>
+                    </div>
+                    <div className="h-48 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-lg flex items-end justify-between p-4">
+                      {[40, 60, 45, 80, 65, 90, 75, 95].map((height, i) => (
+                        <div key={i} className={`bg-gradient-to-t from-blue-500 to-purple-500 rounded-t w-8`} style={{height: `${height}%`}}></div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Stats */}
+                  <div className="space-y-4">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Win Rate</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">73.2%</div>
+                      <div className="text-xs text-green-600 dark:text-green-400">↗ +5.2%</div>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Profit Factor</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">2.84</div>
+                      <div className="text-xs text-green-600 dark:text-green-400">↗ +0.3</div>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Total Trades</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">1,247</div>
+                      <div className="text-xs text-blue-600 dark:text-blue-400">This month</div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Recent trades */}
+                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Recent Trades</h4>
+                  <div className="space-y-3">
+                    {[
+                      { symbol: 'BTC/USD', pnl: '+$1,234', time: '2 min ago', color: 'green' },
+                      { symbol: 'ETH/USD', pnl: '+$892', time: '5 min ago', color: 'green' },
+                      { symbol: 'SOL/USD', pnl: '-$156', time: '12 min ago', color: 'red' }
+                    ].map((trade, i) => (
+                      <div key={i} className="flex items-center justify-between py-2 px-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">₿</div>
+                          <div>
+                            <div className="font-medium text-gray-900 dark:text-white">{trade.symbol}</div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400">{trade.time}</div>
+                          </div>
+                        </div>
+                        <div className={`font-semibold ${trade.color === 'green' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                          {trade.pnl}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating elements */}
+              <div className="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur-xl opacity-60 animate-pulse"></div>
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-to-br from-purple-500 to pink-500 rounded-full blur-xl opacity-40 animate-pulse" style={{animationDelay: '1s'}}></div>
             </div>
-          </motion.div>
-
-          <motion.h1 
-            className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 text-gray-900 dark:text-white tracking-tight leading-none"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Serious traders journal.
-            <br />
-            <span className="text-gray-500 dark:text-gray-500">
-              Losers just 'remember.'
-            </span>
-          </motion.h1>
-          
-          <motion.p 
-            className="text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            You don't have a trading journal? You're just gambling. Track, analyze, and grow as a trader with a clean, modern journal for crypto & stocks.
-          </motion.p>
-
-          <motion.div 
-            className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <Button 
-              size="lg" 
-              className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 px-8 py-3 rounded-lg font-medium transition-colors"
-              onClick={() => setLocation("/auth")}
-            >
-              Get Started
-            </Button>
-            <Button 
-              variant="outline"
-              size="lg" 
-              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-8 py-3 rounded-lg font-medium transition-colors"
-              onClick={() => setLocation("/auth")}
-            >
-              View Demo
-            </Button>
-          </motion.div>
-
-          <motion.div 
-            className="text-sm text-gray-500 dark:text-gray-400"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            14-day free trial • No credit card required
           </motion.div>
         </div>
       </section>
@@ -323,46 +436,231 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section - Clean Grid */}
-      <section className="py-24 px-6 bg-gray-50/50 dark:bg-gray-900/50">
-        <div className="max-w-6xl mx-auto">
+      {/* Premium Features Showcase */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        {/* Premium background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.02),transparent_50%)]"></div>
+        
+        <div className="relative max-w-7xl mx-auto">
           <motion.div 
-            className="text-center mb-16"
+            className="text-center mb-20"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Everything you need to trade better
+            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+              Built for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">professional</span> traders
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Simple tools to track, analyze, and improve your trading performance.
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Every feature engineered to give you the competitive edge that separates winning traders from the rest.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700"
-              >
-                <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mb-6">
-                  <feature.icon className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+          {/* Interactive Features Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+            {/* AI Analytics Feature */}
+            <motion.div
+              className="group"
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-3xl p-8 shadow-2xl group-hover:shadow-3xl transition-all duration-500">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Brain className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">AI Pattern Recognition</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Institutional-grade intelligence</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {feature.description}
+                
+                <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg leading-relaxed">
+                  Our AI analyzes 10,000+ data points from your trades to identify profitable patterns you never knew existed. 
+                  <span className="font-semibold text-purple-600 dark:text-purple-400"> Average 34% improvement in win rate.</span>
                 </p>
-              </motion.div>
-            ))}
+                
+                {/* Mini preview */}
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">Pattern Detected: Morning Breakout</span>
+                    <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">87% Win Rate</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600 dark:text-gray-400">Time Range</span>
+                      <span className="text-gray-900 dark:text-white">9:30-10:30 AM EST</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600 dark:text-gray-400">Avg Profit</span>
+                      <span className="text-green-600 dark:text-green-400 font-semibold">+$1,247</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Real-time Sync Feature */}
+            <motion.div
+              className="group"
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-3xl p-8 shadow-2xl group-hover:shadow-3xl transition-all duration-500">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Zap className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Universal Exchange Sync</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Zero manual work</p>
+                  </div>
+                </div>
+                
+                <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg leading-relaxed">
+                  Connect any exchange in 30 seconds. Binance, Coinbase, Bybit, or custom APIs. 
+                  <span className="font-semibold text-blue-600 dark:text-blue-400"> Your trades sync instantly.</span>
+                </p>
+                
+                {/* Exchange logos preview */}
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                  <div className="text-sm font-medium text-gray-900 dark:text-white mb-3">Connected Exchanges</div>
+                  <div className="flex items-center gap-4">
+                    {['Binance', 'Coinbase', 'Bybit', 'Kraken'].map((exchange, i) => (
+                      <div key={i} className="flex items-center gap-2 bg-white dark:bg-gray-700 px-3 py-2 rounded-lg shadow-sm">
+                        <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">{exchange[0]}</span>
+                        </div>
+                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{exchange}</span>
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Risk Management Feature */}
+            <motion.div
+              className="group"
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-3xl p-8 shadow-2xl group-hover:shadow-3xl transition-all duration-500">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Shield className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Risk Protection System</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Never blow your account</p>
+                  </div>
+                </div>
+                
+                <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg leading-relaxed">
+                  Real-time drawdown alerts, position sizing calculator, and risk-reward optimization. 
+                  <span className="font-semibold text-red-600 dark:text-red-400"> Prevents 95% of account blow-ups.</span>
+                </p>
+                
+                {/* Risk dashboard preview */}
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">Account Risk Level</span>
+                    <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">SAFE</span>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Max Drawdown</span>
+                      <span className="text-sm text-gray-900 dark:text-white font-medium">8.2% / 15%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-green-500 h-2 rounded-full" style={{width: '55%'}}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Mobile App Feature */}
+            <motion.div
+              className="group"
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-3xl p-8 shadow-2xl group-hover:shadow-3xl transition-all duration-500">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Smartphone className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Native Mobile Apps</h3>
+                    <p className="text-gray-600 dark:text-gray-400">Trade anywhere, anytime</p>
+                  </div>
+                </div>
+                
+                <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg leading-relaxed">
+                  Full-featured iOS and Android apps with offline support, push notifications, and Touch ID security. 
+                  <span className="font-semibold text-green-600 dark:text-green-400"> 4.9★ rating on App Store.</span>
+                </p>
+                
+                {/* App preview */}
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                  <div className="text-sm font-medium text-gray-900 dark:text-white mb-3">Available On</div>
+                  <div className="flex gap-3">
+                    <div className="bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+                      <div className="w-4 h-4 bg-white rounded-sm"></div>
+                      App Store
+                    </div>
+                    <div className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+                      <div className="w-4 h-4 bg-white rounded-sm"></div>
+                      Google Play
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
+
+          {/* Stats Banner */}
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 text-white shadow-2xl">
+              <h3 className="text-3xl md:text-4xl font-bold mb-8">Trusted by the world's best traders</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                  <div className="text-4xl md:text-5xl font-bold mb-2">47,000+</div>
+                  <div className="text-blue-100">Active Traders</div>
+                </div>
+                <div>
+                  <div className="text-4xl md:text-5xl font-bold mb-2">$2.1B</div>
+                  <div className="text-blue-100">Volume Tracked</div>
+                </div>
+                <div>
+                  <div className="text-4xl md:text-5xl font-bold mb-2">127%</div>
+                  <div className="text-blue-100">Avg Performance Boost</div>
+                </div>
+                <div>
+                  <div className="text-4xl md:text-5xl font-bold mb-2">4.9★</div>
+                  <div className="text-blue-100">User Rating</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 

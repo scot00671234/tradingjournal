@@ -226,23 +226,7 @@ export default function AuthPage() {
             </div>
           </div>
           
-          <div className="mt-8 p-4 bg-slate-700 rounded-lg">
-            <h3 className="text-white font-semibold mb-2">Free Plan</h3>
-            <ul className="text-sm text-slate-300 space-y-1">
-              <li>• Up to 5 trades</li>
-              <li>• Basic analytics</li>
-              <li>• Win rate tracking</li>
-            </ul>
-            
-            <h3 className="text-white font-semibold mb-2 mt-4">Pro Plan - $19/month</h3>
-            <ul className="text-sm text-slate-300 space-y-1">
-              <li>• Unlimited trades</li>
-              <li>• Advanced analytics</li>
-              <li>• Chart uploads</li>
-              <li>• CSV exports</li>
-              <li>• Priority support</li>
-            </ul>
-          </div>
+
         </div>
       </div>
     </div>

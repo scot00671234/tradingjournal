@@ -502,6 +502,7 @@ export default function LandingPage() {
                 <li><a href="#pricing" className="hover:text-black dark:hover:text-white transition-colors">Pricing</a></li>
                 <li><a href="/dashboard" className="hover:text-black dark:hover:text-white transition-colors">Dashboard</a></li>
                 <li><a href="/auth" className="hover:text-black dark:hover:text-white transition-colors">Sign Up</a></li>
+                <li><a href="/demo" className="hover:text-black dark:hover:text-white transition-colors">Live Demo</a></li>
               </ul>
             </div>
 
@@ -510,6 +511,10 @@ export default function LandingPage() {
               <h3 className="font-semibold text-black dark:text-white mb-4">Resources</h3>
               <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
                 <li><a href="/blog" className="hover:text-black dark:hover:text-white transition-colors">Blog</a></li>
+                <li><a href="/guides" className="hover:text-black dark:hover:text-white transition-colors">Trading Guides</a></li>
+                <li><a href="/api" className="hover:text-black dark:hover:text-white transition-colors">API Documentation</a></li>
+                <li><a href="/help" className="hover:text-black dark:hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="/templates" className="hover:text-black dark:hover:text-white transition-colors">Journal Templates</a></li>
               </ul>
             </div>
 
@@ -519,8 +524,9 @@ export default function LandingPage() {
               <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
                 <li><a href="/about" className="hover:text-black dark:hover:text-white transition-colors">About</a></li>
                 <li><a href="/contact" className="hover:text-black dark:hover:text-white transition-colors">Contact</a></li>
-                <li><a href="/privacy" className="hover:text-black dark:hover:text-white transition-colors">Privacy</a></li>
-                <li><a href="/terms" className="hover:text-black dark:hover:text-white transition-colors">Terms</a></li>
+                <li><a href="/careers" className="hover:text-black dark:hover:text-white transition-colors">Careers</a></li>
+                <li><a href="/privacy" className="hover:text-black dark:hover:text-white transition-colors">Privacy Policy</a></li>
+                <li><a href="/terms" className="hover:text-black dark:hover:text-white transition-colors">Terms of Service</a></li>
               </ul>
             </div>
           </div>

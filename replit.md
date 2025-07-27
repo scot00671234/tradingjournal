@@ -80,6 +80,15 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
     - Blue gradient CTA buttons with shadow effects
     - Blue-accented form elements and search inputs
     - Consistent blue theme across landing page, dashboard, and auth pages
+- ✓ Updated to new CoinFeedly golden logo and theme (January 27, 2025):
+  - Replaced previous logo with official CoinFeedly golden gradient logo
+  - Completely redesigned UI color scheme from blue to golden/yellow theme:
+    - Golden yellow gradient buttons (from-yellow-500 to-amber-600)
+    - Yellow-tinted glassmorphism effects and borders throughout
+    - Yellow-accented form inputs, search bars, and interactive elements
+    - Warm golden shadows and hover effects for premium feel
+    - Updated dashboard background gradient to yellow/amber tones
+    - Consistent golden theme across all pages maintaining brand coherence
 
 ## User Preferences
 

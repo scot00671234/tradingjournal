@@ -18,7 +18,7 @@ import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 import "react-grid-layout/css/styles.css";
 //@ts-ignore
 import GridLayout from "react-grid-layout";
-import barclayneLogo from "@assets/Barclayne capital (1) (1)_1753636103538.png";
+import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
 
 export default function SimplifiedDashboard() {
   const { user, logoutMutation } = useAuth();
@@ -109,16 +109,16 @@ export default function SimplifiedDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-amber-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       {/* Floating Nav Bar */}
       <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-4">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-blue-100/30 dark:border-blue-900/30 rounded-2xl px-6 py-3 shadow-lg shadow-blue-500/10 dark:shadow-blue-400/10">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-yellow-100/30 dark:border-yellow-900/30 rounded-2xl px-6 py-3 shadow-lg shadow-yellow-500/10 dark:shadow-yellow-400/10">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
               <img 
-                src={barclayneLogo} 
-                alt="Barclayne Capital" 
+                src={coinFeedlyLogo} 
+                alt="CoinFeedly" 
                 className="h-8 w-auto"
               />
               <div>
@@ -136,7 +136,7 @@ export default function SimplifiedDashboard() {
                   placeholder="Search trades, tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/30 dark:border-blue-800/30 backdrop-blur-sm focus:border-blue-400 dark:focus:border-blue-600"
+                  className="pl-10 bg-yellow-50/30 dark:bg-yellow-950/30 border-yellow-200/30 dark:border-yellow-800/30 backdrop-blur-sm focus:border-yellow-400 dark:focus:border-yellow-600"
                 />
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function SimplifiedDashboard() {
               <Button
                 size="sm"
                 onClick={() => setShowTradeEntry(!showTradeEntry)}
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
+                className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Trade
@@ -157,7 +157,7 @@ export default function SimplifiedDashboard() {
                 size="sm"
                 onClick={() => setIsCustomizing(!isCustomizing)}
                 className={isCustomizing 
-                  ? "bg-blue-600 text-white hover:bg-blue-700" 
+                  ? "bg-yellow-600 text-white hover:bg-yellow-700" 
                   : "hover:bg-gray-100 dark:hover:bg-gray-800"
                 }
               >

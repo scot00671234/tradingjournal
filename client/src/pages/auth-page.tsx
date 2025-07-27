@@ -12,7 +12,7 @@ import { insertUserSchema, type InsertUser } from "@shared/schema";
 import { z } from "zod";
 import { TrendingUp, Shield, BarChart3, Target } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import barclayneLogo from "@assets/Barclayne capital (1) (1)_1753636103538.png";
+import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -78,8 +78,8 @@ export default function AuthPage() {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-3 mb-4">
               <img 
-                src={barclayneLogo} 
-                alt="Barclayne Capital" 
+                src={coinFeedlyLogo} 
+                alt="CoinFeedly" 
                 className="h-10 w-auto"
               />
               <h1 className="text-2xl font-light tracking-wider text-gray-900 dark:text-white">
@@ -134,7 +134,7 @@ export default function AuthPage() {
                       />
                       <Button 
                         type="submit" 
-                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300" 
+                        className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300" 
                         disabled={loginMutation.isPending}
                       >
                         {loginMutation.isPending ? "Signing in..." : "Sign in"}
@@ -184,7 +184,7 @@ export default function AuthPage() {
                       />
                       <Button 
                         type="submit" 
-                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300" 
+                        className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300" 
                         disabled={registerMutation.isPending}
                       >
                         {registerMutation.isPending ? "Creating account..." : "Create account"}

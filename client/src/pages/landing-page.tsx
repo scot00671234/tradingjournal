@@ -22,7 +22,7 @@ import rolexWatch from "@assets/pexels-pixabay-364822_1753624512469.jpg";
 import porscheSports from "@assets/pexels-adrian-dorobantu-989175-2127740_1753624512469.jpg";
 import tropicalVilla from "@assets/pexels-asadphoto-3155666_1753624512470.jpg";
 import heroVideo from "@assets/Copy of Black and White Modern Quote Motivation Success Video_1753634070768.mp4";
-import barclayneLogo from "@assets/Barclayne capital (1) (1)_1753636103538.png";
+import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();
@@ -83,13 +83,13 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-black">
       {/* Glassy Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-2xl border-b border-blue-100/30 dark:border-blue-900/30 shadow-lg shadow-blue-500/5 dark:shadow-blue-400/5">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-2xl border-b border-yellow-100/30 dark:border-yellow-900/30 shadow-lg shadow-yellow-500/5 dark:shadow-yellow-400/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <img 
-                src={barclayneLogo} 
-                alt="Barclayne Capital" 
+                src={coinFeedlyLogo} 
+                alt="CoinFeedly" 
                 className="h-8 w-auto"
               />
               <span className="ml-3 text-xl font-light tracking-wider text-black dark:text-white">
@@ -103,7 +103,7 @@ export default function LandingPage() {
                 variant="outline" 
                 size="sm" 
                 onClick={() => setLocation("/auth")}
-                className="border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950/50"
+                className="border-yellow-200 dark:border-yellow-800 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-950/50"
               >
                 Sign In
               </Button>
@@ -134,7 +134,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             className="mb-6"
           >
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 text-xs font-medium text-blue-700 dark:text-blue-300">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-yellow-50 dark:bg-yellow-950/50 border border-yellow-200 dark:border-yellow-800 text-xs font-medium text-yellow-700 dark:text-yellow-300">
               <Sparkles className="w-3 h-3 mr-2" />
               Professional Trading Journal
             </div>
@@ -176,7 +176,7 @@ export default function LandingPage() {
             <Button 
               size="lg" 
               onClick={() => setLocation("/auth")}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 px-8 py-3 h-auto font-medium shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
+              className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 px-8 py-3 h-auto font-medium shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300"
             >
               Start 7-Day Free Trial
               <ArrowRight className="ml-2 h-4 w-4" />

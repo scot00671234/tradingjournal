@@ -158,14 +158,7 @@ export default function LandingPage() {
             Losers just forget.
           </motion.p>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-lg text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed"
-          >
-            Transform your trading into a systematic wealth-building machine. Track every trade, master your psychology, and unlock the financial freedom you've been chasing.
-          </motion.p>
+
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -190,6 +183,100 @@ export default function LandingPage() {
             >
               <Play className="mr-2 h-4 w-4" />
               View Demo
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Second Hero - Transformation Section */}
+      <section className="py-32 bg-gradient-to-b from-gray-50/30 to-white dark:from-gray-950/30 dark:to-black relative overflow-hidden">
+        {/* Subtle background elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.08]">
+          <div className="absolute top-1/3 left-1/4 w-32 h-32 rounded-full bg-yellow-500 blur-3xl"></div>
+          <div className="absolute bottom-1/2 right-1/3 w-24 h-24 rounded-full bg-amber-600 blur-3xl"></div>
+        </div>
+        
+        <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-12"
+          >
+            <h2 className="text-4xl lg:text-6xl font-bold text-black dark:text-white mb-8 tracking-tight leading-tight">
+              Winners journal.
+              <br />
+              <span className="text-gray-600 dark:text-gray-400 font-light italic text-3xl lg:text-5xl">
+                Losers just forget.
+              </span>
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-16"
+          >
+            <p className="text-xl lg:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto font-light">
+              Transform your trading into a systematic wealth-building machine. Track every 
+              trade, master your psychology, and unlock the financial freedom you've been chasing.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="grid md:grid-cols-3 gap-8 mb-16"
+          >
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                <BarChart3 className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-black dark:text-white mb-4">Every Trade Matters</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Build an unbreakable record that reveals your true edge. No trade forgotten, no pattern missed.
+              </p>
+            </div>
+
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                <Target className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-black dark:text-white mb-4">Master Your Mind</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Document decisions and emotions. Break destructive patterns. Develop unshakeable discipline.
+              </p>
+            </div>
+
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                <TrendingUp className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-black dark:text-white mb-4">Scale What Works</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Identify the setups that print money. Eliminate what drains your account. Compound your edge.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <Button 
+              size="lg" 
+              onClick={() => setLocation("/auth")}
+              className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 px-12 py-4 h-auto font-medium shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300 text-lg"
+            >
+              Start Your Transformation
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </motion.div>
         </div>

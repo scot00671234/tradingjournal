@@ -141,56 +141,43 @@ export default function LandingPage() {
         <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-br from-gray-200/50 to-gray-300/50 dark:from-gray-700/20 dark:to-gray-600/20 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Floating Header */}
-      <motion.header 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-6xl px-4"
-      >
-        <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
-          <div className="px-8 py-4">
-            <div className="flex items-center justify-between">
-              <motion.div 
-                className="flex items-center space-x-3"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <div className="w-12 h-12 bg-gray-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
-                  <TrendingUp className="w-7 h-7 text-white dark:text-gray-900" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    CoinFeedly
-                  </h1>
-                  <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">Clean, Simple Trading Journal</span>
-                </div>
-              </motion.div>
-              <div className="flex items-center space-x-3">
-                <Button 
-                  variant="ghost" 
-                  className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-medium"
-                  onClick={() => setLocation("/auth")}
-                >
-                  Login
-                </Button>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold px-6"
-                    onClick={() => setLocation("/auth")}
-                  >
-                    Start Free Trial
-                    <Sparkles className="w-4 h-4 ml-2" />
-                  </Button>
-                </motion.div>
+      {/* Clean Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-950/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-black dark:bg-white rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-white dark:text-black" />
               </div>
+              <div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">CoinFeedly</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Clean, Simple Trading Journal</div>
+              </div>
+            </div>
+
+            {/* Navigation */}
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="ghost" 
+                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium"
+                onClick={() => setLocation("/auth")}
+              >
+                Login
+              </Button>
+              <Button 
+                className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 font-medium px-6"
+                onClick={() => setLocation("/auth")}
+              >
+                Get Started
+              </Button>
             </div>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Hero Section - Clean Vercel Style */}
-      <section className="pt-24 pb-32 px-6">
+      <section className="pt-32 pb-32 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

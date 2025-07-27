@@ -65,7 +65,6 @@ export function setupAuth(app: Express) {
     }
 
     const user = await storage.createUser({
-      username: req.body.email, // Use email as username for backward compatibility
       email: req.body.email,
       password: await hashPassword(req.body.password),
     });

@@ -4,7 +4,7 @@ import { TradeStatsCards } from "@/components/trade-stats-cards";
 import { UnifiedTradeEntry } from "@/components/unified-trade-entry";
 import { RecentTradesTable } from "@/components/recent-trades-table";
 import { useAuth } from "@/hooks/use-auth";
-import { Bell, Moon, Sun } from "lucide-react";
+import { Settings, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/ui/theme-provider";
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
@@ -51,8 +51,13 @@ export default function DashboardPage() {
               >
                 {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </Button>
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                <Bell className="h-5 w-5" />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-muted-foreground hover:text-foreground"
+                onClick={() => window.location.href = "/settings"}
+              >
+                <Settings className="h-5 w-5" />
               </Button>
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">

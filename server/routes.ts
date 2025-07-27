@@ -297,6 +297,86 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ received: true });
   });
 
+  // Profile management routes
+  app.patch("/api/profile", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { firstName, lastName, email } = req.body;
+      
+      // Check if email already exists (if changing email)
+      if (email && email !== req.user.email) {
+        const existingUser = await storage.getUserByEmail(email);
+        if (existingUser) {
+          return res.status(400).json({ message: "Email already exists" });
+        }
+      }
+      
+      const updatedUser = await storage.updateUserProfile(req.user.id, {
+        firstName,
+        lastName,
+        email
+      });
+      
+      res.json(updatedUser);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.delete("/api/delete-account", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const user = req.user;
+      
+      // Cancel subscription if exists
+      if (user.stripeSubscriptionId) {
+        await stripe.subscriptions.cancel(user.stripeSubscriptionId);
+      }
+      
+      // Delete user account and associated data
+      await storage.deleteUser(user.id);
+      
+      // Logout the user
+      req.logout((err) => {
+        if (err) {
+          return res.status(500).json({ message: "Failed to logout after deletion" });
+        }
+        res.json({ message: "Account deleted successfully" });
+      });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/cancel-subscription", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const user = req.user;
+      
+      if (!user.stripeSubscriptionId) {
+        return res.status(400).json({ message: "No active subscription found" });
+      }
+      
+      // Cancel subscription at period end
+      await stripe.subscriptions.update(user.stripeSubscriptionId, {
+        cancel_at_period_end: true
+      });
+      
+      res.json({ message: "Subscription cancelled successfully" });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
   // User account deletion
   app.delete("/api/user", async (req, res) => {
     if (!req.isAuthenticated()) {

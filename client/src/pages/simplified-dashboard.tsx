@@ -2,7 +2,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
-import { Bell, Moon, Sun, Plus, Filter, Search, Settings, LogOut, Layout, LayoutDashboard, TrendingUp, BarChart3 } from "lucide-react";
+import { Moon, Sun, Plus, Filter, Search, Settings, LogOut, Layout, LayoutDashboard, TrendingUp, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,7 @@ import "react-grid-layout/css/styles.css";
 //@ts-ignore
 import GridLayout from "react-grid-layout";
 import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
+import { getGreeting } from "@/utils/greeting";
 
 export default function SimplifiedDashboard() {
   const { user, logoutMutation } = useAuth();
@@ -169,14 +170,18 @@ export default function SimplifiedDashboard() {
                 {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
               
-              <Button variant="ghost" size="sm">
-                <Bell className="h-4 w-4" />
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => window.location.href = "/settings"}
+              >
+                <Settings className="h-4 w-4" />
               </Button>
 
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">
                   <span className="text-white dark:text-black text-sm font-medium">
-                    {user?.email?.charAt(0).toUpperCase()}
+                    {user?.firstName?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
                   </span>
                 </div>
               </div>
@@ -191,7 +196,7 @@ export default function SimplifiedDashboard() {
           {/* Welcome Section */}
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Good morning, {user?.email?.split('@')[0]}
+              {getGreeting()}, {user?.firstName || user?.email?.split('@')[0]}
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
               Here's your trading overview and quick actions.

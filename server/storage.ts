@@ -14,6 +14,8 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   updateUserStripeInfo(userId: number, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User>;
   updateUserProStatus(userId: number, isProUser: boolean): Promise<User>;
+  updateUserProfile(userId: number, updates: { firstName?: string; lastName?: string; email?: string }): Promise<User>;
+  deleteUser(userId: number): Promise<boolean>;
   
   getUserTrades(userId: number, limit?: number): Promise<Trade[]>;
   createTrade(trade: InsertTrade & { userId: number }): Promise<Trade>;
@@ -63,6 +65,8 @@ export class DatabaseStorage implements IStorage {
     const [user] = await db
       .insert(users)
       .values({
+        firstName: insertUser.firstName,
+        lastName: insertUser.lastName,
         email: insertUser.email,
         password: insertUser.password,
         username: insertUser.email.split('@')[0], // Generate username from email
@@ -91,6 +95,24 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, userId))
       .returning();
     return user;
+  }
+
+  async updateUserProfile(userId: number, updates: { firstName?: string; lastName?: string; email?: string }): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set(updates)
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async deleteUser(userId: number): Promise<boolean> {
+    // First delete all user's trades
+    await db.delete(trades).where(eq(trades.userId, userId));
+    
+    // Then delete the user
+    const result = await db.delete(users).where(eq(users.id, userId));
+    return result.rowCount > 0;
   }
 
   async getUserTrades(userId: number, limit?: number): Promise<Trade[]> {

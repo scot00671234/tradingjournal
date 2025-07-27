@@ -11,7 +11,10 @@ import {
   Sparkles
 } from "lucide-react";
 import { motion } from "framer-motion";
-import oceanWaves from "@assets/pexels-pok-rie-33563-2064749_1753621776275.jpg";
+import luxuryCar from "@assets/pexels-pixabay-326259_1753623060677.jpg";
+import luxuryRoom from "@assets/pexels-joao-gustavo-rezende-15265-68389_1753623060676.jpg";
+import watchCollection from "@assets/pexels-bemistermister-380782_1753623060677.jpg";
+import penthouseView from "@assets/pexels-rpnickson-2417842_1753623060678.jpg";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();
@@ -91,14 +94,14 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
-        {/* Ocean Wave Background */}
+        {/* Luxury Car Hero Background */}
         <div className="absolute inset-0 z-0">
           <img 
-            src={oceanWaves} 
-            alt="Ocean waves" 
-            className="w-full h-full object-cover opacity-20 dark:opacity-15"
+            src={luxuryCar} 
+            alt="Luxury car interior" 
+            className="w-full h-full object-cover opacity-30 dark:opacity-25"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/90 dark:from-black/70 dark:via-black/50 dark:to-black/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/60 to-white/90 dark:from-black/80 dark:via-black/60 dark:to-black/90"></div>
         </div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
@@ -169,7 +172,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section with Lifestyle Images */}
       <section id="features" className="py-24 bg-gray-50/50 dark:bg-gray-950/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -182,31 +185,46 @@ export default function LandingPage() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className="border-0 shadow-sm bg-white dark:bg-black hover:shadow-md transition-shadow duration-200">
-                  <CardHeader className="text-center pb-4">
-                    <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
-                      <feature.icon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+            {features.map((feature, index) => {
+              const featureImages = [watchCollection, luxuryRoom, penthouseView];
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card className="border-0 shadow-sm bg-white dark:bg-black hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                    {/* Feature Image */}
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={featureImages[index]} 
+                        alt={`${feature.title} lifestyle`}
+                        className="w-full h-full object-cover opacity-80"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                      <div className="absolute bottom-4 left-4">
+                        <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                          <feature.icon className="h-5 w-5 text-white" />
+                        </div>
+                      </div>
                     </div>
-                    <CardTitle className="text-xl font-semibold text-black dark:text-white">
-                      {feature.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                    
+                    <CardHeader className="text-center pb-4">
+                      <CardTitle className="text-xl font-semibold text-black dark:text-white">
+                        {feature.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        {feature.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -286,9 +304,19 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-gray-50/50 dark:bg-gray-950/50">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      {/* CTA Section with Penthouse Background */}
+      <section className="relative py-24 overflow-hidden">
+        {/* Penthouse Background */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={penthouseView} 
+            alt="Luxury penthouse view" 
+            className="w-full h-full object-cover opacity-20 dark:opacity-15"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/80 to-white/90 dark:from-black/90 dark:via-black/80 dark:to-black/90"></div>
+        </div>
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
             Ready to become consistently profitable?
           </h2>
@@ -299,7 +327,7 @@ export default function LandingPage() {
           <Button 
             size="lg" 
             onClick={() => setLocation("/auth")}
-            className="bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black px-8 py-3 h-auto font-medium"
+            className="bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black px-8 py-3 h-auto font-medium shadow-lg"
           >
             Start 7-Day Free Trial
             <ArrowRight className="ml-2 h-4 w-4" />

@@ -13,7 +13,10 @@ import { z } from "zod";
 import { TrendingUp, Shield, BarChart3, Target } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
-const loginSchema = insertUserSchema.pick({ username: true, password: true });
+const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
+});
 type LoginData = z.infer<typeof loginSchema>;
 
 export default function AuthPage() {
@@ -35,7 +38,7 @@ export default function AuthPage() {
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -43,7 +46,6 @@ export default function AuthPage() {
   const registerForm = useForm<InsertUser>({
     resolver: zodResolver(insertUserSchema),
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
@@ -68,18 +70,18 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex">
+    <div className="min-h-screen bg-white dark:bg-gray-950 flex">
       {/* Left side - Forms */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-6">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-black dark:bg-white rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-white dark:text-black" />
               </div>
-              <h1 className="text-2xl font-bold text-white">TradeJournal</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">CoinFeedly</h1>
             </div>
-            <p className="text-slate-400">Track your trades. Analyze your performance.</p>
+            <p className="text-gray-600 dark:text-gray-400">Track your trades. Analyze your performance.</p>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -101,12 +103,12 @@ export default function AuthPage() {
                     <form onSubmit={loginForm.handleSubmit(onLogin)} className="space-y-4">
                       <FormField
                         control={loginForm.control}
-                        name="username"
+                        name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter your username" {...field} />
+                              <Input type="email" placeholder="Enter your email" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -151,19 +153,6 @@ export default function AuthPage() {
                     <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-4">
                       <FormField
                         control={registerForm.control}
-                        name="username"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Choose a username" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={registerForm.control}
                         name="email"
                         render={({ field }) => (
                           <FormItem>
@@ -205,12 +194,12 @@ export default function AuthPage() {
       </div>
 
       {/* Right side - Hero */}
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-800 p-8 flex-col justify-center">
+      <div className="hidden lg:flex lg:w-1/2 bg-gray-50 dark:bg-gray-900 p-8 flex-col justify-center">
         <div className="max-w-md">
-          <h2 className="text-3xl font-bold text-white mb-6">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
             Professional Trading Journal
           </h2>
-          <p className="text-slate-300 mb-8">
+          <p className="text-gray-600 dark:text-gray-300 mb-8">
             Take your trading to the next level with detailed analytics, performance tracking, and insights designed for serious traders.
           </p>
           

@@ -44,10 +44,14 @@ export const tradeRelations = relations(trades, ({ one }) => ({
 
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
+  username: true,
   createdAt: true,
   isProUser: true,
   stripeCustomerId: true,
   stripeSubscriptionId: true,
+}).extend({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 export const insertTradeSchema = createInsertSchema(trades).omit({

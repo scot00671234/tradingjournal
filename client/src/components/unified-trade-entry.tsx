@@ -64,8 +64,8 @@ export function UnifiedTradeEntry({
         direction,
         tags,
         tradeDate: new Date(data.tradeDate).toISOString(),
-        entryPrice: parseFloat(data.entryPrice as string),
-        exitPrice: data.exitPrice ? parseFloat(data.exitPrice as string) : undefined,
+        entryPrice: parseFloat(data.entryPrice),
+        exitPrice: data.exitPrice ? parseFloat(data.exitPrice) : undefined,
       };
       
       const res = await apiRequest("POST", "/api/trades", tradeData);
@@ -107,7 +107,7 @@ export function UnifiedTradeEntry({
     },
   });
 
-  const onSubmit = async (data: InsertTrade) => {
+  const onSubmit = (data: InsertTrade) => {
     createTradeMutation.mutate(data);
   };
 

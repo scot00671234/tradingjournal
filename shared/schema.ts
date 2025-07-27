@@ -60,9 +60,10 @@ export const insertTradeSchema = createInsertSchema(trades).omit({
   createdAt: true,
   pnl: true,
 }).extend({
-  entryPrice: z.coerce.number().positive("Entry price must be positive"),
-  exitPrice: z.coerce.number().positive("Exit price must be positive").optional(),
+  entryPrice: z.string().min(1, "Entry price is required"),
+  exitPrice: z.string().optional(),
   size: z.coerce.number().int().positive("Size must be a positive integer"),
+  tradeDate: z.string().min(1, "Trade date is required"),
 });
 
 export const updateTradeSchema = createInsertSchema(trades).omit({

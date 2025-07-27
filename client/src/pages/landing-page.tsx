@@ -109,9 +109,9 @@ export default function LandingPage() {
             muted 
             loop 
             playsInline
-            className="w-full h-full object-cover opacity-30 dark:opacity-25"
+            className="w-full h-full object-cover opacity-50 dark:opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/60 to-white/90 dark:from-black/80 dark:via-black/60 dark:to-black/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/40 to-white/70 dark:from-black/60 dark:via-black/40 dark:to-black/70"></div>
         </div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">

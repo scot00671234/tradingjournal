@@ -19,18 +19,18 @@ export default function LandingPage() {
   const features = [
     {
       icon: BarChart3,
-      title: "Track Trades",
-      description: "Log every trade with entry, exit, and P&L. Build your trading history systematically."
+      title: "Track Every Trade",
+      description: "Build an unbreakable record of your wins and losses. Turn trading from gambling into a data-driven business."
     },
     {
       icon: TrendingUp,
-      title: "Analyze Trends", 
-      description: "See your performance over time with clear charts. Identify what's working and what isn't."
+      title: "Master Your Edge", 
+      description: "Identify the patterns that print money. Eliminate the trades that drain your account. Scale what works."
     },
     {
       icon: Target,
-      title: "Reflect & Learn",
-      description: "Add notes and tags to trades. Learn from mistakes and replicate successful patterns."
+      title: "Control Your Mind",
+      description: "Document your emotions and decisions. Break bad habits. Develop the discipline of profitable traders."
     }
   ];
 
@@ -71,8 +71,8 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
-      {/* Clean Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50">
+      {/* Glassy Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-black/60 backdrop-blur-2xl border-b border-white/20 dark:border-gray-700/30 shadow-lg shadow-black/5 dark:shadow-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="text-xl font-semibold text-black dark:text-white">
@@ -91,14 +91,14 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
-        {/* Subtle Background */}
+        {/* Ocean Wave Background */}
         <div className="absolute inset-0 z-0">
           <img 
             src={oceanWaves} 
             alt="Ocean waves" 
-            className="w-full h-full object-cover opacity-[0.03] dark:opacity-[0.02]"
+            className="w-full h-full object-cover opacity-20 dark:opacity-15"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white dark:via-black/50 dark:to-black"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/90 dark:from-black/70 dark:via-black/50 dark:to-black/90"></div>
         </div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
@@ -120,9 +120,7 @@ export default function LandingPage() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-5xl lg:text-7xl font-bold text-black dark:text-white mb-6 tracking-tight leading-none"
           >
-            Serious traders
-            <br />
-            journal.
+            Winners journal.
           </motion.h1>
 
           <motion.p
@@ -131,7 +129,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-2xl lg:text-3xl text-gray-600 dark:text-gray-400 mb-8 font-light italic"
           >
-            Losers just 'remember.
+            Losers just remember.
           </motion.p>
 
           <motion.p 
@@ -140,7 +138,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-lg text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            A clean, simple trading journal that helps you track trades, analyze performance, and learn from every decision.
+            Transform your trading into a systematic wealth-building machine. Track every trade, master your psychology, and unlock the financial freedom you've been chasing.
           </motion.p>
 
           <motion.div 
@@ -176,10 +174,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
-              Everything you need to improve your trading
+              Turn trading into your money machine
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Simple tools that help you understand your trading patterns and make better decisions.
+              Professional tools to track patterns, eliminate emotions, and build consistent profits that compound into life-changing wealth.
             </p>
           </div>
           
@@ -292,10 +290,10 @@ export default function LandingPage() {
       <section className="py-24 bg-gray-50/50 dark:bg-gray-950/50">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
-            Ready to improve your trading?
+            Ready to become consistently profitable?
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Join CoinFeedly today and start building better trading habits with a clean, simple journal.
+            Stop losing money to emotional trades. Start building the systematic approach that turns trading into wealth.
           </p>
           
           <Button 

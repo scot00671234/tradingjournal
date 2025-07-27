@@ -134,12 +134,11 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
-      {/* Animated Background */}
+    <div className="min-h-screen bg-white dark:bg-gray-950">
+      {/* Subtle Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-br from-green-400/20 to-blue-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-gray-100/50 to-gray-200/50 dark:from-gray-800/20 dark:to-gray-700/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-br from-gray-200/50 to-gray-300/50 dark:from-gray-700/20 dark:to-gray-600/20 rounded-full blur-3xl"></div>
       </div>
 
       {/* Floating Header */}
@@ -149,7 +148,7 @@ export default function LandingPage() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-6xl px-4"
       >
-        <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl shadow-2xl shadow-black/5">
+        <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg">
           <div className="px-8 py-4">
             <div className="flex items-center justify-between">
               <motion.div 
@@ -157,27 +156,27 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <TrendingUp className="w-7 h-7 text-white" />
+                <div className="w-12 h-12 bg-gray-900 dark:bg-white rounded-xl flex items-center justify-center shadow-lg">
+                  <TrendingUp className="w-7 h-7 text-white dark:text-gray-900" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                     CoinFeedly
                   </h1>
-                  <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">AI-Powered Trading Journal</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">Clean, Simple Trading Journal</span>
                 </div>
               </motion.div>
               <div className="flex items-center space-x-3">
                 <Button 
                   variant="ghost" 
-                  className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-300 font-medium"
+                  className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-medium"
                   onClick={() => setLocation("/auth")}
                 >
                   Login
                 </Button>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button 
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 font-semibold px-6"
+                    className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 font-semibold px-6"
                     onClick={() => setLocation("/auth")}
                   >
                     Start Free Trial
@@ -198,9 +197,9 @@ export default function LandingPage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <Badge className="mb-8 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-700/50 backdrop-blur-sm text-sm px-4 py-2 font-semibold shadow-lg">
-              <Rocket className="w-4 h-4 mr-2" />
-              Join 47,000+ profitable traders making $2M+ monthly
+            <Badge className="mb-8 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 backdrop-blur-sm text-sm px-4 py-2 font-semibold shadow-lg">
+              <TrendingUp className="w-4 h-4 mr-2" />
+              Trusted by 47,000+ traders worldwide
             </Badge>
           </motion.div>
           
@@ -210,25 +209,24 @@ export default function LandingPage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <span className="bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
-              Stop Losing Money
+            <span className="text-gray-900 dark:text-white">
+              Serious traders journal.
             </span>
             <br />
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-4xl md:text-5xl">
-              Start Winning Trades
+            <span className="text-gray-600 dark:text-gray-400 text-4xl md:text-5xl">
+              Losers just 'remember.'
             </span>
           </motion.h1>
           
           <motion.p 
-            className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-8 max-w-4xl mx-auto leading-relaxed font-medium"
+            className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed font-medium"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            AI-powered trading journal that <span className="text-green-600 font-bold">automatically identifies your winning patterns</span> and 
-            <span className="text-red-600 font-bold"> eliminates losing strategies</span>. 
+            You don't have a trading journal? You're just gambling. Track, analyze, and grow as a trader with a clean, modern journal for crypto & stocks.
             <br className="hidden md:block" />
-            <span className="text-blue-600 font-bold">Average user increases profit by 187% in 90 days.</span>
+            <span className="text-gray-900 dark:text-white font-semibold">Stop leaving money on the table.</span>
           </motion.p>
 
           <motion.div 
@@ -240,11 +238,11 @@ export default function LandingPage() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-lg px-12 py-4 rounded-2xl shadow-2xl hover:shadow-emerald-500/25 transition-all duration-300 font-bold"
+                className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 text-lg px-12 py-4 rounded-2xl shadow-lg transition-all duration-300 font-bold"
                 onClick={() => setLocation("/auth")}
               >
-                <DollarSign className="w-6 h-6 mr-2" />
-                Start Making Profit Now
+                <TrendingUp className="w-6 h-6 mr-2" />
+                Start Trading Journal Now
                 <ChevronRight className="w-6 h-6 ml-2" />
               </Button>
             </motion.div>
@@ -252,7 +250,7 @@ export default function LandingPage() {
               <Button 
                 variant="outline"
                 size="lg" 
-                className="border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-lg px-8 py-4 rounded-2xl backdrop-blur-sm font-semibold"
+                className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 text-lg px-8 py-4 rounded-2xl backdrop-blur-sm font-semibold"
                 onClick={() => setLocation("/auth")}
               >
                 <Eye className="w-5 h-5 mr-2" />
@@ -262,7 +260,7 @@ export default function LandingPage() {
           </motion.div>
 
           <motion.div 
-            className="text-center text-sm text-slate-500 dark:text-slate-400 space-y-2"
+            className="text-center text-sm text-gray-500 dark:text-gray-400 space-y-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -286,6 +284,124 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Problem/Solution Section */}
+      <section className="py-24 px-4 bg-gray-50/50 dark:bg-gray-900/50">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Problems Column */}
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">Sound familiar?</h3>
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 font-medium">Lost money but don't know why?</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 font-medium">Forget your strategy mid-trade?</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 font-medium">No idea how your performance really looks?</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Solutions Column */}
+            <motion.div
+              initial={{ x: 50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">CoinFeedly solves this:</h3>
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Check className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 font-medium">Log trades with reason, entry, exit</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Check className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 font-medium">See P/L over time</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Check className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 font-medium">Track emotions & discipline</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Check className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 font-medium">See patterns → become a smarter trader</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Used By Section */}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-20 text-center"
+          >
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-8">Used by:</h3>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-4xl mx-auto">
+              {[
+                'Day traders',
+                'Swing traders', 
+                'Crypto degens',
+                'Stock scalpers',
+                'Funded challenge traders'
+              ].map((trader, index) => (
+                <div key={index} className="flex items-center justify-center space-x-2 p-4 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span className="text-gray-700 dark:text-gray-300 text-sm font-medium">{trader}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-32 px-4 relative">
         <div className="container mx-auto relative z-10">
@@ -296,13 +412,11 @@ export default function LandingPage() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
-              Why Traders Love CoinFeedly
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+              Serious traders journal. Losers just 'remember.'
             </h2>
-            <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto font-medium">
-              The only trading journal that actually makes you money.
-              <br />
-              <span className="text-green-600 font-bold">Stop guessing. Start profiting.</span>
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-medium">
+              You don't have a trading journal? You're just gambling. Track, analyze, and grow as a trader with a clean, modern journal for crypto & stocks.
             </p>
           </motion.div>
 
@@ -515,7 +629,7 @@ export default function LandingPage() {
 
       {/* Final CTA Section */}
       <section className="py-32 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-green-600"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="container mx-auto text-center relative z-10">
           <motion.div 
@@ -528,12 +642,12 @@ export default function LandingPage() {
             <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
               Your Next Profitable Trade
               <br />
-              <span className="text-2xl md:text-3xl text-blue-200">Starts Here</span>
+              <span className="text-2xl md:text-3xl text-gray-300">Starts Here</span>
             </h2>
             <p className="text-xl md:text-2xl text-white/90 mb-12 font-medium leading-relaxed">
               Stop leaving money on the table. Join 47,000+ traders who've already discovered
               <br className="hidden md:block" />
-              <span className="text-yellow-300 font-bold">the patterns that actually make money.</span>
+              <span className="text-white font-bold">the patterns that actually make money.</span>
             </p>
             
             <motion.div 
@@ -546,11 +660,11 @@ export default function LandingPage() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button 
                   size="lg" 
-                  className="bg-white text-blue-600 hover:bg-blue-50 text-xl px-12 py-6 rounded-2xl shadow-2xl font-bold border-2 border-white/20"
+                  className="bg-white text-gray-900 hover:bg-gray-100 text-xl px-12 py-6 rounded-2xl shadow-2xl font-bold"
                   onClick={() => setLocation("/auth")}
                 >
                   <Trophy className="w-6 h-6 mr-3" />
-                  Start Winning Trades Now
+                  Start Your Trading Journal
                   <ChevronRight className="w-6 h-6 ml-3" />
                 </Button>
               </motion.div>

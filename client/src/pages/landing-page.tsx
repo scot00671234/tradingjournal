@@ -146,7 +146,7 @@ export default function LandingPage() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-4xl lg:text-6xl font-bold text-black dark:text-white mb-6 tracking-tight leading-tight"
           >
-            You keep losing. And you don't even know why.
+            Imagine where you'd be if you tracked every trade.
           </motion.h1>
 
           <motion.p
@@ -155,16 +155,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-8 font-light leading-relaxed"
           >
-            You tell yourself you'll figure it out next time. But next time never comes.
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-lg lg:text-xl text-black dark:text-white mb-8 font-medium leading-relaxed max-w-3xl mx-auto"
-          >
-            This journal ends the cycle. Brings clarity. Builds confidence. Gets you back in control.
+            The trading journal that separates winners from losers.
           </motion.p>
 
 

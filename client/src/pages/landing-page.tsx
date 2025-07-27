@@ -155,7 +155,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-8 font-light leading-relaxed"
           >
-            The trading journal that separates winners from losers.
+            Have you imagined yet? Now live it with the trading journal that separates winners from losers.
           </motion.p>
 
 

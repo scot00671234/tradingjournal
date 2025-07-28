@@ -44,6 +44,7 @@ export function UnifiedTradeEntry({
   const [customAssets, setCustomAssets] = useState<string[]>([]);
   const [allAssets, setAllAssets] = useState<string[]>(defaultAssets);
   const [newAsset, setNewAsset] = useState("");
+  const [selectedAsset, setSelectedAsset] = useState("");
 
   const form = useForm<InsertTrade>({
     resolver: zodResolver(insertTradeSchema),
@@ -138,6 +139,7 @@ export function UnifiedTradeEntry({
     if (upperValue && !allAssets.includes(upperValue) && !customAssets.includes(upperValue)) {
       setCustomAssets([...customAssets, upperValue]);
       form.setValue("asset", upperValue);
+      setSelectedAsset(upperValue);
       // Keep the asset in the input field, don't clear it
     }
   };
@@ -184,8 +186,9 @@ export function UnifiedTradeEntry({
                       onClick={() => {
                         form.setValue("asset", asset);
                         setNewAsset(asset);
+                        setSelectedAsset(asset);
                       }}
-                      className="text-xs pr-8"
+                      className={`text-xs pr-8 ${selectedAsset === asset ? 'bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800' : ''}`}
                     >
                       {asset}
                     </Button>
@@ -214,8 +217,12 @@ export function UnifiedTradeEntry({
                         onClick={() => {
                           form.setValue("asset", asset);
                           setNewAsset(asset);
+                          setSelectedAsset(asset);
                         }}
-                        className="text-xs bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/30 dark:hover:bg-blue-900/30 border-blue-200 dark:border-blue-800 pr-8"
+                        className={`text-xs pr-8 ${selectedAsset === asset 
+                          ? 'bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800' 
+                          : 'bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/30 dark:hover:bg-blue-900/30 border-blue-200 dark:border-blue-800'
+                        }`}
                       >
                         {asset}
                       </Button>
@@ -241,6 +248,7 @@ export function UnifiedTradeEntry({
                 onChange={(e) => {
                   setNewAsset(e.target.value);
                   form.setValue("asset", e.target.value);
+                  setSelectedAsset(e.target.value.toUpperCase());
                 }}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomAsset())}
                 className="text-xs"

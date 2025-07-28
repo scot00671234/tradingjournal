@@ -23,8 +23,8 @@ export function TradeListWidget({ trades, className }: TradeListWidgetProps) {
             <List className="w-5 h-5 mr-2 text-gray-500" />
             Recent Trades
           </div>
-          <Badge variant="outline" className="text-xs">
-            {trades.length} total
+          <Badge variant="outline" className="text-xs flex items-center">
+            {trades.length} {trades.length === 1 ? 'trade' : 'trades'}
           </Badge>
         </CardTitle>
       </CardHeader>

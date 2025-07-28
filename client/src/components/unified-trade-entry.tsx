@@ -66,7 +66,7 @@ export function UnifiedTradeEntry({
       const tradeData = {
         ...data,
         direction,
-        tags,
+        tags: JSON.stringify(tags), // Convert array to JSON string
         tradeDate: new Date(data.tradeDate).toISOString(),
         entryPrice: data.entryPrice,
         exitPrice: data.exitPrice || undefined,

@@ -152,7 +152,7 @@ export class DatabaseStorage implements IStorage {
         exitPrice: trade.exitPrice ? (typeof trade.exitPrice === 'string' ? parseFloat(trade.exitPrice) : trade.exitPrice) : null,
         size: trade.size,
         notes: trade.notes || null,
-        tags: trade.tags ? JSON.stringify(trade.tags) : null,
+        tags: trade.tags || null,
         imageUrl: trade.imageUrl || null,
         tradeDate: new Date(trade.tradeDate),
         pnl,

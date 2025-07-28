@@ -32,17 +32,25 @@ export default function SimplifiedDashboard() {
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [showWidgetSelector, setShowWidgetSelector] = useState(false);
   const [layouts, setLayouts] = useState([
-    { i: "equity-curve", x: 0, y: 0, w: 6, h: 4, minW: 4, minH: 3 },
-    { i: "drawdown", x: 6, y: 0, w: 6, h: 4, minW: 4, minH: 3 },
-    { i: "performance-metrics", x: 0, y: 4, w: 6, h: 4, minW: 4, minH: 3 },
-    { i: "trade-list", x: 6, y: 4, w: 6, h: 4, minW: 4, minH: 3 },
+    { i: "equity-curve", x: 0, y: 0, w: 6, h: 5, minW: 4, minH: 4 },
+    { i: "drawdown", x: 6, y: 0, w: 6, h: 5, minW: 4, minH: 4 },
+    { i: "performance-metrics", x: 0, y: 5, w: 6, h: 5, minW: 4, minH: 4 },
+    { i: "trade-list", x: 6, y: 5, w: 6, h: 5, minW: 4, minH: 4 },
+  ]);
+  
+  const [activeWidgets, setActiveWidgets] = useState([
+    "equity-curve", "drawdown", "performance-metrics", "trade-list"
   ]);
   
   const availableWidgets = [
-    { id: "equity-curve", name: "Equity Curve", icon: TrendingUp },
-    { id: "drawdown", name: "Drawdown Analysis", icon: BarChart3 },
-    { id: "performance-metrics", name: "Performance Metrics", icon: LayoutDashboard },
-    { id: "trade-list", name: "Recent Trades", icon: Layout },
+    { id: "equity-curve", name: "Equity Curve", icon: TrendingUp, description: "Track your account value over time" },
+    { id: "drawdown", name: "Drawdown Analysis", icon: BarChart3, description: "Monitor risk and underwater periods" },
+    { id: "performance-metrics", name: "Performance Metrics", icon: LayoutDashboard, description: "Key trading statistics and ratios" },
+    { id: "trade-list", name: "Recent Trades", icon: Layout, description: "View your latest trading activity" },
+    { id: "profit-loss", name: "P&L Distribution", icon: BarChart3, description: "Analyze profit and loss patterns" },
+    { id: "win-rate", name: "Win Rate Tracker", icon: TrendingUp, description: "Monitor your success rate trends" },
+    { id: "risk-reward", name: "Risk/Reward Analysis", icon: LayoutDashboard, description: "Track R:R ratios across trades" },
+    { id: "monthly-summary", name: "Monthly Summary", icon: Layout, description: "Monthly performance breakdown" },
   ];
 
   const { data: stats } = useQuery<TradeStats>({
@@ -98,6 +106,25 @@ export default function SimplifiedDashboard() {
   // Get unique assets for filter dropdown
   const uniqueAssets = Array.from(new Set(trades?.map(trade => trade.asset) || []));
 
+  // Placeholder widget component for new widgets
+  const PlaceholderWidget = ({ title, icon: Icon, description }: { title: string; icon: any; description: string }) => (
+    <div className="h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+          <h3 className="text-sm font-medium text-gray-900 dark:text-white">{title}</h3>
+        </div>
+        <Badge variant="outline" className="text-xs">Coming Soon</Badge>
+      </div>
+      <div className="flex items-center justify-center h-32 text-center">
+        <div>
+          <Icon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+          <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
+        </div>
+      </div>
+    </div>
+  );
+
   // Widget rendering function
   const renderWidget = (key: string) => {
     if (!trades) return null;
@@ -111,6 +138,14 @@ export default function SimplifiedDashboard() {
         return <PerformanceMetricsWidget trades={filteredTrades} />;
       case "trade-list":
         return <TradeListWidget trades={filteredTrades} />;
+      case "profit-loss":
+        return <PlaceholderWidget title="P&L Distribution" icon={BarChart3} description="Analyze profit and loss patterns" />;
+      case "win-rate":
+        return <PlaceholderWidget title="Win Rate Tracker" icon={TrendingUp} description="Monitor your success rate trends" />;
+      case "risk-reward":
+        return <PlaceholderWidget title="Risk/Reward Analysis" icon={LayoutDashboard} description="Track R:R ratios across trades" />;
+      case "monthly-summary":
+        return <PlaceholderWidget title="Monthly Summary" icon={Layout} description="Monthly performance breakdown" />;
       default:
         return null;
     }
@@ -118,6 +153,28 @@ export default function SimplifiedDashboard() {
 
   const handleLayoutChange = (layout: any) => {
     setLayouts(layout);
+  };
+
+  const addWidget = (widgetId: string) => {
+    if (!activeWidgets.includes(widgetId)) {
+      setActiveWidgets([...activeWidgets, widgetId]);
+      const newWidget = {
+        i: widgetId,
+        x: 0,
+        y: Math.max(...layouts.map(l => l.y + l.h), 0),
+        w: 6,
+        h: 5,
+        minW: 4,
+        minH: 4,
+      };
+      setLayouts([...layouts, newWidget]);
+    }
+    setShowWidgetSelector(false);
+  };
+
+  const removeWidget = (widgetId: string) => {
+    setActiveWidgets(activeWidgets.filter(id => id !== widgetId));
+    setLayouts(layouts.filter(layout => layout.i !== widgetId));
   };
 
   return (
@@ -313,64 +370,85 @@ export default function SimplifiedDashboard() {
                 className="layout"
                 layout={layouts}
                 cols={12}
-                rowHeight={60}
+                rowHeight={70}
                 width={1200}
                 isDraggable={isCustomizing}
                 isResizable={isCustomizing}
                 onLayoutChange={handleLayoutChange}
-                margin={[24, 24]}
+                margin={[16, 16]}
                 containerPadding={[0, 0]}
                 useCSSTransforms={true}
               >
-                <div key="equity-curve" className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all" : ""}>
-                  {renderWidget("equity-curve")}
-                </div>
-                <div key="drawdown" className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all" : ""}>
-                  {renderWidget("drawdown")}
-                </div>
-                <div key="performance-metrics" className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all" : ""}>
-                  {renderWidget("performance-metrics")}
-                </div>
-                <div key="trade-list" className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all" : ""}>
-                  {renderWidget("trade-list")}
-                </div>
+                {activeWidgets.map(widgetId => (
+                  <div key={widgetId} className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all relative group" : "relative"}>
+                    {isCustomizing && (
+                      <button
+                        onClick={() => removeWidget(widgetId)}
+                        className="absolute -top-2 -right-2 z-10 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                      >
+                        ×
+                      </button>
+                    )}
+                    {renderWidget(widgetId)}
+                  </div>
+                ))}
               </GridLayout>
               
-              {/* Widget Selector Button */}
+              {/* Enhanced Widget Selector Button */}
               <Button
                 onClick={() => setShowWidgetSelector(!showWidgetSelector)}
-                className="fixed bottom-6 right-6 z-50 bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 rounded-full w-14 h-14 transition-all duration-300"
-                size="lg"
+                className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white shadow-lg shadow-yellow-500/30 hover:shadow-yellow-500/50 rounded-full w-12 h-12 transition-all duration-300 transform hover:scale-110 active:scale-95 backdrop-blur-sm border border-white/20"
+                size="sm"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%), linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                  boxShadow: '0 8px 32px rgba(245, 158, 11, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                }}
               >
-                <Plus className="w-6 h-6" />
+                <Plus className="w-5 h-5" />
               </Button>
               
-              {/* Widget Selector Panel */}
+              {/* Enhanced Widget Selector Panel */}
               {showWidgetSelector && (
                 <>
                   <div 
                     className="fixed inset-0 z-40 bg-black/20" 
                     onClick={() => setShowWidgetSelector(false)}
                   />
-                  <div className="fixed bottom-24 right-6 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-4 shadow-lg min-w-[200px]">
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-3">Add Widget</h4>
+                  <div className="fixed bottom-20 right-6 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-xl p-4 shadow-xl min-w-[320px] max-h-[400px] overflow-y-auto">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-gray-900 dark:text-white">Add Widget</h4>
+                      <button
+                        onClick={() => setShowWidgetSelector(false)}
+                        className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                      >
+                        ×
+                      </button>
+                    </div>
                     <div className="space-y-2">
                       {availableWidgets.map((widget) => {
-                        const Icon = widget.icon;
+                        const isActive = activeWidgets.includes(widget.id);
                         return (
-                          <Button
+                          <button
                             key={widget.id}
-                            variant="ghost"
-                            size="sm"
-                            className="w-full justify-start hover:bg-yellow-50 dark:hover:bg-yellow-950/30"
-                            onClick={() => {
-                              // Add widget logic here - currently just closes for demo
-                              setShowWidgetSelector(false);
-                            }}
+                            className={`w-full flex items-start p-3 text-left rounded-lg transition-all border ${
+                              isActive 
+                                ? 'bg-yellow-50/50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700 opacity-50 cursor-not-allowed' 
+                                : 'hover:bg-gray-100/50 dark:hover:bg-gray-800/50 border-transparent hover:border-gray-200 dark:hover:border-gray-700'
+                            }`}
+                            onClick={() => !isActive && addWidget(widget.id)}
+                            disabled={isActive}
                           >
-                            <Icon className="w-4 h-4 mr-2" />
-                            {widget.name}
-                          </Button>
+                            <widget.icon className="w-5 h-5 mr-3 mt-0.5 text-gray-600 dark:text-gray-400" />
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-medium text-gray-800 dark:text-gray-200">{widget.name}</span>
+                                {isActive && (
+                                  <span className="text-xs text-yellow-600 dark:text-yellow-400 ml-2">Active</span>
+                                )}
+                              </div>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">{widget.description}</p>
+                            </div>
+                          </button>
                         );
                       })}
                     </div>

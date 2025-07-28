@@ -1,36 +1,36 @@
-import { pgTable, text, serial, integer, boolean, timestamp, decimal, varchar } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const users = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
-  isProUser: boolean("is_pro_user").default(false),
+  isProUser: integer("is_pro_user", { mode: 'boolean' }).default(false),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: integer("created_at", { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 });
 
-export const trades = pgTable("trades", {
-  id: serial("id").primaryKey(),
+export const trades = sqliteTable("trades", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id").references(() => users.id).notNull(),
-  asset: varchar("asset", { length: 10 }).notNull(),
-  direction: varchar("direction", { length: 5 }).notNull(), // 'long' or 'short'
-  entryPrice: decimal("entry_price", { precision: 10, scale: 2 }).notNull(),
-  exitPrice: decimal("exit_price", { precision: 10, scale: 2 }),
+  asset: text("asset", { length: 10 }).notNull(),
+  direction: text("direction", { length: 5 }).notNull(), // 'long' or 'short'
+  entryPrice: real("entry_price").notNull(),
+  exitPrice: real("exit_price"),
   size: integer("size").notNull(),
-  pnl: decimal("pnl", { precision: 10, scale: 2 }),
+  pnl: real("pnl"),
   notes: text("notes"),
-  tags: text("tags").array(),
+  tags: text("tags"), // SQLite doesn't have arrays, so we'll store as JSON string
   imageUrl: text("image_url"),
-  tradeDate: timestamp("trade_date").notNull(),
-  isCompleted: boolean("is_completed").default(false),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  tradeDate: integer("trade_date", { mode: 'timestamp' }).notNull(),
+  isCompleted: integer("is_completed", { mode: 'boolean' }).default(false),
+  createdAt: integer("created_at", { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 });
 
 export const userRelations = relations(users, ({ many }) => ({

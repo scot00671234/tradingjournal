@@ -2,10 +2,9 @@ import { users, trades, type User, type InsertUser, type Trade, type InsertTrade
 import { db } from "./db";
 import { eq, desc, and, count, sum, avg } from "drizzle-orm";
 import session from "express-session";
-import connectPg from "connect-pg-simple";
-import { pool } from "./db";
+import MemoryStore from "memorystore";
 
-const PostgresSessionStore = connectPg(session);
+const MemorySessionStore = MemoryStore(session);
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -40,9 +39,8 @@ export class DatabaseStorage implements IStorage {
   sessionStore: any;
 
   constructor() {
-    this.sessionStore = new PostgresSessionStore({ 
-      pool, 
-      createTableIfMissing: true 
+    this.sessionStore = new MemorySessionStore({ 
+      checkPeriod: 86400000 // prune expired entries every 24h
     });
   }
 
@@ -112,7 +110,7 @@ export class DatabaseStorage implements IStorage {
     
     // Then delete the user
     const result = await db.delete(users).where(eq(users.id, userId));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   async getUserTrades(userId: number, limit?: number): Promise<Trade[]> {
@@ -138,9 +136,9 @@ export class DatabaseStorage implements IStorage {
       const size = trade.size;
       
       if (trade.direction === 'long') {
-        pnl = ((exitPrice - entryPrice) * size).toFixed(2);
+        pnl = (exitPrice - entryPrice) * size;
       } else {
-        pnl = ((entryPrice - exitPrice) * size).toFixed(2);
+        pnl = (entryPrice - exitPrice) * size;
       }
     }
 
@@ -150,11 +148,11 @@ export class DatabaseStorage implements IStorage {
         userId: trade.userId,
         asset: trade.asset,
         direction: trade.direction,
-        entryPrice: typeof trade.entryPrice === 'string' ? trade.entryPrice : trade.entryPrice.toString(),
-        exitPrice: trade.exitPrice ? (typeof trade.exitPrice === 'string' ? trade.exitPrice : trade.exitPrice.toString()) : null,
+        entryPrice: typeof trade.entryPrice === 'string' ? parseFloat(trade.entryPrice) : trade.entryPrice,
+        exitPrice: trade.exitPrice ? (typeof trade.exitPrice === 'string' ? parseFloat(trade.exitPrice) : trade.exitPrice) : null,
         size: trade.size,
         notes: trade.notes || null,
-        tags: trade.tags || null,
+        tags: trade.tags ? JSON.stringify(trade.tags) : null,
         imageUrl: trade.imageUrl || null,
         tradeDate: new Date(trade.tradeDate),
         pnl,
@@ -168,14 +166,14 @@ export class DatabaseStorage implements IStorage {
     // Recalculate P&L if prices are updated
     let pnl = updates.pnl;
     if (updates.entryPrice && updates.exitPrice) {
-      const entryPrice = parseFloat(updates.entryPrice.toString());
-      const exitPrice = parseFloat(updates.exitPrice.toString());
+      const entryPrice = typeof updates.entryPrice === 'string' ? parseFloat(updates.entryPrice) : updates.entryPrice;
+      const exitPrice = typeof updates.exitPrice === 'string' ? parseFloat(updates.exitPrice) : updates.exitPrice;
       const size = updates.size || 0;
       
       if (updates.direction === 'long') {
-        pnl = ((exitPrice - entryPrice) * size).toFixed(2);
+        pnl = (exitPrice - entryPrice) * size;
       } else if (updates.direction === 'short') {
-        pnl = ((entryPrice - exitPrice) * size).toFixed(2);
+        pnl = (entryPrice - exitPrice) * size;
       }
     }
 

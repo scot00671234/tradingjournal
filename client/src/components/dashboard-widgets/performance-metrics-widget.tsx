@@ -77,9 +77,6 @@ export function PerformanceMetricsWidget({ trades, className }: PerformanceMetri
             <Award className="w-5 h-5 mr-2 text-purple-500" />
             Performance Metrics
           </div>
-          <div className={`text-sm font-medium ${performance.color}`}>
-            {performance.rating}
-          </div>
         </CardTitle>
       </CardHeader>
       <CardContent>

@@ -23,6 +23,10 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Optimized chart heights and content spacing for better visual balance
   - Enhanced placeholder widgets with better proportions and styling
   - Improved grid layout spacing with 80px row height for optimal widget display
+- ✓ Removed judgmental labels from dashboard widgets:
+  - Removed "Poor/Good/Excellent" ratings from Performance Metrics widget
+  - Removed "HIGH/MODERATE/LOW" severity indicators from Drawdown Analysis widget
+  - Widgets now display data objectively without subjective assessments
 - ✓ Previously migrated from Replit Agent to Replit environment:
   - Fixed critical database architecture - migrated from SQLite to PostgreSQL
   - Created PostgreSQL database with proper environment variables

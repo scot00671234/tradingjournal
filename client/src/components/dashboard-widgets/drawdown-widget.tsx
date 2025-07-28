@@ -55,17 +55,6 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
             <TrendingDown className="w-5 h-5 mr-2 text-red-500" />
             Drawdown Analysis
           </div>
-          <div className="flex items-center space-x-2">
-            {drawdownLevel === 'low' && <Shield className="w-4 h-4 text-green-500" />}
-            {drawdownLevel === 'moderate' && <AlertTriangle className="w-4 h-4 text-yellow-500" />}
-            {drawdownLevel === 'high' && <AlertTriangle className="w-4 h-4 text-red-500" />}
-            <span className={`text-sm font-medium ${
-              drawdownLevel === 'low' ? 'text-green-600' : 
-              drawdownLevel === 'moderate' ? 'text-yellow-600' : 'text-red-600'
-            }`}>
-              {drawdownLevel.toUpperCase()}
-            </span>
-          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col">

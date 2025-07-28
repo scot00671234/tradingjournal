@@ -32,10 +32,10 @@ export default function SimplifiedDashboard() {
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [showWidgetSelector, setShowWidgetSelector] = useState(false);
   const [layouts, setLayouts] = useState([
-    { i: "equity-curve", x: 0, y: 0, w: 6, h: 5, minW: 4, minH: 4 },
-    { i: "drawdown", x: 6, y: 0, w: 6, h: 5, minW: 4, minH: 4 },
-    { i: "performance-metrics", x: 0, y: 5, w: 6, h: 5, minW: 4, minH: 4 },
-    { i: "trade-list", x: 6, y: 5, w: 6, h: 5, minW: 4, minH: 4 },
+    { i: "equity-curve", x: 0, y: 0, w: 6, h: 6, minW: 4, minH: 5 },
+    { i: "drawdown", x: 6, y: 0, w: 6, h: 6, minW: 4, minH: 5 },
+    { i: "performance-metrics", x: 0, y: 6, w: 6, h: 6, minW: 4, minH: 5 },
+    { i: "trade-list", x: 6, y: 6, w: 6, h: 6, minW: 4, minH: 5 },
   ]);
   
   const [activeWidgets, setActiveWidgets] = useState([
@@ -163,9 +163,9 @@ export default function SimplifiedDashboard() {
         x: 0,
         y: Math.max(...layouts.map(l => l.y + l.h), 0),
         w: 6,
-        h: 5,
+        h: 6,
         minW: 4,
-        minH: 4,
+        minH: 5,
       };
       setLayouts([...layouts, newWidget]);
     }
@@ -365,19 +365,22 @@ export default function SimplifiedDashboard() {
 
           {/* Drag-and-Drop Dashboard */}
           {trades && trades.length > 0 && (
-            <div className="mb-8 relative">
+            <div className="mb-8 relative" style={{ minHeight: '1000px' }}>
               <GridLayout
                 className="layout"
                 layout={layouts}
                 cols={12}
-                rowHeight={70}
+                rowHeight={80}
                 width={1200}
+                autoSize={true}
                 isDraggable={isCustomizing}
                 isResizable={isCustomizing}
                 onLayoutChange={handleLayoutChange}
-                margin={[16, 16]}
-                containerPadding={[0, 0]}
+                margin={[20, 20]}
+                containerPadding={[10, 10]}
                 useCSSTransforms={true}
+                preventCollision={false}
+                compactType="vertical"
               >
                 {activeWidgets.map(widgetId => (
                   <div key={widgetId} className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all relative group" : "relative"}>

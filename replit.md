@@ -132,6 +132,14 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Updated dashboard to properly parse JSON tags for display
   - Eliminated runtime errors when displaying trade tags in trade list
   - Trade entry form now working correctly with all validation
+- ✓ Enhanced dashboard widget system with professional spacing (January 28, 2025):
+  - Fixed widget overlapping issues with improved grid layout dimensions (6h units, 80px rowHeight)
+  - Added proper spacing with 20px margins and vertical compaction
+  - Enhanced widget selector button with glassmorphism effects and animations
+  - Added 4 new trading widgets: P&L Distribution, Win Rate Tracker, Risk/Reward Analysis, Monthly Summary
+  - Implemented widget deletion in customization mode with hover delete buttons
+  - Added descriptive widget selector panel with active status indicators
+  - Professional CSS grid styling with proper box-sizing and overflow handling
 
 ## User Preferences
 

@@ -140,6 +140,11 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Implemented widget deletion in customization mode with hover delete buttons
   - Added descriptive widget selector panel with active status indicators
   - Professional CSS grid styling with proper box-sizing and overflow handling
+  - Removed all target displays from Performance Metrics and Drawdown widgets for cleaner UI
+  - Implemented 3-tier standard sizing system: Small (4x4), Medium (6x5), Large (8x6)
+  - Fixed widget deletion with proper hover effects and functional delete buttons
+  - Enhanced grid layout with fixed spacing, collision prevention, and locked widget sizes
+  - Disabled widget resizing to maintain clean, consistent grid appearance
 
 ## User Preferences
 

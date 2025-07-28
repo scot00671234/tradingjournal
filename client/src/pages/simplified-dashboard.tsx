@@ -31,11 +31,12 @@ export default function SimplifiedDashboard() {
   const [filterTimeframe, setFilterTimeframe] = useState<string>("all");
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [showWidgetSelector, setShowWidgetSelector] = useState(false);
+  // Standard widget sizes: Small (4x4), Medium (6x5), Large (12x6)
   const [layouts, setLayouts] = useState([
-    { i: "equity-curve", x: 0, y: 0, w: 6, h: 6, minW: 4, minH: 5 },
-    { i: "drawdown", x: 6, y: 0, w: 6, h: 6, minW: 4, minH: 5 },
-    { i: "performance-metrics", x: 0, y: 6, w: 6, h: 6, minW: 4, minH: 5 },
-    { i: "trade-list", x: 6, y: 6, w: 6, h: 6, minW: 4, minH: 5 },
+    { i: "equity-curve", x: 0, y: 0, w: 6, h: 5, minW: 6, minH: 5, maxW: 6, maxH: 5 },
+    { i: "drawdown", x: 6, y: 0, w: 6, h: 5, minW: 6, minH: 5, maxW: 6, maxH: 5 },
+    { i: "performance-metrics", x: 0, y: 5, w: 6, h: 5, minW: 6, minH: 5, maxW: 6, maxH: 5 },
+    { i: "trade-list", x: 6, y: 5, w: 6, h: 5, minW: 6, minH: 5, maxW: 6, maxH: 5 },
   ]);
   
   const [activeWidgets, setActiveWidgets] = useState([
@@ -155,17 +156,35 @@ export default function SimplifiedDashboard() {
     setLayouts(layout);
   };
 
+  // Widget size configurations: Small (4x4), Medium (6x5), Large (8x6)
+  const getWidgetSize = (widgetId: string) => {
+    const sizeMap = {
+      "equity-curve": { w: 6, h: 5 }, // Medium - chart needs space
+      "drawdown": { w: 6, h: 5 }, // Medium - chart needs space
+      "performance-metrics": { w: 6, h: 5 }, // Medium - 4 metrics grid
+      "trade-list": { w: 6, h: 5 }, // Medium - scrollable list
+      "profit-loss": { w: 4, h: 4 }, // Small - simple chart
+      "win-rate": { w: 4, h: 4 }, // Small - single metric
+      "risk-reward": { w: 4, h: 4 }, // Small - single metric  
+      "monthly-summary": { w: 8, h: 6 } // Large - comprehensive table
+    };
+    return sizeMap[widgetId] || { w: 6, h: 5 };
+  };
+
   const addWidget = (widgetId: string) => {
     if (!activeWidgets.includes(widgetId)) {
       setActiveWidgets([...activeWidgets, widgetId]);
+      const size = getWidgetSize(widgetId);
       const newWidget = {
         i: widgetId,
         x: 0,
         y: Math.max(...layouts.map(l => l.y + l.h), 0),
-        w: 6,
-        h: 6,
-        minW: 4,
-        minH: 5,
+        w: size.w,
+        h: size.h,
+        minW: size.w,
+        minH: size.h,
+        maxW: size.w,
+        maxH: size.h,
       };
       setLayouts([...layouts, newWidget]);
     }
@@ -370,16 +389,16 @@ export default function SimplifiedDashboard() {
                 className="layout"
                 layout={layouts}
                 cols={12}
-                rowHeight={80}
+                rowHeight={85}
                 width={1200}
                 autoSize={true}
                 isDraggable={isCustomizing}
-                isResizable={isCustomizing}
+                isResizable={false}
                 onLayoutChange={handleLayoutChange}
-                margin={[20, 20]}
-                containerPadding={[10, 10]}
+                margin={[24, 24]}
+                containerPadding={[16, 16]}
                 useCSSTransforms={true}
-                preventCollision={false}
+                preventCollision={true}
                 compactType="vertical"
               >
                 {activeWidgets.map(widgetId => (

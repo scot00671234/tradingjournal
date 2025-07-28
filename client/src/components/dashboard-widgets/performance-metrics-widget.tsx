@@ -44,32 +44,28 @@ export function PerformanceMetricsWidget({ trades, className }: PerformanceMetri
       value: `${winRate.toFixed(1)}%`,
       icon: Target,
       color: winRate >= 50 ? 'text-green-600' : 'text-red-600',
-      bgColor: winRate >= 50 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20',
-      target: '50%+'
+      bgColor: winRate >= 50 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'
     },
     {
       label: 'Profit Factor',
       value: profitFactor === 999 ? '∞' : profitFactor.toFixed(2),
       icon: TrendingUp,
       color: profitFactor >= 1.5 ? 'text-green-600' : profitFactor >= 1.0 ? 'text-yellow-600' : 'text-red-600',
-      bgColor: profitFactor >= 1.5 ? 'bg-green-50 dark:bg-green-900/20' : profitFactor >= 1.0 ? 'bg-yellow-50 dark:bg-yellow-900/20' : 'bg-red-50 dark:bg-red-900/20',
-      target: '1.5+'
+      bgColor: profitFactor >= 1.5 ? 'bg-green-50 dark:bg-green-900/20' : profitFactor >= 1.0 ? 'bg-yellow-50 dark:bg-yellow-900/20' : 'bg-red-50 dark:bg-red-900/20'
     },
     {
       label: 'Risk:Reward',
       value: `1:${riskRewardRatio === 999 ? '∞' : riskRewardRatio.toFixed(1)}`,
       icon: BarChart3,
       color: riskRewardRatio >= 2 ? 'text-green-600' : riskRewardRatio >= 1 ? 'text-yellow-600' : 'text-red-600',
-      bgColor: riskRewardRatio >= 2 ? 'bg-green-50 dark:bg-green-900/20' : riskRewardRatio >= 1 ? 'bg-yellow-50 dark:bg-yellow-900/20' : 'bg-red-50 dark:bg-red-900/20',
-      target: '1:2+'
+      bgColor: riskRewardRatio >= 2 ? 'bg-green-50 dark:bg-green-900/20' : riskRewardRatio >= 1 ? 'bg-yellow-50 dark:bg-yellow-900/20' : 'bg-red-50 dark:bg-red-900/20'
     },
     {
       label: 'Expectancy',
       value: `$${expectancy.toFixed(2)}`,
       icon: Award,
       color: expectancy > 0 ? 'text-green-600' : 'text-red-600',
-      bgColor: expectancy > 0 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20',
-      target: '>$0'
+      bgColor: expectancy > 0 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'
     }
   ];
 
@@ -92,17 +88,14 @@ export function PerformanceMetricsWidget({ trades, className }: PerformanceMetri
             const Icon = metric.icon;
             return (
               <div key={index} className={`p-4 rounded-lg ${metric.bgColor} border border-gray-200/30 dark:border-gray-700/30`}>
-                <div className="flex items-center justify-between mb-2">
-                  <Icon className={`w-5 h-5 ${metric.color}`} />
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    Target: {metric.target}
+                <div className="flex items-center mb-3">
+                  <Icon className={`w-5 h-5 ${metric.color} mr-2`} />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {metric.label}
                   </span>
                 </div>
-                <div className={`text-2xl font-bold ${metric.color} mb-1`}>
+                <div className={`text-2xl font-bold ${metric.color}`}>
                   {metric.value}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {metric.label}
                 </div>
               </div>
             );

@@ -138,7 +138,6 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
               stroke="#dc2626" 
               strokeDasharray="5 5" 
               opacity={0.7}
-              label={{ value: "20% DD", position: "insideTopRight", fontSize: 11 }}
             />
             <Area 
               type="monotone" 
@@ -163,9 +162,7 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
               {isInDrawdown ? 'In Drawdown' : 'At Peak'}
             </div>
           </div>
-          <div className="text-gray-500 dark:text-gray-400">
-            Target: Keep under 20%
-          </div>
+
         </div>
       </CardContent>
     </Card>

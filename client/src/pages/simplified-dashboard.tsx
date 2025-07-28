@@ -290,7 +290,7 @@ export default function SimplifiedDashboard() {
                     ✕
                   </Button>
                 </div>
-                <UnifiedTradeEntry subscriptionStatus={subscriptionStatus} />
+                <UnifiedTradeEntry subscriptionStatus={subscriptionStatus} showHeader={false} />
               </div>
             </div>
           )}

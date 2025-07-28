@@ -28,8 +28,7 @@ interface UnifiedTradeEntryProps {
   title?: string;
 }
 
-const popularAssets = ["AAPL", "TSLA", "SPY", "QQQ", "MSFT", "NVDA", "AMZN", "GOOGL"];
-const cryptoAssets = ["BTC", "ETH", "ADA", "SOL", "DOT", "MATIC", "AVAX", "LINK"];
+const defaultAssets = ["AAPL", "TSLA", "SPY", "QQQ", "MSFT", "NVDA", "AMZN", "GOOGL", "BTC", "ETH", "ADA", "SOL", "DOT", "MATIC", "AVAX", "LINK"];
 
 export function UnifiedTradeEntry({ 
   subscriptionStatus, 
@@ -43,8 +42,8 @@ export function UnifiedTradeEntry({
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const [customAssets, setCustomAssets] = useState<string[]>([]);
-  const [allStockAssets, setAllStockAssets] = useState(popularAssets);
-  const [allCryptoAssets, setAllCryptoAssets] = useState(cryptoAssets);
+  const [allAssets, setAllAssets] = useState<string[]>(defaultAssets);
+  const [newAsset, setNewAsset] = useState("");
 
   const form = useForm<InsertTrade>({
     resolver: zodResolver(insertTradeSchema),
@@ -126,28 +125,19 @@ export function UnifiedTradeEntry({
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
-  const removeStockAsset = (assetToRemove: string) => {
-    setAllStockAssets(allStockAssets.filter(asset => asset !== assetToRemove));
-  };
-
-  const removeCryptoAsset = (assetToRemove: string) => {
-    setAllCryptoAssets(allCryptoAssets.filter(asset => asset !== assetToRemove));
+  const removeAsset = (assetToRemove: string) => {
+    setAllAssets(allAssets.filter(asset => asset !== assetToRemove));
   };
 
   const removeCustomAsset = (assetToRemove: string) => {
     setCustomAssets(customAssets.filter(asset => asset !== assetToRemove));
   };
 
-  const handleAssetInput = (value: string) => {
-    form.setValue("asset", value);
-    
-    // Auto-add asset if it's not already in any category
-    const upperValue = value.trim().toUpperCase();
-    if (upperValue && 
-        !allStockAssets.includes(upperValue) && 
-        !allCryptoAssets.includes(upperValue) && 
-        !customAssets.includes(upperValue)) {
+  const addCustomAsset = () => {
+    const upperValue = newAsset.trim().toUpperCase();
+    if (upperValue && !allAssets.includes(upperValue) && !customAssets.includes(upperValue)) {
       setCustomAssets([...customAssets, upperValue]);
+      setNewAsset("");
     }
   };
 
@@ -181,11 +171,10 @@ export function UnifiedTradeEntry({
           <div className="space-y-2">
             <Label htmlFor="asset">Asset</Label>
             
-            {/* Stocks Section */}
+            {/* Main Assets Section */}
             <div className="space-y-2">
-              <div className="text-xs text-gray-600 dark:text-gray-400">Popular Stocks</div>
               <div className="flex flex-wrap gap-2">
-                {allStockAssets.map((asset) => (
+                {allAssets.map((asset) => (
                   <div key={asset} className="relative group">
                     <Button
                       type="button"
@@ -198,34 +187,7 @@ export function UnifiedTradeEntry({
                     </Button>
                     <button
                       type="button"
-                      onClick={() => removeStockAsset(asset)}
-                      className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Crypto Section */}
-            <div className="space-y-2">
-              <div className="text-xs text-gray-600 dark:text-gray-400">Crypto</div>
-              <div className="flex flex-wrap gap-2">
-                {allCryptoAssets.map((asset) => (
-                  <div key={asset} className="relative group">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => form.setValue("asset", asset)}
-                      className="text-xs bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800 pr-8"
-                    >
-                      {asset}
-                    </Button>
-                    <button
-                      type="button"
-                      onClick={() => removeCryptoAsset(asset)}
+                      onClick={() => removeAsset(asset)}
                       className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       ×
@@ -238,7 +200,6 @@ export function UnifiedTradeEntry({
             {/* Custom Assets Section */}
             {customAssets.length > 0 && (
               <div className="space-y-2">
-                <div className="text-xs text-gray-600 dark:text-gray-400">Custom Assets</div>
                 <div className="flex flex-wrap gap-2">
                   {customAssets.map((asset) => (
                     <div key={asset} className="relative group">
@@ -264,11 +225,32 @@ export function UnifiedTradeEntry({
               </div>
             )}
 
+            {/* Add New Asset */}
+            <div className="flex gap-2">
+              <Input
+                placeholder="Enter asset symbol (e.g., AAPL, BTC, ETH)"
+                value={newAsset}
+                onChange={(e) => setNewAsset(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomAsset())}
+                className="text-xs"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addCustomAsset}
+                disabled={!newAsset.trim()}
+                className="shrink-0"
+              >
+                Add
+              </Button>
+            </div>
+
             <Input
               id="asset"
-              placeholder="Enter asset symbol (e.g., AAPL, BTC, ETH)"
+              placeholder="Or select from above"
               {...form.register("asset")}
-              onChange={(e) => handleAssetInput(e.target.value)}
+              className="text-xs"
             />
             {form.formState.errors.asset && (
               <p className="text-red-500 text-sm">{form.formState.errors.asset.message}</p>

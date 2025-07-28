@@ -120,6 +120,12 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Added floating widget selector button in bottom-right corner with glassmorphism panel
   - Improved customization mode with dashed borders and clear visual indicators
   - Enhanced asset selection with distinct styling for stocks vs crypto vs custom assets
+- ✓ Simplified asset selection UI (January 28, 2025):
+  - Unified all assets into single section (removed stocks/crypto distinction)
+  - All asset tickers displayed as clickable buttons with remove (×) functionality
+  - Manual asset addition - requires clicking "Add" button after typing
+  - Custom assets shown in blue styling to distinguish from defaults
+  - Cleaner, more streamlined asset selection experience
 
 ## User Preferences
 

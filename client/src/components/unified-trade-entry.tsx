@@ -169,7 +169,7 @@ export function UnifiedTradeEntry({
         <form onSubmit={form.handleSubmit((data) => onSubmit(data as InsertTrade))} className="space-y-4">
           {/* Asset Selection */}
           <div className="space-y-2">
-            <Label htmlFor="asset">Asset</Label>
+            <Label htmlFor="asset">Assets</Label>
             
             {/* Main Assets Section */}
             <div className="space-y-2">
@@ -225,12 +225,16 @@ export function UnifiedTradeEntry({
               </div>
             )}
 
-            {/* Add New Asset */}
+            {/* Single Asset Input */}
             <div className="flex gap-2">
               <Input
+                id="asset"
                 placeholder="Enter asset symbol (e.g., AAPL, BTC, ETH)"
                 value={newAsset}
-                onChange={(e) => setNewAsset(e.target.value)}
+                onChange={(e) => {
+                  setNewAsset(e.target.value);
+                  form.setValue("asset", e.target.value);
+                }}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomAsset())}
                 className="text-xs"
               />
@@ -245,13 +249,6 @@ export function UnifiedTradeEntry({
                 Add
               </Button>
             </div>
-
-            <Input
-              id="asset"
-              placeholder="Or select from above"
-              {...form.register("asset")}
-              className="text-xs"
-            />
             {form.formState.errors.asset && (
               <p className="text-red-500 text-sm">{form.formState.errors.asset.message}</p>
             )}

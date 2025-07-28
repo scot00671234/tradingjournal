@@ -29,7 +29,7 @@ export function TradeListWidget({ trades, className }: TradeListWidgetProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <ScrollArea className="h-[300px]">
+        <ScrollArea className="h-[350px]">
           <div className="space-y-1 p-6 pt-0">
             {sortedTrades.length > 0 ? (
               sortedTrades.slice(0, 10).map((trade, index) => (

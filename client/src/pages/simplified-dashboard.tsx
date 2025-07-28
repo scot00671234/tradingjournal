@@ -109,7 +109,7 @@ export default function SimplifiedDashboard() {
 
   // Placeholder widget component for new widgets
   const PlaceholderWidget = ({ title, icon: Icon, description }: { title: string; icon: any; description: string }) => (
-    <div className="h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg">
+    <div className="h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
           <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -117,9 +117,9 @@ export default function SimplifiedDashboard() {
         </div>
         <Badge variant="outline" className="text-xs">Coming Soon</Badge>
       </div>
-      <div className="flex items-center justify-center h-32 text-center">
+      <div className="flex items-center justify-center flex-1 text-center">
         <div>
-          <Icon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+          <Icon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
         </div>
       </div>
@@ -156,19 +156,19 @@ export default function SimplifiedDashboard() {
     setLayouts(layout);
   };
 
-  // Widget size configurations: Small (4x4), Medium (6x5), Large (8x6)
+  // Widget size configurations: Uniform size for clean, organized layout
   const getWidgetSize = (widgetId: string) => {
     const sizeMap = {
-      "equity-curve": { w: 6, h: 5 }, // Medium - chart needs space
-      "drawdown": { w: 6, h: 5 }, // Medium - chart needs space
-      "performance-metrics": { w: 6, h: 5 }, // Medium - 4 metrics grid
-      "trade-list": { w: 6, h: 5 }, // Medium - scrollable list
-      "profit-loss": { w: 4, h: 4 }, // Small - simple chart
-      "win-rate": { w: 4, h: 4 }, // Small - single metric
-      "risk-reward": { w: 4, h: 4 }, // Small - single metric  
-      "monthly-summary": { w: 8, h: 6 } // Large - comprehensive table
+      "equity-curve": { w: 6, h: 6 }, // Uniform - chart with proper spacing
+      "drawdown": { w: 6, h: 6 }, // Uniform - chart with proper spacing
+      "performance-metrics": { w: 6, h: 6 }, // Uniform - metrics grid
+      "trade-list": { w: 6, h: 6 }, // Uniform - scrollable list
+      "profit-loss": { w: 6, h: 6 }, // Uniform - simple chart
+      "win-rate": { w: 6, h: 6 }, // Uniform - single metric
+      "risk-reward": { w: 6, h: 6 }, // Uniform - single metric  
+      "monthly-summary": { w: 6, h: 6 } // Uniform - comprehensive table
     };
-    return sizeMap[widgetId] || { w: 6, h: 5 };
+    return sizeMap[widgetId] || { w: 6, h: 6 };
   };
 
   const addWidget = (widgetId: string) => {

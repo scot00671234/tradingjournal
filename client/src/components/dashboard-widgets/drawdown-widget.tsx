@@ -96,7 +96,7 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
           </div>
         </div>
 
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer width="100%" height={240}>
           <AreaChart data={drawdownData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.3} />
             <XAxis 

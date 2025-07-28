@@ -30,12 +30,12 @@ export function TradeListWidget({ trades, className }: TradeListWidgetProps) {
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="h-[350px]">
-          <div className="space-y-1 p-6 pt-0">
+          <div className="space-y-1 px-6 py-0">
             {sortedTrades.length > 0 ? (
               sortedTrades.slice(0, 10).map((trade, index) => (
                 <div 
                   key={trade.id} 
-                  className="flex items-center justify-between p-3 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg border border-gray-200/30 dark:border-gray-700/30 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 transition-colors"
+                  className="flex items-center justify-between p-2.5 mx-1 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg border border-gray-200/30 dark:border-gray-700/30 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 transition-colors"
                 >
                   <div className="flex items-center space-x-3">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${

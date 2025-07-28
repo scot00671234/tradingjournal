@@ -259,7 +259,7 @@ export function UnifiedTradeEntry({
                 size="sm"
                 onClick={addCustomAsset}
                 disabled={!newAsset.trim()}
-                className="shrink-0"
+                className="shrink-0 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 border-gray-200 dark:border-gray-700"
               >
                 Add
               </Button>
@@ -275,20 +275,26 @@ export function UnifiedTradeEntry({
             <div className="flex space-x-2">
               <Button
                 type="button"
-                variant={direction === "long" ? "default" : "outline"}
+                variant="outline"
                 size="sm"
                 onClick={() => setDirection("long")}
-                className="flex-1"
+                className={`flex-1 ${direction === "long" 
+                  ? 'bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/40 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-200' 
+                  : 'hover:bg-yellow-50 dark:hover:bg-yellow-950/20 border-gray-200 dark:border-gray-700'
+                }`}
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Long
               </Button>
               <Button
                 type="button"
-                variant={direction === "short" ? "default" : "outline"}
+                variant="outline"
                 size="sm"
                 onClick={() => setDirection("short")}
-                className="flex-1"
+                className={`flex-1 ${direction === "short" 
+                  ? 'bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/40 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-200' 
+                  : 'hover:bg-yellow-50 dark:hover:bg-yellow-950/20 border-gray-200 dark:border-gray-700'
+                }`}
               >
                 <TrendingDown className="w-4 h-4 mr-2" />
                 Short
@@ -362,7 +368,13 @@ export function UnifiedTradeEntry({
                 onChange={(e) => setNewTag(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
               />
-              <Button type="button" onClick={addTag} size="sm">
+              <Button 
+                type="button" 
+                onClick={addTag} 
+                size="sm"
+                variant="outline"
+                className="bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 border-gray-200 dark:border-gray-700"
+              >
                 Add
               </Button>
             </div>
@@ -407,7 +419,7 @@ export function UnifiedTradeEntry({
               <Button 
                 type="submit" 
                 disabled={createTradeMutation.isPending}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white border-0 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 {createTradeMutation.isPending ? "Adding..." : "Add Trade"}

@@ -16,7 +16,7 @@ export function TradeListWidget({ trades, className }: TradeListWidgetProps) {
   );
 
   return (
-    <Card className={`bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg glass-transition hover:shadow-xl ${className}`}>
+    <Card className={`h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg glass-transition hover:shadow-xl ${className}`}>
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white">
           <div className="flex items-center">

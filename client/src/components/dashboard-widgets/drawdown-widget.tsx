@@ -48,7 +48,7 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
   const tradesInDrawdown = drawdownData.filter(d => Math.abs(d.drawdown) > 0.1).length;
 
   return (
-    <Card className={`bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg glass-transition hover:shadow-xl ${className}`}>
+    <Card className={`h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg glass-transition hover:shadow-xl ${className}`}>
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white">
           <div className="flex items-center">
@@ -68,7 +68,7 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 flex flex-col">
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="text-center p-2 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
             <div className="text-xl font-bold text-red-600">
@@ -96,8 +96,9 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
           </div>
         </div>
 
-        <ResponsiveContainer width="100%" height={260}>
-          <AreaChart data={drawdownData}>
+        <div className="flex-1">
+          <ResponsiveContainer width="100%" height={260}>
+            <AreaChart data={drawdownData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.3} />
             <XAxis 
               dataKey="tradeNumber" 
@@ -152,8 +153,9 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
                 <stop offset="95%" stopColor="#dc2626" stopOpacity={0.1}/>
               </linearGradient>
             </defs>
-          </AreaChart>
-        </ResponsiveContainer>
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
 
         <div className="mt-4 flex justify-between text-sm">
           <div className="flex items-center space-x-4">
@@ -162,7 +164,6 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
               {isInDrawdown ? 'In Drawdown' : 'At Peak'}
             </div>
           </div>
-
         </div>
       </CardContent>
     </Card>

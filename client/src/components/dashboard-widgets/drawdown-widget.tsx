@@ -49,7 +49,7 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
 
   return (
     <Card className={`bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg glass-transition hover:shadow-xl ${className}`}>
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-4">
         <CardTitle className="flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white">
           <div className="flex items-center">
             <TrendingDown className="w-5 h-5 mr-2 text-red-500" />
@@ -69,25 +69,25 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <div className="text-center p-3 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
-            <div className="text-2xl font-bold text-red-600">
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="text-center p-2 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
+            <div className="text-xl font-bold text-red-600">
               {maxDrawdown.toFixed(1)}%
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Max Drawdown
             </div>
           </div>
-          <div className="text-center p-3 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
-            <div className="text-2xl font-bold text-gray-700 dark:text-gray-300">
+          <div className="text-center p-2 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
+            <div className="text-xl font-bold text-gray-700 dark:text-gray-300">
               {currentDrawdown.toFixed(1)}%
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Current DD
             </div>
           </div>
-          <div className="text-center p-3 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
-            <div className="text-2xl font-bold text-blue-600">
+          <div className="text-center p-2 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
+            <div className="text-xl font-bold text-blue-600">
               {tradesInDrawdown}
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -96,7 +96,7 @@ export function DrawdownWidget({ trades, className }: DrawdownWidgetProps) {
           </div>
         </div>
 
-        <ResponsiveContainer width="100%" height={240}>
+        <ResponsiveContainer width="100%" height={260}>
           <AreaChart data={drawdownData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.3} />
             <XAxis 

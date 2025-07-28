@@ -45,7 +45,7 @@ export function EquityCurveWidget({ trades, className }: EquityCurveWidgetProps)
 
   return (
     <Card className={`bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg glass-transition hover:shadow-xl ${className}`}>
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-4">
         <CardTitle className="flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white">
           <div className="flex items-center">
             <Activity className="w-5 h-5 mr-2 text-blue-500" />
@@ -63,7 +63,7 @@ export function EquityCurveWidget({ trades, className }: EquityCurveWidgetProps)
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={320}>
+        <ResponsiveContainer width="100%" height={300}>
           <LineChart data={equityData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.3} />
             <XAxis 

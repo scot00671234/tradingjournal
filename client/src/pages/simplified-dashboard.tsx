@@ -488,16 +488,9 @@ export default function SimplifiedDashboard() {
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   Start Your Trading Journey
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Add your first trade to see powerful analytics and insights
+                <p className="text-gray-600 dark:text-gray-400">
+                  Use the quick trade entry form above to log your trades and see powerful analytics
                 </p>
-                <Button
-                  onClick={() => setShowTradeEntry(true)}
-                  className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Your First Trade
-                </Button>
               </div>
             </div>
           )}
@@ -637,16 +630,9 @@ export default function SimplifiedDashboard() {
                 <div className="text-center py-12">
                   <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No trades yet</h4>
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">
-                    Start logging your trades to see them here.
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Your completed trades will appear here.
                   </p>
-                  <Button
-                    onClick={() => setShowTradeEntry(true)}
-                    className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Your First Trade
-                  </Button>
                 </div>
               )}
             </div>

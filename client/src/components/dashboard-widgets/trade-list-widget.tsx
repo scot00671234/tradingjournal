@@ -80,7 +80,7 @@ export function TradeListWidget({ trades, className }: TradeListWidgetProps) {
               <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                 <List className="w-12 h-12 mx-auto mb-4 opacity-30" />
                 <p className="text-sm">No trades yet</p>
-                <p className="text-xs mt-1">Start by adding your first trade</p>
+                <p className="text-xs mt-1">Your recent trades will appear here</p>
               </div>
             )}
           </div>

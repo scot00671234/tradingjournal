@@ -291,8 +291,8 @@ export default function SimplifiedDashboard() {
           </div>
 
           {/* Stats Cards with Glass Effect */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl hover:scale-105">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total P&L</h3>
                 <BarChart3 className="w-4 h-4 text-green-500" />
@@ -305,7 +305,7 @@ export default function SimplifiedDashboard() {
               </div>
             </div>
 
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl hover:scale-105">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Win Rate</h3>
                 <div className="w-4 h-4 bg-blue-500 rounded-full" />
@@ -318,7 +318,7 @@ export default function SimplifiedDashboard() {
               </div>
             </div>
 
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl hover:scale-105">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Trades</h3>
                 <div className="w-4 h-4 bg-purple-500 rounded-full" />
@@ -331,7 +331,7 @@ export default function SimplifiedDashboard() {
               </div>
             </div>
 
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg glass-transition hover:shadow-xl hover:scale-105">
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Plan</h3>
                 <Badge variant="outline" className="text-xs capitalize">

@@ -126,6 +126,12 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
   - Manual asset addition - requires clicking "Add" button after typing
   - Custom assets shown in blue styling to distinguish from defaults
   - Cleaner, more streamlined asset selection experience
+- ✓ Fixed trade submission and dashboard display errors (January 28, 2025):
+  - Resolved data type validation errors in trade entry form
+  - Fixed tags conversion from array to JSON string format for database storage
+  - Updated dashboard to properly parse JSON tags for display
+  - Eliminated runtime errors when displaying trade tags in trade list
+  - Trade entry form now working correctly with all validation
 
 ## User Preferences
 

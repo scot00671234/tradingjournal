@@ -513,15 +513,22 @@ export default function SimplifiedDashboard() {
                         }`}>
                           {parseFloat(trade.pnl || '0') >= 0 ? '+' : ''}${trade.pnl || '0.00'}
                         </div>
-                        {trade.tags && trade.tags.length > 0 && (
-                          <div className="flex gap-1 mt-1">
-                            {trade.tags.slice(0, 2).map((tag, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        )}
+                        {trade.tags && (() => {
+                          try {
+                            const tags = typeof trade.tags === 'string' ? JSON.parse(trade.tags) : trade.tags;
+                            return tags && tags.length > 0 && (
+                              <div className="flex gap-1 mt-1">
+                                {tags.slice(0, 2).map((tag: string, index: number) => (
+                                  <Badge key={index} variant="outline" className="text-xs">
+                                    {tag}
+                                  </Badge>
+                                ))}
+                              </div>
+                            );
+                          } catch {
+                            return null;
+                          }
+                        })()}
                       </div>
                     </div>
                   ))}

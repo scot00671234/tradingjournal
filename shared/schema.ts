@@ -1,36 +1,36 @@
-import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, real, boolean, timestamp, serial } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = sqliteTable("users", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
-  isProUser: integer("is_pro_user", { mode: 'boolean' }).default(false),
+  isProUser: boolean("is_pro_user").default(false),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
-  createdAt: integer("created_at", { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const trades = sqliteTable("trades", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const trades = pgTable("trades", {
+  id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id).notNull(),
-  asset: text("asset", { length: 10 }).notNull(),
-  direction: text("direction", { length: 5 }).notNull(), // 'long' or 'short'
+  asset: text("asset").notNull(),
+  direction: text("direction").notNull(), // 'long' or 'short'
   entryPrice: real("entry_price").notNull(),
   exitPrice: real("exit_price"),
   size: integer("size").notNull(),
   pnl: real("pnl"),
   notes: text("notes"),
-  tags: text("tags"), // SQLite doesn't have arrays, so we'll store as JSON string
+  tags: text("tags"), // JSON string for PostgreSQL compatibility
   imageUrl: text("image_url"),
-  tradeDate: integer("trade_date", { mode: 'timestamp' }).notNull(),
-  isCompleted: integer("is_completed", { mode: 'boolean' }).default(false),
-  createdAt: integer("created_at", { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  tradeDate: timestamp("trade_date").notNull(),
+  isCompleted: boolean("is_completed").default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const userRelations = relations(users, ({ many }) => ({

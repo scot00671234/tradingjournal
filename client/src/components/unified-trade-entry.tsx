@@ -137,7 +137,8 @@ export function UnifiedTradeEntry({
     const upperValue = newAsset.trim().toUpperCase();
     if (upperValue && !allAssets.includes(upperValue) && !customAssets.includes(upperValue)) {
       setCustomAssets([...customAssets, upperValue]);
-      setNewAsset("");
+      form.setValue("asset", upperValue);
+      // Keep the asset in the input field, don't clear it
     }
   };
 
@@ -180,7 +181,10 @@ export function UnifiedTradeEntry({
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => form.setValue("asset", asset)}
+                      onClick={() => {
+                        form.setValue("asset", asset);
+                        setNewAsset(asset);
+                      }}
                       className="text-xs pr-8"
                     >
                       {asset}
@@ -207,7 +211,10 @@ export function UnifiedTradeEntry({
                         type="button"
                         variant="outline"
                         size="sm"
-                        onClick={() => form.setValue("asset", asset)}
+                        onClick={() => {
+                          form.setValue("asset", asset);
+                          setNewAsset(asset);
+                        }}
                         className="text-xs bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/30 dark:hover:bg-blue-900/30 border-blue-200 dark:border-blue-800 pr-8"
                       >
                         {asset}

@@ -382,9 +382,10 @@ export default function SimplifiedDashboard() {
             </div>
           )}
 
-          {/* Drag-and-Drop Dashboard */}
+          {/* Drag-and-Drop Dashboard - Using same grid system */}
           {trades && trades.length > 0 && (
-            <div className="mb-8 relative" style={{ minHeight: '1000px' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <div className="col-span-1 md:col-span-2 lg:col-span-4 relative" style={{ minHeight: '1000px' }}>
               <GridLayout
                 className="layout"
                 layout={layouts}
@@ -477,6 +478,7 @@ export default function SimplifiedDashboard() {
                   </div>
                 </>
               )}
+              </div>
             </div>
           )}
 
@@ -495,8 +497,9 @@ export default function SimplifiedDashboard() {
             </div>
           )}
 
-          {/* Recent Trades with Glass Effect */}
-          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl">
+          {/* Recent Trades with Glass Effect - Using same grid system */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="col-span-1 md:col-span-2 lg:col-span-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl min-w-0">
             <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Trades</h3>
@@ -635,6 +638,7 @@ export default function SimplifiedDashboard() {
                   </p>
                 </div>
               )}
+            </div>
             </div>
           </div>
         </div>

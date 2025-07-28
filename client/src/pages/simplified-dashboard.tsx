@@ -279,7 +279,11 @@ export default function SimplifiedDashboard() {
 
       {/* Main Content */}
       <div className="pt-24 px-4 pb-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto"
+             style={{ 
+               paddingLeft: '0px', 
+               paddingRight: '0px' 
+             }}>
           {/* Welcome Section */}
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -291,7 +295,11 @@ export default function SimplifiedDashboard() {
           </div>
 
           {/* Stats Cards with Glass Effect */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+               style={{ 
+                 marginLeft: '16px', 
+                 marginRight: '16px' 
+               }}>
             <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total P&L</h3>
@@ -382,22 +390,26 @@ export default function SimplifiedDashboard() {
             </div>
           )}
 
-          {/* Drag-and-Drop Dashboard - Using same grid system */}
+          {/* Drag-and-Drop Dashboard */}
           {trades && trades.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              <div className="col-span-1 md:col-span-2 lg:col-span-4 relative" style={{ minHeight: '1000px' }}>
+            <div className="mb-8 relative" 
+                 style={{ 
+                   minHeight: '1000px',
+                   marginLeft: '16px', 
+                   marginRight: '16px' 
+                 }}>
               <GridLayout
                 className="layout"
                 layout={layouts}
                 cols={12}
                 rowHeight={85}
-                width={1200}
+                width={1168}
                 autoSize={true}
                 isDraggable={isCustomizing}
                 isResizable={false}
                 onLayoutChange={handleLayoutChange}
-                margin={[24, 24]}
-                containerPadding={[16, 16]}
+                margin={[16, 16]}
+                containerPadding={[0, 0]}
                 useCSSTransforms={true}
                 preventCollision={true}
                 compactType="vertical"
@@ -478,7 +490,6 @@ export default function SimplifiedDashboard() {
                   </div>
                 </>
               )}
-              </div>
             </div>
           )}
 
@@ -497,9 +508,12 @@ export default function SimplifiedDashboard() {
             </div>
           )}
 
-          {/* Recent Trades with Glass Effect - Using same grid system */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="col-span-1 md:col-span-2 lg:col-span-4 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl min-w-0">
+          {/* Recent Trades with Glass Effect */}
+          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl"
+               style={{ 
+                 marginLeft: '16px', 
+                 marginRight: '16px' 
+               }}>
             <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Trades</h3>
@@ -638,7 +652,6 @@ export default function SimplifiedDashboard() {
                   </p>
                 </div>
               )}
-            </div>
             </div>
           </div>
         </div>

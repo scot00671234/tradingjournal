@@ -6,7 +6,19 @@ CoinFeedly is a beautiful, Notion-style trading journal with automatic trade syn
 
 **Tagline**: A beautiful, Notion-style trading journal with automatic trade sync and powerful insights.
 
-## Recent Changes (January 28, 2025)
+## Recent Changes (January 29, 2025)
+- ✓ Successfully completed Replit Agent to Replit environment migration (January 29, 2025):
+  - Fixed missing TypeScript dependencies and PostgreSQL database connectivity
+  - Pushed database schema successfully with all required tables
+  - Application running cleanly on port 5000 with full functionality
+- ✓ Enhanced widget customization system (January 29, 2025):
+  - Removed four placeholder widgets: P&L Distribution, Win Rate Tracker, Risk/Reward Analysis, Monthly Summary
+  - Ensured all widgets (including default ones) can be deleted in customization mode
+  - Fixed TypeScript errors in trade filtering and display functionality
+  - Maintained clean, professional dashboard with only functional widgets
+  - All widgets now have proper delete functionality when in customization mode
+
+## Previous Changes (January 28, 2025)
 - ✓ Successfully completed migration from Replit Agent to Replit environment:
   - Fixed critical database architecture - migrated from SQLite to PostgreSQL
   - Created PostgreSQL database with proper environment variables

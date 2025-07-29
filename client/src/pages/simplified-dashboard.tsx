@@ -48,10 +48,6 @@ export default function SimplifiedDashboard() {
     { id: "drawdown", name: "Drawdown Analysis", icon: BarChart3, description: "Monitor risk and underwater periods" },
     { id: "performance-metrics", name: "Performance Metrics", icon: LayoutDashboard, description: "Key trading statistics and ratios" },
     { id: "trade-list", name: "Recent Trades", icon: Layout, description: "View your latest trading activity" },
-    { id: "profit-loss", name: "P&L Distribution", icon: BarChart3, description: "Analyze profit and loss patterns" },
-    { id: "win-rate", name: "Win Rate Tracker", icon: TrendingUp, description: "Monitor your success rate trends" },
-    { id: "risk-reward", name: "Risk/Reward Analysis", icon: LayoutDashboard, description: "Track R:R ratios across trades" },
-    { id: "monthly-summary", name: "Monthly Summary", icon: Layout, description: "Monthly performance breakdown" },
   ];
 
   const { data: stats } = useQuery<TradeStats>({
@@ -72,7 +68,14 @@ export default function SimplifiedDashboard() {
   const filteredTrades = trades?.filter(trade => {
     const matchesSearch = searchTerm === "" || 
       trade.asset.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      trade.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (trade.tags && (() => {
+        try {
+          const tags = typeof trade.tags === 'string' ? JSON.parse(trade.tags) : trade.tags;
+          return Array.isArray(tags) && tags.some((tag: string) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+        } catch {
+          return false;
+        }
+      })()) ||
       trade.notes?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       trade.direction.toLowerCase().includes(searchTerm.toLowerCase());
     
@@ -139,14 +142,6 @@ export default function SimplifiedDashboard() {
         return <PerformanceMetricsWidget trades={filteredTrades} />;
       case "trade-list":
         return <TradeListWidget trades={filteredTrades} />;
-      case "profit-loss":
-        return <PlaceholderWidget title="P&L Distribution" icon={BarChart3} description="Analyze profit and loss patterns" />;
-      case "win-rate":
-        return <PlaceholderWidget title="Win Rate Tracker" icon={TrendingUp} description="Monitor your success rate trends" />;
-      case "risk-reward":
-        return <PlaceholderWidget title="Risk/Reward Analysis" icon={LayoutDashboard} description="Track R:R ratios across trades" />;
-      case "monthly-summary":
-        return <PlaceholderWidget title="Monthly Summary" icon={Layout} description="Monthly performance breakdown" />;
       default:
         return null;
     }
@@ -158,15 +153,11 @@ export default function SimplifiedDashboard() {
 
   // Widget size configurations: Uniform size for clean, organized layout
   const getWidgetSize = (widgetId: string) => {
-    const sizeMap = {
+    const sizeMap: Record<string, { w: number; h: number }> = {
       "equity-curve": { w: 6, h: 6 }, // Uniform - chart with proper spacing
       "drawdown": { w: 6, h: 6 }, // Uniform - chart with proper spacing
       "performance-metrics": { w: 6, h: 6 }, // Uniform - metrics grid
       "trade-list": { w: 6, h: 6 }, // Uniform - scrollable list
-      "profit-loss": { w: 6, h: 6 }, // Uniform - simple chart
-      "win-rate": { w: 6, h: 6 }, // Uniform - single metric
-      "risk-reward": { w: 6, h: 6 }, // Uniform - single metric  
-      "monthly-summary": { w: 6, h: 6 } // Uniform - comprehensive table
     };
     return sizeMap[widgetId] || { w: 6, h: 6 };
   };
@@ -619,9 +610,9 @@ export default function SimplifiedDashboard() {
                       </div>
                       <div className="text-right">
                         <div className={`font-semibold ${
-                          parseFloat(trade.pnl || '0') >= 0 ? 'text-green-600' : 'text-red-600'
+                          parseFloat(String(trade.pnl || '0')) >= 0 ? 'text-green-600' : 'text-red-600'
                         }`}>
-                          {parseFloat(trade.pnl || '0') >= 0 ? '+' : ''}${trade.pnl || '0.00'}
+                          {parseFloat(String(trade.pnl || '0')) >= 0 ? '+' : ''}${String(trade.pnl || '0.00')}
                         </div>
                         {trade.tags && (() => {
                           try {

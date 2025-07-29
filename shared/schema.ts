@@ -1,4 +1,4 @@
-import { pgTable, text, integer, real, boolean, timestamp, serial } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, real, boolean, timestamp, serial, index } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -13,8 +13,24 @@ export const users = pgTable("users", {
   isProUser: boolean("is_pro_user").default(false),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
+  subscriptionStatus: text("subscription_status").default("inactive"), // active, canceled, past_due
+  subscriptionPlan: text("subscription_plan").default("free"), // free, pro, elite
+  isEmailVerified: boolean("is_email_verified").default(false),
+  emailVerificationToken: text("email_verification_token"),
+  passwordResetToken: text("password_reset_token"),
+  passwordResetExpires: timestamp("password_reset_expires"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+// Session storage table for production
+export const sessions = pgTable("sessions", {
+  sid: text("sid").primaryKey(),
+  sess: text("sess").notNull(), // JSON session data
+  expire: timestamp("expire").notNull(),
+}, (table) => [
+  index("idx_sessions_expire").on(table.expire),
+]);
 
 export const trades = pgTable("trades", {
   id: serial("id").primaryKey(),
@@ -48,14 +64,41 @@ export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   username: true,
   createdAt: true,
+  updatedAt: true,
   isProUser: true,
   stripeCustomerId: true,
   stripeSubscriptionId: true,
+  subscriptionStatus: true,
+  subscriptionPlan: true,
+  isEmailVerified: true,
+  emailVerificationToken: true,
+  passwordResetToken: true,
+  passwordResetExpires: true,
 }).extend({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, "Reset token is required"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export const updateProfileSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Please enter a valid email address"),
 });
 
 export const insertTradeSchema = createInsertSchema(trades).omit({
@@ -77,6 +120,10 @@ export const updateTradeSchema = createInsertSchema(trades).omit({
 }).partial();
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
+export type LoginData = z.infer<typeof loginSchema>;
+export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
+export type UpdateProfileData = z.infer<typeof updateProfileSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertTrade = z.infer<typeof insertTradeSchema>;
 export type UpdateTrade = z.infer<typeof updateTradeSchema>;
@@ -93,8 +140,27 @@ export type TradeStats = {
   maxDrawdown: number;
 };
 
-export type SubscriptionStatus = {
+export type SubscriptionInfo = {
   plan: string;
+  status: string;
   tradeCount: number;
   tradeLimit: number | null;
+  nextBillingDate?: string;
+  cancelAtPeriodEnd?: boolean;
+};
+
+export type BillingInfo = {
+  stripeCustomerId?: string;
+  subscriptionId?: string;
+  plan: string;
+  status: string;
+  currentPeriodStart?: string;
+  currentPeriodEnd?: string;
+  cancelAtPeriodEnd?: boolean;
+  paymentMethod?: {
+    brand: string;
+    last4: string;
+    expMonth: number;
+    expYear: number;
+  };
 };

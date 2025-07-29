@@ -1,20 +1,42 @@
-import { users, trades, type User, type InsertUser, type Trade, type InsertTrade, type UpdateTrade } from "@shared/schema";
+import { 
+  users, 
+  trades, 
+  sessions,
+  type User, 
+  type InsertUser, 
+  type Trade, 
+  type InsertTrade, 
+  type UpdateTrade,
+  type UpdateProfileData
+} from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and, count, sum, avg } from "drizzle-orm";
+import { eq, desc, and, count, sum, avg, lt } from "drizzle-orm";
 import session from "express-session";
-import MemoryStore from "memorystore";
-
-const MemorySessionStore = MemoryStore(session);
+import connectPg from "connect-pg-simple";
 
 export interface IStorage {
+  // User management
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUserStripeInfo(userId: number, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User>;
   updateUserProStatus(userId: number, isProUser: boolean): Promise<User>;
-  updateUserProfile(userId: number, updates: { firstName?: string; lastName?: string; email?: string }): Promise<User>;
+  updateUserProfile(userId: number, updates: UpdateProfileData): Promise<User>;
+  updateUserPassword(userId: number, hashedPassword: string): Promise<User>;
   deleteUser(userId: number): Promise<boolean>;
+  
+  // Email verification
+  setEmailVerificationToken(userId: number, token: string): Promise<void>;
+  verifyEmailWithToken(token: string): Promise<User | null>;
+  
+  // Password reset
+  setPasswordResetToken(email: string, token: string, expiresAt: Date): Promise<void>;
+  getUserByPasswordResetToken(token: string): Promise<User | null>;
+  clearPasswordResetToken(userId: number): Promise<void>;
+  
+  // Subscription management
+  updateUserSubscription(userId: number, plan: string, status: string, stripeCustomerId?: string, stripeSubscriptionId?: string): Promise<User>;
   
   getUserTrades(userId: number, limit?: number): Promise<Trade[]>;
   createTrade(trade: InsertTrade & { userId: number }): Promise<Trade>;
@@ -39,9 +61,22 @@ export class DatabaseStorage implements IStorage {
   sessionStore: any;
 
   constructor() {
-    this.sessionStore = new MemorySessionStore({ 
-      checkPeriod: 86400000 // prune expired entries every 24h
-    });
+    // Use PostgreSQL session store for production
+    if (process.env.DATABASE_URL) {
+      const pgStore = connectPg(session);
+      this.sessionStore = new pgStore({
+        conString: process.env.DATABASE_URL,
+        createTableIfMissing: false,
+        ttl: 7 * 24 * 60 * 60, // 7 days
+        tableName: 'sessions',
+      });
+    } else {
+      // Fallback to memory store for development
+      const MemoryStore = require('memorystore')(session);
+      this.sessionStore = new MemoryStore({ 
+        checkPeriod: 86400000 // prune expired entries every 24h
+      });
+    }
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -95,10 +130,102 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  async updateUserProfile(userId: number, updates: { firstName?: string; lastName?: string; email?: string }): Promise<User> {
+  async updateUserProfile(userId: number, updates: UpdateProfileData): Promise<User> {
     const [user] = await db
       .update(users)
-      .set(updates)
+      .set({
+        ...updates,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async updateUserPassword(userId: number, hashedPassword: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ 
+        password: hashedPassword,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async setEmailVerificationToken(userId: number, token: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ 
+        emailVerificationToken: token,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async verifyEmailWithToken(token: string): Promise<User | null> {
+    const [user] = await db
+      .update(users)
+      .set({ 
+        isEmailVerified: true,
+        emailVerificationToken: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.emailVerificationToken, token))
+      .returning();
+    
+    return user || null;
+  }
+
+  async setPasswordResetToken(email: string, token: string, expiresAt: Date): Promise<void> {
+    await db
+      .update(users)
+      .set({ 
+        passwordResetToken: token,
+        passwordResetExpires: expiresAt,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.email, email));
+  }
+
+  async getUserByPasswordResetToken(token: string): Promise<User | null> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(
+        and(
+          eq(users.passwordResetToken, token),
+          // Token hasn't expired (compare with current timestamp)
+          lt(new Date(), users.passwordResetExpires)
+        )
+      );
+    
+    return user || null;
+  }
+
+  async clearPasswordResetToken(userId: number): Promise<void> {
+    await db
+      .update(users)
+      .set({ 
+        passwordResetToken: null,
+        passwordResetExpires: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async updateUserSubscription(userId: number, plan: string, status: string, stripeCustomerId?: string, stripeSubscriptionId?: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ 
+        subscriptionPlan: plan,
+        subscriptionStatus: status,
+        isProUser: plan !== 'free',
+        stripeCustomerId,
+        stripeSubscriptionId,
+        updatedAt: new Date(),
+      })
       .where(eq(users.id, userId))
       .returning();
     return user;

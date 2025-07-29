@@ -82,23 +82,37 @@ export function setupAuth(app: Express) {
         lastName: validatedData.lastName,
         email: validatedData.email,
         password: await hashPassword(validatedData.password),
+        // In development, auto-verify emails for easier testing
+        isEmailVerified: process.env.NODE_ENV === 'development'
       });
 
-      // Generate and store email verification token
-      const verificationToken = generateSecureToken();
-      await storage.setEmailVerificationToken(user.id, verificationToken);
-      
-      // Send verification email
-      await emailService.sendVerificationEmail(
-        user.email,
-        verificationToken,
-        user.firstName
-      );
+      // In production, send verification email
+      if (process.env.NODE_ENV !== 'development') {
+        // Generate and store email verification token
+        const verificationToken = generateSecureToken();
+        await storage.setEmailVerificationToken(user.id, verificationToken);
+        
+        // Send verification email
+        await emailService.sendVerificationEmail(
+          user.email,
+          verificationToken,
+          user.firstName
+        );
 
-      res.status(201).json({ 
-        message: "Registration successful. Please check your email to verify your account.",
-        user: { id: user.id, email: user.email, firstName: user.firstName }
-      });
+        res.status(201).json({ 
+          message: "Registration successful. Please check your email to verify your account.",
+          user: { id: user.id, email: user.email, firstName: user.firstName }
+        });
+      } else {
+        // In development, log the user in immediately
+        req.login(user, (err) => {
+          if (err) return next(err);
+          res.status(201).json({
+            message: "Registration successful. You are now logged in (development mode).",
+            user: user
+          });
+        });
+      }
     } catch (error: any) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid registration data", errors: error.errors });
@@ -139,7 +153,8 @@ export function setupAuth(app: Express) {
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
-      if (!user.isEmailVerified) {
+      // In development, allow login without email verification for testing
+      if (!user.isEmailVerified && process.env.NODE_ENV !== 'development') {
         return res.status(403).json({ 
           message: "Please verify your email address before logging in",
           needsVerification: true

@@ -151,6 +151,11 @@ export default function AuthPage() {
                     >
                       Forgot your password?
                     </button>
+                    {import.meta.env.DEV && (
+                      <div className="mt-2 text-xs text-gray-500">
+                        Development mode: Email verification bypassed
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>

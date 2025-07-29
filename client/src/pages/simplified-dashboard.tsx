@@ -321,7 +321,7 @@ export default function SimplifiedDashboard() {
                     {stats?.winRate?.toFixed(1) || '0.0'}%
                   </div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">
-                    {stats?.totalTrades || 0} {stats?.totalTrades === 1 ? 'trade' : 'trades'}
+                    {stats?.totalTrades || 0} trade{stats?.totalTrades === 1 ? '' : 's'}
                   </div>
                 </div>
               </div>
@@ -350,20 +350,18 @@ export default function SimplifiedDashboard() {
               <div className="p-5">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Plan</h3>
-                  <Badge variant="outline" className="text-xs capitalize">
-                    {subscriptionStatus?.plan || 'free'}
-                  </Badge>
+                  <div className="w-4 h-4 bg-yellow-500 rounded-full" />
                 </div>
                 <div className="space-y-2">
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {subscriptionStatus?.plan === 'free' ? (
-                      `${subscriptionStatus.tradeCount}/5`
+                      `${subscriptionStatus.tradeCount || 0}/5`
                     ) : (
                       'Unlimited'
                     )}
                   </div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">
-                    Trades used
+                    {subscriptionStatus?.plan === 'free' ? 'Trades used' : 'Trades available'}
                   </div>
                 </div>
               </div>

@@ -291,61 +291,81 @@ export default function SimplifiedDashboard() {
                  marginLeft: '16px', 
                  marginRight: '16px' 
                }}>
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total P&L</h3>
-                <BarChart3 className="w-4 h-4 text-green-500" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white text-center">
-                ${stats?.totalPnL?.toFixed(2) || '0.00'}
-              </div>
-              <div className="text-xs text-green-600 dark:text-green-400 mt-1 text-center">
-                {stats?.totalPnL && stats.totalPnL >= 0 ? 'Positive' : 'Negative'}
-              </div>
-            </div>
-
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Win Rate</h3>
-                <div className="w-4 h-4 bg-blue-500 rounded-full" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white text-center">
-                {stats?.winRate?.toFixed(1) || '0.0'}%
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
-                {stats?.totalTrades || 0} {stats?.totalTrades === 1 ? 'trade' : 'trades'}
+            {/* Total P&L Card */}
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total P&L</h3>
+                  <BarChart3 className="w-4 h-4 text-green-500" />
+                </div>
+                <div className="space-y-2">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    ${stats?.totalPnL?.toFixed(2) || '0.00'}
+                  </div>
+                  <div className="text-xs text-green-600 dark:text-green-400">
+                    {stats?.totalPnL && stats.totalPnL >= 0 ? 'Positive' : 'Negative'}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Trades</h3>
-                <div className="w-4 h-4 bg-purple-500 rounded-full" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white text-center">
-                {stats?.totalTrades || 0}
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
-                This period
+            {/* Win Rate Card */}
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Win Rate</h3>
+                  <div className="w-4 h-4 bg-blue-500 rounded-full" />
+                </div>
+                <div className="space-y-2">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {stats?.winRate?.toFixed(1) || '0.0'}%
+                  </div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    {stats?.totalTrades || 0} {stats?.totalTrades === 1 ? 'trade' : 'trades'}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-5 shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Plan</h3>
-                <Badge variant="outline" className="text-xs capitalize">
-                  {subscriptionStatus?.plan || 'free'}
-                </Badge>
+            {/* Total Trades Card */}
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Trades</h3>
+                  <div className="w-4 h-4 bg-purple-500 rounded-full" />
+                </div>
+                <div className="space-y-2">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {stats?.totalTrades || 0}
+                  </div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    This period
+                  </div>
+                </div>
               </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white text-center">
-                {subscriptionStatus?.plan === 'free' ? (
-                  `${subscriptionStatus.tradeCount}/5`
-                ) : (
-                  'Unlimited'
-                )}
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
-                Trades used
+            </div>
+
+            {/* Plan Card */}
+            <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl hover:scale-105 min-w-0">
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Plan</h3>
+                  <Badge variant="outline" className="text-xs capitalize">
+                    {subscriptionStatus?.plan || 'free'}
+                  </Badge>
+                </div>
+                <div className="space-y-2">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {subscriptionStatus?.plan === 'free' ? (
+                      `${subscriptionStatus.tradeCount}/5`
+                    ) : (
+                      'Unlimited'
+                    )}
+                  </div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    Trades used
+                  </div>
+                </div>
               </div>
             </div>
           </div>

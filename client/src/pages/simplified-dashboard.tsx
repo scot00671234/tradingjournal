@@ -409,8 +409,17 @@ export default function SimplifiedDashboard() {
                   <div key={widgetId} className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all relative group" : "relative"}>
                     {isCustomizing && (
                       <button
-                        onClick={() => removeWidget(widgetId)}
-                        className="absolute -top-2 -right-2 z-10 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          removeWidget(widgetId);
+                        }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        className="absolute -top-2 -right-2 z-50 w-8 h-8 bg-red-500 text-white rounded-full text-sm flex items-center justify-center opacity-90 hover:opacity-100 transition-all duration-200 hover:bg-red-600 hover:scale-110 shadow-lg cursor-pointer"
+                        style={{ pointerEvents: 'auto' }}
                       >
                         ×
                       </button>

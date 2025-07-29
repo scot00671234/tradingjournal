@@ -18,6 +18,10 @@ import TradeHistoryPage from "@/pages/trade-history-page";
 import AnalyticsPage from "@/pages/analytics-page";
 import TagsPage from "@/pages/tags-page";
 import ExportDataPage from "@/pages/export-data-page";
+import ForgotPasswordPage from "@/pages/forgot-password";
+import ResetPasswordPage from "@/pages/reset-password";
+import VerifyEmailPage from "@/pages/verify-email";
+import SettingsPageNew from "@/pages/settings";
 import { ProtectedRoute } from "./lib/protected-route";
 
 function Router() {
@@ -26,15 +30,20 @@ function Router() {
       <Route path="/" component={LandingPage} />
       <Route path="/blog" component={BlogPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
+      <Route path="/auth" component={AuthPage} />
+      <Route path="/login" component={AuthPage} />
+      <Route path="/register" component={AuthPage} />
+      <Route path="/forgot-password" component={ForgotPasswordPage} />
+      <Route path="/reset-password" component={ResetPasswordPage} />
+      <Route path="/verify-email" component={VerifyEmailPage} />
       <ProtectedRoute path="/dashboard" component={SimplifiedDashboard} />
       <ProtectedRoute path="/add-trade" component={AddTradePage} />
       <ProtectedRoute path="/trades" component={TradeHistoryPage} />
       <ProtectedRoute path="/analytics" component={AnalyticsPage} />
       <ProtectedRoute path="/tags" component={TagsPage} />
       <ProtectedRoute path="/export" component={ExportDataPage} />
-      <ProtectedRoute path="/settings" component={SettingsPage} />
+      <ProtectedRoute path="/settings" component={SettingsPageNew} />
       <ProtectedRoute path="/subscribe" component={SubscribePage} />
-      <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
   );

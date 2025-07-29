@@ -143,6 +143,15 @@ export default function AuthPage() {
                       </Button>
                     </form>
                   </Form>
+                  
+                  <div className="mt-4 text-center">
+                    <button
+                      onClick={() => setLocation('/forgot-password')}
+                      className="text-sm text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 transition-colors"
+                    >
+                      Forgot your password?
+                    </button>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

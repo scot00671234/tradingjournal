@@ -514,6 +514,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Import backtest routes
+  const backtestRoutes = await import("./routes/backtest");
+  app.use(backtestRoutes.default);
+
   const httpServer = createServer(app);
   return httpServer;
 }

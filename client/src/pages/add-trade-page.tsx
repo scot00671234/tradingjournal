@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Sidebar } from "@/components/sidebar";
 import { UnifiedTradeEntry } from "@/components/unified-trade-entry";
 import { Button } from "@/components/ui/button";
+import type { SubscriptionStatus } from "@shared/schema";
 
 export default function AddTradePage() {
   const { user } = useAuth();
@@ -41,7 +42,7 @@ export default function AddTradePage() {
 
           <div className="max-w-4xl mx-auto">
             <UnifiedTradeEntry 
-              subscriptionStatus={subscriptionStatus}
+              subscriptionStatus={subscriptionStatus as SubscriptionStatus}
               redirectAfterSubmit="/dashboard"
               showHeader={false}
             />

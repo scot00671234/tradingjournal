@@ -14,6 +14,25 @@ const stripe = process.env.STRIPE_SECRET_KEY ?
   null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint for Docker and load balancers
+  app.get("/api/health", async (req, res) => {
+    try {
+      // Test database connection
+      await db.execute("SELECT 1");
+      res.status(200).json({ 
+        status: "healthy", 
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime()
+      });
+    } catch (error: any) {
+      res.status(503).json({ 
+        status: "unhealthy", 
+        error: error.message,
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
   // Setup authentication routes
   setupAuth(app);
 

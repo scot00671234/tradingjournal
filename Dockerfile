@@ -1,18 +1,14 @@
-# Use Cloudron base image
-FROM cloudron/base:4.2.0@sha256:46da2fffb36353ef714f97ae8e962bd2c212ca091108d768ba473078319a47f4
+# Multi-stage build for production
+FROM node:20-alpine AS builder
 
-RUN mkdir -p /app/code
-WORKDIR /app/code
-
-# Install Node.js 20
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs
+# Set working directory
+WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including dev dependencies for build)
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -20,15 +16,50 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Copy start script
-COPY start.sh /app/code/start.sh
-RUN chmod +x /app/code/start.sh
+# Production stage
+FROM node:20-alpine AS production
 
-# Set correct permissions
-RUN chown -R cloudron:cloudron /app/code
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
 
-# Use cloudron user
-USER cloudron
+# Create app directory and user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S coinfeedly -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy built application from builder stage
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/shared ./shared
+
+# Copy database migration files
+COPY drizzle.config.ts ./
+COPY start-production.sh ./
+RUN chmod +x start-production.sh
+
+# Create uploads directory
+RUN mkdir -p uploads
+
+# Change ownership of the app directory
+RUN chown -R coinfeedly:nodejs /app
+
+# Switch to non-root user
+USER coinfeedly
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
 # Start the application
-CMD ["/app/code/start.sh"]
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["./start-production.sh"]

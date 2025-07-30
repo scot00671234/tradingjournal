@@ -3,10 +3,11 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 // Set default session secret if not provided
-// In Cloudron, use CLOUDRON_APP_ORIGIN as part of session secret for security
 if (!process.env.SESSION_SECRET) {
-  const cloudronSecret = process.env.CLOUDRON_APP_ORIGIN || 'localhost';
-  process.env.SESSION_SECRET = `coinfeedly-session-${cloudronSecret}-${Date.now()}`;
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('SESSION_SECRET environment variable is required in production');
+  }
+  process.env.SESSION_SECRET = 'default-session-secret-for-development';
 }
 
 const app = express();
@@ -63,8 +64,8 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // Use PORT environment variable for Cloudron deployment, fallback to 5000
-  const port = process.env.PORT || 5000;
+  // Use PORT environment variable, fallback to 3000 for production
+  const port = process.env.PORT || 3000;
   server.listen({
     port,
     host: "0.0.0.0",

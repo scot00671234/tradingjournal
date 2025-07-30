@@ -7,6 +7,19 @@ CoinFeedly is a complete production-ready SaaS trading journal with professional
 **Tagline**: A beautiful, Notion-style trading journal with automatic trade sync and powerful insights.
 
 ## Recent Changes (January 30, 2025)
+- ✓ **PRODUCTION VPS DEPLOYMENT READY** (January 30, 2025):
+  - Created multi-stage Dockerfile optimized for production with Node.js 20 Alpine
+  - Added docker-compose.yml for complete stack deployment with PostgreSQL
+  - Implemented health check endpoint (/api/health) with database connectivity test
+  - Added automatic PostgreSQL table migration on startup via start-production.sh
+  - Created comprehensive production deployment documentation (README-PRODUCTION.md)
+  - Configured Dokploy integration with dokploy.json for VPS deployment
+  - Added Nginx reverse proxy configuration with SSL and security headers
+  - Created automated deployment script (deploy.sh) for single-command deployment
+  - Enhanced database connection to support multiple PostgreSQL URL formats
+  - Added production environment template (.env.production.example)
+  - Configured non-root Docker user and proper security practices
+  - Ready for Railpacks/Dokploy deployment on any VPS with auto-migration
 - ✓ **CLOUDRON DEPLOYMENT READY** (January 30, 2025):
   - Created complete Cloudron package with CloudronManifest.json
   - Configured Dockerfile with Cloudron base image and proper permissions

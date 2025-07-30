@@ -1,0 +1,48 @@
+{
+  "name": "coinfeedly",
+  "type": "application",
+  "dockerFile": "Dockerfile",
+  "buildType": "dockerfile",
+  "sourceType": "github",
+  "environments": [
+    {
+      "name": "NODE_ENV",
+      "value": "production"
+    },
+    {
+      "name": "PORT",
+      "value": "3000"
+    }
+  ],
+  "mounts": [
+    {
+      "type": "volume",
+      "name": "coinfeedly-uploads",
+      "mountPath": "/app/uploads"
+    }
+  ],
+  "domains": [
+    {
+      "host": "coinfeedly.example.com",
+      "port": 3000,
+      "https": true
+    }
+  ],
+  "resource": {
+    "limits": {
+      "memory": "1024Mi",
+      "cpu": "500m"
+    },
+    "requests": {
+      "memory": "512Mi",
+      "cpu": "250m"
+    }
+  },
+  "healthCheck": {
+    "enabled": true,
+    "path": "/api/health",
+    "interval": 30,
+    "timeout": 10,
+    "retries": 3
+  }
+}

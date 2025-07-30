@@ -42,14 +42,7 @@ export function CalendarWidget() {
 
   const updateTradeMutation = useMutation({
     mutationFn: async (data: { id: number; updates: any }) => {
-      const response = await fetch(`/api/trades/${data.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data.updates),
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to update trade");
-      return response.json();
+      return apiRequest(`/api/trades/${data.id}`, "PUT", data.updates);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/trades"] });

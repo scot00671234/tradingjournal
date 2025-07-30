@@ -7,6 +7,18 @@ CoinFeedly is a complete production-ready SaaS trading journal with professional
 **Tagline**: A beautiful, Notion-style trading journal with automatic trade sync and powerful insights.
 
 ## Recent Changes (January 30, 2025)
+- ✓ **SUCCESSFUL MIGRATION TO REPLIT ENVIRONMENT AND ENHANCED TRADE CALENDAR** (January 30, 2025):
+  - Successfully migrated CoinFeedly from Replit Agent to standard Replit environment  
+  - Fixed trade calendar synchronization issues with proper API integration using standardized apiRequest function
+  - Added Trade Calendar as 5th default widget for new users, positioned prominently in dashboard layout
+  - Replaced complex backtesting widget with intuitive SimpleBacktestingWidget featuring:
+    - Clean, TradingView-inspired interface with essential controls
+    - Easy strategy selection (Moving Average Crossover, RSI Mean Reversion, Price Breakout)
+    - Real-time progress indicators and simple equity curve visualization
+    - Pro trader focused metrics: Total Return, Win Rate, Max Drawdown, Total Trades
+    - Streamlined configuration with asset, timeframe, dates, and balance settings
+  - Enhanced default widget layout: Equity Curve, Performance Metrics, Drawdown Analysis, Trade List, Trade Calendar
+  - All trading journal features working seamlessly with PostgreSQL database and real-time synchronization
 - ✓ **MOVED CURRENCY SELECTOR TO SETTINGS AND SET DEFAULT WIDGETS** (January 30, 2025):
   - Moved currency selector from navigation bar to dedicated Settings page section  
   - Added comprehensive currency support with 30+ global currencies (USD, EUR, GBP, JPY, CAD, AUD, CHF, CNY, etc.)

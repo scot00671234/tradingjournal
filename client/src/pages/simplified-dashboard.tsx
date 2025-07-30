@@ -16,7 +16,7 @@ import { PerformanceMetricsWidget } from "@/components/dashboard-widgets/perform
 import { TradeListWidget } from "@/components/dashboard-widgets/trade-list-widget";
 import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
 import { DailyPnLWidget } from "@/components/dashboard-widgets/daily-pnl-widget";
-import { BacktestingWidget } from "@/components/dashboard-widgets/backtesting-widget";
+import { SimpleBacktestingWidget } from "@/components/dashboard-widgets/simple-backtesting-widget";
 
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 import "react-grid-layout/css/styles.css";
@@ -37,14 +37,15 @@ export default function SimplifiedDashboard() {
   const [showWidgetSelector, setShowWidgetSelector] = useState(false);
   // Standard widget sizes: Small (4x4), Medium (6x5), Large (12x6)
   const [layouts, setLayouts] = useState([
-    { i: "equity-curve", x: 0, y: 0, w: 6, h: 5, minW: 6, minH: 5, maxW: 6, maxH: 5 },
-    { i: "drawdown", x: 6, y: 0, w: 6, h: 5, minW: 6, minH: 5, maxW: 6, maxH: 5 },
-    { i: "performance-metrics", x: 0, y: 5, w: 6, h: 5, minW: 6, minH: 5, maxW: 6, maxH: 5 },
-    { i: "trade-list", x: 6, y: 5, w: 6, h: 5, minW: 6, minH: 5, maxW: 6, maxH: 5 },
+    { i: "equity-curve", x: 0, y: 0, w: 6, h: 6, minW: 6, minH: 6, maxW: 6, maxH: 6 },
+    { i: "performance-metrics", x: 6, y: 0, w: 6, h: 6, minW: 6, minH: 6, maxW: 6, maxH: 6 },
+    { i: "drawdown", x: 0, y: 6, w: 6, h: 6, minW: 6, minH: 6, maxW: 6, maxH: 6 },
+    { i: "trade-list", x: 6, y: 6, w: 6, h: 6, minW: 6, minH: 6, maxW: 6, maxH: 6 },
+    { i: "calendar", x: 0, y: 12, w: 12, h: 8, minW: 12, minH: 8, maxW: 12, maxH: 8 },
   ]);
   
   const [activeWidgets, setActiveWidgets] = useState([
-    "equity-curve", "drawdown", "performance-metrics", "trade-list"
+    "equity-curve", "performance-metrics", "drawdown", "trade-list", "calendar"
   ]);
   
   const availableWidgets = [
@@ -154,7 +155,7 @@ export default function SimplifiedDashboard() {
       case "daily-pnl":
         return <DailyPnLWidget trades={filteredTrades} />;
       case "backtesting":
-        return <BacktestingWidget />;
+        return <SimpleBacktestingWidget />;
       default:
         return null;
     }

@@ -2,6 +2,10 @@ import sgMail from '@sendgrid/mail';
 import crypto from 'crypto';
 
 // Initialize SendGrid with API key (will be set in production)
+// In Cloudron, sendmail addon is available via localhost:25
+const IS_CLOUDRON = process.env.CLOUDRON_APP_ORIGIN !== undefined;
+const FROM_EMAIL = process.env.FROM_EMAIL || process.env.CLOUDRON_MAIL_FROM || 'noreply@coinfeedly.com';
+
 if (process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 }
@@ -13,13 +17,12 @@ export interface EmailService {
 }
 
 class SendGridEmailService implements EmailService {
-  private fromEmail = 'noreply@coinfeedly.com';
-  private baseUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://coinfeedly.com' 
-    : 'http://localhost:5000';
+  private fromEmail = FROM_EMAIL;
+  private baseUrl = process.env.CLOUDRON_APP_ORIGIN || 
+    (process.env.NODE_ENV === 'production' ? 'https://coinfeedly.com' : 'http://localhost:5000');
 
   async sendVerificationEmail(email: string, token: string, firstName: string): Promise<void> {
-    if (!process.env.SENDGRID_API_KEY) {
+    if (!process.env.SENDGRID_API_KEY && !IS_CLOUDRON) {
       console.log(`Would send verification email to ${email} with token: ${token}`);
       return;
     }

@@ -7,6 +7,18 @@ CoinFeedly is a complete production-ready SaaS trading journal with professional
 **Tagline**: A beautiful, Notion-style trading journal with automatic trade sync and powerful insights.
 
 ## Recent Changes (January 30, 2025)
+- ✓ **CLOUDRON DEPLOYMENT READY** (January 30, 2025):
+  - Created complete Cloudron package with CloudronManifest.json
+  - Configured Dockerfile with Cloudron base image and proper permissions
+  - Added PostgreSQL addon integration with CLOUDRON_POSTGRESQL_URL support
+  - Configured sendmail addon for email notifications
+  - Added start.sh script for proper Cloudron initialization
+  - Updated port configuration to use Cloudron's PORT environment variable
+  - Enhanced session security with Cloudron app origin integration
+  - Created comprehensive deployment documentation (README-CLOUDRON.md)
+  - Added build script (build-cloudron.sh) for Cloudron package creation
+  - Configured health check endpoint and proper memory limits
+  - App ready for one-click installation on any Cloudron instance
 - ✓ **SUCCESSFUL MIGRATION TO REPLIT ENVIRONMENT AND ENHANCED TRADE CALENDAR** (January 30, 2025):
   - Successfully migrated CoinFeedly from Replit Agent to standard Replit environment  
   - Fixed trade calendar synchronization issues with proper API integration using standardized apiRequest function

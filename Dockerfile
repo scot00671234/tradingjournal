@@ -1,8 +1,12 @@
-# Use official Node.js runtime as base image
-FROM node:20-alpine
+# Use Cloudron base image
+FROM cloudron/base:4.2.0@sha256:46da2fffb36353ef714f97ae8e962bd2c212ca091108d768ba473078319a47f4
 
-# Set working directory
-WORKDIR /app
+RUN mkdir -p /app/code
+WORKDIR /app/code
+
+# Install Node.js 20
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
 
 # Copy package files
 COPY package*.json ./
@@ -16,11 +20,15 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Expose port
-EXPOSE 8080
+# Copy start script
+COPY start.sh /app/code/start.sh
+RUN chmod +x /app/code/start.sh
 
-# Set environment to production
-ENV NODE_ENV=production
+# Set correct permissions
+RUN chown -R cloudron:cloudron /app/code
+
+# Use cloudron user
+USER cloudron
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["/app/code/start.sh"]

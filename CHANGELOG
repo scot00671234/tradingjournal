@@ -1,0 +1,40 @@
+## [1.0.0] - 2025-01-30
+
+### Added
+- Initial release of CoinFeedly trading journal
+- Complete trading dashboard with customizable widgets
+- User authentication and registration system
+- Trade entry and management system
+- Performance analytics and visualizations
+- Multi-currency support (30+ currencies)
+- Stripe payment integration for Pro/Elite subscriptions
+- PostgreSQL database integration
+- Email verification system
+- Password reset functionality
+- Responsive design for mobile and desktop
+
+### Features
+- **Dashboard Widgets:**
+  - Equity Curve visualization
+  - Performance Metrics display
+  - Drawdown Analysis
+  - Trade List with filtering
+  - Trade Calendar with visual P&L
+
+- **Trading Features:**
+  - Comprehensive trade tracking (entry/exit prices, P&L, notes, tags)
+  - Support for long and short positions
+  - Image attachments for trade screenshots
+  - Real-time performance calculations
+
+- **User Management:**
+  - Session-based authentication
+  - Email verification required
+  - Profile management
+  - Currency preference settings
+
+- **Subscription Management:**
+  - Free tier (5 trades limit)
+  - Pro tier ($29/month - unlimited trades)
+  - Elite tier ($49/month - premium features)
+  - 7-day free trial for paid plans

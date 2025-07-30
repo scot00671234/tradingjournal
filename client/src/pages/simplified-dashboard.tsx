@@ -16,6 +16,7 @@ import { PerformanceMetricsWidget } from "@/components/dashboard-widgets/perform
 import { TradeListWidget } from "@/components/dashboard-widgets/trade-list-widget";
 import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
 import { DailyPnLWidget } from "@/components/dashboard-widgets/daily-pnl-widget";
+import { BacktestingWidget } from "@/components/dashboard-widgets/backtesting-widget";
 import { CurrencySelector } from "@/components/currency-selector";
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 import "react-grid-layout/css/styles.css";
@@ -53,6 +54,7 @@ export default function SimplifiedDashboard() {
     { id: "trade-list", name: "Recent Trades", icon: Layout, description: "View your latest trading activity" },
     { id: "calendar", name: "Trade Calendar", icon: Layout, description: "Calendar view of all your trades with editing" },
     { id: "daily-pnl", name: "Daily P&L", icon: BarChart3, description: "Daily profit and loss tracking with charts" },
+    { id: "backtesting", name: "Strategy Backtesting", icon: TrendingUp, description: "Professional backtesting with historical market simulation" },
   ];
 
   const { data: stats } = useQuery<TradeStats>({
@@ -151,6 +153,8 @@ export default function SimplifiedDashboard() {
         return <CalendarWidget />;
       case "daily-pnl":
         return <DailyPnLWidget trades={filteredTrades} />;
+      case "backtesting":
+        return <BacktestingWidget />;
       default:
         return null;
     }
@@ -169,6 +173,7 @@ export default function SimplifiedDashboard() {
       "trade-list": { w: 6, h: 6 }, // Uniform - scrollable list
       "calendar": { w: 12, h: 8 }, // Large - calendar needs more space
       "daily-pnl": { w: 6, h: 6 }, // Uniform - daily P&L chart
+      "backtesting": { w: 12, h: 8 }, // Large - backtesting needs comprehensive space
     };
     return sizeMap[widgetId] || { w: 6, h: 6 };
   };

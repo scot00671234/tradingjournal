@@ -10,7 +10,9 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { updateProfileSchema, type UpdateProfileData, type BillingInfo } from "@shared/schema";
-import { AlertTriangle, CreditCard, Settings, Trash2, User } from "lucide-react";
+import { AlertTriangle, CreditCard, Settings, Trash2, User, DollarSign } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -52,6 +54,40 @@ export default function SettingsPage() {
     },
   });
 
+  // Available currencies with their symbols - comprehensive list
+  const currencies = [
+    { code: "USD", symbol: "$", name: "US Dollar" },
+    { code: "EUR", symbol: "€", name: "Euro" },
+    { code: "GBP", symbol: "£", name: "British Pound" },
+    { code: "JPY", symbol: "¥", name: "Japanese Yen" },
+    { code: "CAD", symbol: "C$", name: "Canadian Dollar" },
+    { code: "AUD", symbol: "A$", name: "Australian Dollar" },
+    { code: "CHF", symbol: "CHF", name: "Swiss Franc" },
+    { code: "CNY", symbol: "¥", name: "Chinese Yuan" },
+    { code: "SEK", symbol: "kr", name: "Swedish Krona" },
+    { code: "NOK", symbol: "kr", name: "Norwegian Krone" },
+    { code: "DKK", symbol: "kr", name: "Danish Krone" },
+    { code: "PLN", symbol: "zł", name: "Polish Zloty" },
+    { code: "CZK", symbol: "Kč", name: "Czech Koruna" },
+    { code: "HUF", symbol: "Ft", name: "Hungarian Forint" },
+    { code: "RUB", symbol: "₽", name: "Russian Ruble" },
+    { code: "BRL", symbol: "R$", name: "Brazilian Real" },
+    { code: "MXN", symbol: "$", name: "Mexican Peso" },
+    { code: "INR", symbol: "₹", name: "Indian Rupee" },
+    { code: "KRW", symbol: "₩", name: "South Korean Won" },
+    { code: "SGD", symbol: "S$", name: "Singapore Dollar" },
+    { code: "HKD", symbol: "HK$", name: "Hong Kong Dollar" },
+    { code: "NZD", symbol: "NZ$", name: "New Zealand Dollar" },
+    { code: "ZAR", symbol: "R", name: "South African Rand" },
+    { code: "TRY", symbol: "₺", name: "Turkish Lira" },
+    { code: "ILS", symbol: "₪", name: "Israeli Shekel" },
+    { code: "AED", symbol: "د.إ", name: "UAE Dirham" },
+    { code: "SAR", symbol: "﷼", name: "Saudi Riyal" },
+    { code: "THB", symbol: "฿", name: "Thai Baht" },
+    { code: "MYR", symbol: "RM", name: "Malaysian Ringgit" },
+    { code: "IDR", symbol: "Rp", name: "Indonesian Rupiah" },
+  ];
+
   // Update profile mutation
   const updateProfileMutation = useMutation({
     mutationFn: async (data: UpdateProfileData) => {
@@ -68,6 +104,34 @@ export default function SettingsPage() {
       toast({
         title: "Update Failed",
         description: error.message || "Failed to update profile",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Update currency mutation
+  const updateCurrencyMutation = useMutation({
+    mutationFn: async (currency: string) => {
+      const response = await fetch("/api/user/currency", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ preferredCurrency: currency }),
+        credentials: "include",
+      });
+      if (!response.ok) throw new Error("Failed to update currency");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      toast({ 
+        title: "Currency Updated",
+        description: "Your preferred currency has been updated successfully."
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error updating currency",
+        description: error.message,
         variant: "destructive",
       });
     },
@@ -245,6 +309,49 @@ export default function SettingsPage() {
                   </Button>
                 </form>
               </Form>
+            </CardContent>
+          </Card>
+
+          {/* Currency Settings */}
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-amber-200 dark:border-gray-700">
+            <CardHeader>
+              <div className="flex items-center space-x-2">
+                <DollarSign className="w-5 h-5 text-amber-600" />
+                <CardTitle>Currency Preferences</CardTitle>
+              </div>
+              <CardDescription>
+                Choose your preferred currency for displaying trade values and P&L calculations.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="currency">Preferred Currency</Label>
+                <Select
+                  value={user?.preferredCurrency || "USD"}
+                  onValueChange={(value) => updateCurrencyMutation.mutate(value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a currency" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60">
+                    {currencies.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        <div className="flex items-center gap-3">
+                          <span className="font-medium">{currency.code}</span>
+                          <span className="text-muted-foreground">•</span>
+                          <span>{currency.name}</span>
+                          <span className="text-muted-foreground text-sm ml-2">
+                            ({currency.symbol})
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-sm text-muted-foreground">
+                  Current: {user?.preferredCurrency || "USD"} ({currencies.find(c => c.code === (user?.preferredCurrency || "USD"))?.symbol})
+                </p>
+              </div>
             </CardContent>
           </Card>
 

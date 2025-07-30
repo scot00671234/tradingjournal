@@ -17,7 +17,7 @@ import { TradeListWidget } from "@/components/dashboard-widgets/trade-list-widge
 import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
 import { DailyPnLWidget } from "@/components/dashboard-widgets/daily-pnl-widget";
 import { BacktestingWidget } from "@/components/dashboard-widgets/backtesting-widget";
-import { CurrencySelector } from "@/components/currency-selector";
+
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 import "react-grid-layout/css/styles.css";
 //@ts-ignore
@@ -260,8 +260,6 @@ export default function SimplifiedDashboard() {
                 {isCustomizing ? "Done" : "Customize"}
               </Button>
               
-              <CurrencySelector />
-              
               <Button variant="ghost" size="sm" onClick={toggleTheme}>
                 {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
@@ -417,8 +415,8 @@ export default function SimplifiedDashboard() {
             </div>
           )}
 
-          {/* Drag-and-Drop Dashboard */}
-          {trades && trades.length > 0 && (
+          {/* Drag-and-Drop Dashboard - Always show widgets */}
+          {(
             <div className="mb-8 relative" 
                  style={{ 
                    minHeight: '1000px',

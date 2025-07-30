@@ -7,6 +7,13 @@ CoinFeedly is a complete production-ready SaaS trading journal with professional
 **Tagline**: A beautiful, Notion-style trading journal with automatic trade sync and powerful insights.
 
 ## Recent Changes (January 30, 2025)
+- ✓ **MOVED CURRENCY SELECTOR TO SETTINGS AND SET DEFAULT WIDGETS** (January 30, 2025):
+  - Moved currency selector from navigation bar to dedicated Settings page section  
+  - Added comprehensive currency support with 30+ global currencies (USD, EUR, GBP, JPY, CAD, AUD, CHF, CNY, etc.)
+  - Implemented 4 default widgets for new users: Equity Curve, Performance Metrics, Drawdown Analysis, Trade List
+  - Dashboard now shows essential trading widgets immediately upon first login, even without trades
+  - Enhanced Settings page with professional currency selection interface and user feedback
+  - Streamlined navigation bar by removing currency selector for cleaner user experience
 - ✓ **IMPLEMENTED PROFESSIONAL BACKTESTING SYSTEM** (January 30, 2025):
   - Created comprehensive backtesting widget with multi-strategy support (SMA Crossover, RSI Mean Reversion, Breakout, Pairs Trading)
   - Built event-driven backtesting engine with historical market simulation using realistic price movements

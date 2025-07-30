@@ -181,9 +181,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         items: [{
           price_data: {
             currency: 'usd',
-            product_data: {
-              name: selectedPlan.name,
-            },
+            product: 'prod_trading_plan', // Stripe product ID - needs to be created in Stripe dashboard
             unit_amount: selectedPlan.amount,
             recurring: {
               interval: 'month',
@@ -239,7 +237,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json({ 
         message: 'Subscription will be cancelled at the end of the current billing period',
-        periodEnd: subscription.current_period_end
+        periodEnd: new Date(subscription.current_period_end * 1000)
       });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -301,8 +299,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         isActive,
         plan: user.subscriptionPlan,
         status: subscription.status,
-        currentPeriodStart: subscription.current_period_start,
-        currentPeriodEnd: subscription.current_period_end,
+        currentPeriodStart: new Date(subscription.current_period_start * 1000),
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
         trialEnd: subscription.trial_end,
         tradeCount,
@@ -345,14 +343,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         billingInfo = {
           ...billingInfo,
           subscriptionId: subscription.id,
-          currentPeriodStart: new Date(subscription.current_period_start * 1000).toISOString(),
-          currentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
-          cancelAtPeriodEnd: subscription.cancel_at_period_end
+          currentPeriodStart: new Date((subscription.current_period_start || 0) * 1000).toISOString(),
+          currentPeriodEnd: new Date((subscription.current_period_end || 0) * 1000).toISOString(),
+          cancelAtPeriodEnd: subscription.cancel_at_period_end || false
         };
 
         // Get payment method
         if (subscription.default_payment_method) {
-          const paymentMethod = await stripe.paymentMethods.retrieve(subscription.default_payment_method as string);
+          const paymentMethodId = typeof subscription.default_payment_method === 'string' 
+            ? subscription.default_payment_method 
+            : subscription.default_payment_method.id;
+          const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId);
           if (paymentMethod.card) {
             billingInfo.paymentMethod = {
               brand: paymentMethod.card.brand,
@@ -443,7 +444,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (successSubscriptionId) {
             const usersResult = await db.select().from(users).where(eq(users.stripeSubscriptionId, successSubscriptionId));
             if (usersResult.length > 0) {
-              await storage.updateUserSubscription(usersResult[0].id, usersResult[0].subscriptionPlan, 'active');
+              await storage.updateUserSubscription(usersResult[0].id, usersResult[0].subscriptionPlan || 'pro', 'active');
               console.log(`Subscription activated for user ${usersResult[0].id}`);
             }
           }
@@ -456,7 +457,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (failedSubscriptionId) {
             const usersResult = await db.select().from(users).where(eq(users.stripeSubscriptionId, failedSubscriptionId));
             if (usersResult.length > 0) {
-              await storage.updateUserSubscription(usersResult[0].id, usersResult[0].subscriptionPlan, 'past_due');
+              await storage.updateUserSubscription(usersResult[0].id, usersResult[0].subscriptionPlan || 'pro', 'past_due');
               console.log(`Subscription payment failed for user ${usersResult[0].id}`);
             }
           }
@@ -479,7 +480,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             if (updatedSubscription.cancel_at_period_end) {
               status = 'cancel_at_period_end';
             }
-            await storage.updateUserSubscription(updateUsersResult[0].id, updateUsersResult[0].subscriptionPlan, status);
+            await storage.updateUserSubscription(updateUsersResult[0].id, updateUsersResult[0].subscriptionPlan || 'pro', status);
             console.log(`Subscription updated for user ${updateUsersResult[0].id}: ${status}`);
           }
           break;

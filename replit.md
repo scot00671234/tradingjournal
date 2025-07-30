@@ -7,6 +7,14 @@ CoinFeedly is a complete production-ready SaaS trading journal with professional
 **Tagline**: A beautiful, Notion-style trading journal with automatic trade sync and powerful insights.
 
 ## Recent Changes (January 30, 2025)
+- ✓ **ENHANCED TRADE MANAGEMENT AND DAILY ANALYTICS** (January 30, 2025):
+  - Enhanced trade list widget with tabbed interface for Open Positions and Recent Trades
+  - Added comprehensive open positions tracking with real-time P&L calculations
+  - Created Daily P&L widget with interactive bar chart visualization
+  - Implemented daily performance tracking with win/loss statistics and trend analysis
+  - Added currency formatting throughout all P&L displays using user preference
+  - Built responsive color-coded performance indicators (green/red) for instant recognition
+  - Integrated both widgets into the customizable dashboard system
 - ✓ **IMPLEMENTED CALENDAR WIDGET AND CURRENCY SYSTEM** (January 30, 2025):
   - Created comprehensive calendar widget with trade visualization and editing capabilities
   - Added multi-currency support system with 20+ currencies (USD, EUR, GBP, JPY, CAD, AUD, etc.)

@@ -159,8 +159,8 @@ export type SubscriptionStatus = {
   isActive: boolean;
   plan: string;
   status: string;
-  tradeCount?: number;
-  tradeLimit?: number | null;
+  tradeCount: number;
+  tradeLimit: number | null;
 };
 
 export type BillingInfo = {

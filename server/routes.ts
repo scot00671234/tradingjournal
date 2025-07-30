@@ -231,13 +231,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Cancel at period end instead of immediately
       const subscription = await stripe.subscriptions.update(user.stripeSubscriptionId, {
         cancel_at_period_end: true
-      });
+      }) as any;
       
-      await storage.updateUserSubscription(user.id, user.subscriptionPlan, 'cancel_at_period_end');
+      await storage.updateUserSubscription(user.id, user.subscriptionPlan || 'free', 'cancel_at_period_end');
       
       res.json({ 
         message: 'Subscription will be cancelled at the end of the current billing period',
-        periodEnd: new Date(subscription.current_period_end * 1000)
+        periodEnd: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null
       });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -265,7 +265,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         cancel_at_period_end: false
       });
       
-      await storage.updateUserSubscription(user.id, user.subscriptionPlan, 'active');
+      await storage.updateUserSubscription(user.id, user.subscriptionPlan || 'free', 'active');
       
       res.json({ message: 'Subscription reactivated successfully' });
     } catch (error: any) {
@@ -292,15 +292,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId) as any;
       const isActive = ['active', 'trialing'].includes(subscription.status);
       
       res.json({
         isActive,
         plan: user.subscriptionPlan,
         status: subscription.status,
-        currentPeriodStart: new Date(subscription.current_period_start * 1000),
-        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        currentPeriodStart: subscription.current_period_start ? new Date(subscription.current_period_start * 1000) : null,
+        currentPeriodEnd: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null,
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
         trialEnd: subscription.trial_end,
         tradeCount,
@@ -333,18 +333,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const customer = await stripe.customers.retrieve(user.stripeCustomerId);
       let billingInfo: BillingInfo = {
-        plan: user.subscriptionPlan,
-        status: user.subscriptionStatus
+        plan: user.subscriptionPlan || 'free',
+        status: user.subscriptionStatus || 'inactive'
       };
 
       if (user.stripeSubscriptionId) {
-        const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+        const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId) as any;
         
         billingInfo = {
           ...billingInfo,
           subscriptionId: subscription.id,
-          currentPeriodStart: new Date((subscription.current_period_start || 0) * 1000).toISOString(),
-          currentPeriodEnd: new Date((subscription.current_period_end || 0) * 1000).toISOString(),
+          currentPeriodStart: subscription.current_period_start ? new Date(subscription.current_period_start * 1000).toISOString() : undefined,
+          currentPeriodEnd: subscription.current_period_end ? new Date(subscription.current_period_end * 1000).toISOString() : undefined,
           cancelAtPeriodEnd: subscription.cancel_at_period_end || false
         };
 

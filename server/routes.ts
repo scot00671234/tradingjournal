@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { setupAuth } from "./auth";
 import { storage } from "./storage";
-import { insertTradeSchema, updateTradeSchema, users, trades, type BillingInfo } from "@shared/schema";
+import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, type BillingInfo } from "@shared/schema";
 import { z } from "zod";
 import Stripe from "stripe";
 import { db } from "./db";
@@ -492,6 +492,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error('Webhook processing error:', error);
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Update user currency preference
+  app.put("/api/user/currency", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const validatedData = updateCurrencySchema.parse(req.body);
+      await storage.updateUserCurrency(req.user.id, validatedData.preferredCurrency);
+      res.json({ message: "Currency updated successfully" });
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid currency data", errors: error.errors });
+      }
+      res.status(500).json({ message: error.message });
     }
   });
 

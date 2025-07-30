@@ -19,6 +19,7 @@ export const users = pgTable("users", {
   emailVerificationToken: text("email_verification_token"),
   passwordResetToken: text("password_reset_token"),
   passwordResetExpires: timestamp("password_reset_expires"),
+  preferredCurrency: text("preferred_currency").default("USD"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -101,6 +102,10 @@ export const updateProfileSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
 });
 
+export const updateCurrencySchema = z.object({
+  preferredCurrency: z.string().min(1, "Currency is required"),
+});
+
 export const insertTradeSchema = createInsertSchema(trades).omit({
   id: true,
   userId: true,
@@ -123,6 +128,7 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
+export type UpdateCurrencyData = z.infer<typeof updateCurrencySchema>;
 export type UpdateProfileData = z.infer<typeof updateProfileSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertTrade = z.infer<typeof insertTradeSchema>;
@@ -147,6 +153,14 @@ export type SubscriptionInfo = {
   tradeLimit: number | null;
   nextBillingDate?: string;
   cancelAtPeriodEnd?: boolean;
+};
+
+export type SubscriptionStatus = {
+  isActive: boolean;
+  plan: string;
+  status: string;
+  tradeCount?: number;
+  tradeLimit?: number | null;
 };
 
 export type BillingInfo = {

@@ -14,6 +14,8 @@ import { EquityCurveWidget } from "@/components/dashboard-widgets/equity-curve-w
 import { DrawdownWidget } from "@/components/dashboard-widgets/drawdown-widget";
 import { PerformanceMetricsWidget } from "@/components/dashboard-widgets/performance-metrics-widget";
 import { TradeListWidget } from "@/components/dashboard-widgets/trade-list-widget";
+import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
+import { CurrencySelector } from "@/components/currency-selector";
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 import "react-grid-layout/css/styles.css";
 //@ts-ignore
@@ -48,6 +50,7 @@ export default function SimplifiedDashboard() {
     { id: "drawdown", name: "Drawdown Analysis", icon: BarChart3, description: "Monitor risk and underwater periods" },
     { id: "performance-metrics", name: "Performance Metrics", icon: LayoutDashboard, description: "Key trading statistics and ratios" },
     { id: "trade-list", name: "Recent Trades", icon: Layout, description: "View your latest trading activity" },
+    { id: "calendar", name: "Trade Calendar", icon: Layout, description: "Calendar view of all your trades with editing" },
   ];
 
   const { data: stats } = useQuery<TradeStats>({
@@ -142,6 +145,8 @@ export default function SimplifiedDashboard() {
         return <PerformanceMetricsWidget trades={filteredTrades} />;
       case "trade-list":
         return <TradeListWidget trades={filteredTrades} />;
+      case "calendar":
+        return <CalendarWidget />;
       default:
         return null;
     }
@@ -158,6 +163,7 @@ export default function SimplifiedDashboard() {
       "drawdown": { w: 6, h: 6 }, // Uniform - chart with proper spacing
       "performance-metrics": { w: 6, h: 6 }, // Uniform - metrics grid
       "trade-list": { w: 6, h: 6 }, // Uniform - scrollable list
+      "calendar": { w: 12, h: 8 }, // Large - calendar needs more space
     };
     return sizeMap[widgetId] || { w: 6, h: 6 };
   };
@@ -243,6 +249,8 @@ export default function SimplifiedDashboard() {
                 <LayoutDashboard className="w-4 h-4 mr-2" />
                 {isCustomizing ? "Done" : "Customize"}
               </Button>
+              
+              <CurrencySelector />
               
               <Button variant="ghost" size="sm" onClick={toggleTheme}>
                 {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}

@@ -38,6 +38,9 @@ export interface IStorage {
   // Subscription management
   updateUserSubscription(userId: number, plan: string, status: string, stripeCustomerId?: string, stripeSubscriptionId?: string): Promise<User>;
   
+  // Currency preference
+  updateUserCurrency(userId: number, currency: string): Promise<User>;
+  
   getUserTrades(userId: number, limit?: number): Promise<Trade[]>;
   createTrade(trade: InsertTrade & { userId: number }): Promise<Trade>;
   updateTrade(tradeId: number, userId: number, updates: UpdateTrade): Promise<Trade | undefined>;
@@ -196,8 +199,8 @@ export class DatabaseStorage implements IStorage {
       .where(
         and(
           eq(users.passwordResetToken, token),
-          // Token hasn't expired (compare with current timestamp)
-          lt(new Date(), users.passwordResetExpires)
+          // Token hasn't expired (compare with current timestamp)  
+          lt(users.passwordResetExpires, new Date())
         )
       );
     
@@ -226,6 +229,15 @@ export class DatabaseStorage implements IStorage {
         stripeSubscriptionId,
         updatedAt: new Date(),
       })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async updateUserCurrency(userId: number, currency: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ preferredCurrency: currency })
       .where(eq(users.id, userId))
       .returning();
     return user;

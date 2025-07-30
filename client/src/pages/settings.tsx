@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { updateProfileSchema, type UpdateProfileData, type BillingInfo } from "@shared/schema";
-import { AlertTriangle, CreditCard, Settings, Trash2, User, DollarSign } from "lucide-react";
+import { AlertTriangle, CreditCard, Settings, Trash2, User, DollarSign, ArrowLeft } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import {
@@ -239,9 +239,19 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-gray-900 dark:to-gray-800 p-6">
       <div className="max-w-4xl mx-auto space-y-8">
-        <div className="flex items-center space-x-3">
-          <Settings className="w-8 h-8 text-amber-600" />
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Account Settings</h1>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Settings className="w-8 h-8 text-amber-600" />
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Account Settings</h1>
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => window.location.href = "/dashboard"}
+            className="flex items-center gap-2 hover:bg-amber-50 dark:hover:bg-amber-900/20 border-amber-200 dark:border-amber-800"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Dashboard
+          </Button>
         </div>
 
         <div className="grid gap-6">

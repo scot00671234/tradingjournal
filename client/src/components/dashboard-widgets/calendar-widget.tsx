@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { DayPicker } from "react-day-picker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -9,9 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import "react-day-picker/dist/style.css";
-import { CalendarDays, Edit, TrendingUp, TrendingDown } from "lucide-react";
-import { format, isSameDay, parseISO } from "date-fns";
+import { CalendarDays, Edit, TrendingUp, TrendingDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { format, isSameDay, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, addMonths, subMonths, getDay, startOfWeek, endOfWeek } from "date-fns";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Trade } from "@shared/schema";
@@ -33,6 +31,7 @@ const updateFormSchema = z.object({
 });
 
 export function CalendarWidget() {
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [editingTrade, setEditingTrade] = useState<Trade | null>(null);
   const queryClient = useQueryClient();
@@ -78,10 +77,30 @@ export function CalendarWidget() {
     );
   };
 
-  // Get all dates that have trades
-  const getDatesWithTrades = () => {
-    return trades.map(trade => new Date(trade.tradeDate));
+  // Get daily data for calendar display
+  const getDailyData = (date: Date) => {
+    const dayTrades = getTradesForDate(date);
+    const totalPnL = dayTrades.reduce((sum, trade) => sum + (parseFloat(String(trade.pnl || 0))), 0);
+    const tradeCount = dayTrades.length;
+    
+    return {
+      trades: dayTrades,
+      totalPnL,
+      tradeCount,
+      hasProfit: totalPnL > 0,
+      hasLoss: totalPnL < 0,
+      isBreakeven: totalPnL === 0 && tradeCount > 0
+    };
   };
+
+  // Generate calendar days for the current month
+  const generateCalendarDays = () => {
+    const start = startOfWeek(startOfMonth(currentMonth));
+    const end = endOfWeek(endOfMonth(currentMonth));
+    return eachDayOfInterval({ start, end });
+  };
+
+  const calendarDays = generateCalendarDays();
 
   const handleEditTrade = (trade: Trade) => {
     setEditingTrade(trade);
@@ -126,27 +145,309 @@ export function CalendarWidget() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex flex-col lg:flex-row gap-4">
-          {/* Calendar */}
-          <div className="flex-1">
-            <DayPicker
-              mode="single"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-              modifiers={{
-                hasTrades: getDatesWithTrades(),
-              }}
-              modifiersStyles={{
-                hasTrades: {
-                  backgroundColor: 'rgb(34 197 94)',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  borderRadius: '4px',
-                }
-              }}
-              className="rounded-md border w-full"
-            />
+        <div className="flex flex-col gap-4">
+          {/* Calendar Header */}
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+              className="p-1 h-8 w-8"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <h3 className="font-semibold text-lg">
+              {format(currentMonth, "MMMM yyyy")}
+            </h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+              className="p-1 h-8 w-8"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
+
+          {/* Custom Calendar Grid */}
+          <div className="border rounded-lg overflow-hidden">
+            {/* Weekday Headers */}
+            <div className="grid grid-cols-7 bg-gray-50 dark:bg-gray-800">
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                <div key={day} className="p-2 text-center text-xs font-medium text-gray-600 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700 last:border-r-0">
+                  {day}
+                </div>
+              ))}
+            </div>
+
+            {/* Calendar Days */}
+            <div className="grid grid-cols-7">
+              {calendarDays.map((day, index) => {
+                const dailyData = getDailyData(day);
+                const isCurrentMonth = isSameMonth(day, currentMonth);
+                const isSelected = selectedDate && isSameDay(day, selectedDate);
+                
+                let bgColor = 'bg-white dark:bg-gray-900';
+                let textColor = 'text-gray-900 dark:text-gray-100';
+                
+                if (dailyData.tradeCount > 0) {
+                  if (dailyData.hasProfit) {
+                    bgColor = 'bg-green-100 dark:bg-green-900/30';
+                    textColor = 'text-green-800 dark:text-green-200';
+                  } else if (dailyData.hasLoss) {
+                    bgColor = 'bg-red-100 dark:bg-red-900/30';
+                    textColor = 'text-red-800 dark:text-red-200';
+                  } else {
+                    bgColor = 'bg-gray-100 dark:bg-gray-800';
+                    textColor = 'text-gray-700 dark:text-gray-300';
+                  }
+                }
+
+                return (
+                  <div
+                    key={day.toISOString()}
+                    className={`
+                      min-h-[80px] p-2 border-r border-b border-gray-200 dark:border-gray-700 last:border-r-0 cursor-pointer
+                      hover:bg-opacity-80 transition-all duration-200
+                      ${bgColor} ${textColor}
+                      ${!isCurrentMonth ? 'opacity-40' : ''}
+                      ${isSelected ? 'ring-2 ring-blue-500' : ''}
+                    `}
+                    onClick={() => setSelectedDate(day)}
+                  >
+                    <div className="text-sm font-medium mb-1">
+                      {format(day, 'd')}
+                    </div>
+                    
+                    {dailyData.tradeCount > 0 && (
+                      <div className="space-y-1">
+                        <div className="text-xs font-semibold">
+                          {dailyData.totalPnL >= 0 ? '+' : ''}${dailyData.totalPnL.toFixed(0)}
+                        </div>
+                        <div className="text-xs opacity-75">
+                          {dailyData.tradeCount} trade{dailyData.tradeCount === 1 ? '' : 's'}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Selected Date Details */}
+          {selectedDate && (
+            <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800/50">
+              <h3 className="font-medium text-sm mb-3">
+                Trades on {format(selectedDate, "MMM dd, yyyy")}
+              </h3>
+              {selectedDateTrades.length > 0 ? (
+                <div className="space-y-2 max-h-48 overflow-y-auto">
+                  {selectedDateTrades.map((trade) => (
+                    <div
+                      key={trade.id}
+                      className="p-3 border rounded-lg space-y-2 hover:bg-white dark:hover:bg-gray-700/50 transition-colors bg-white/50 dark:bg-gray-700/30"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Badge variant={trade.direction === "long" ? "default" : "secondary"}>
+                            {trade.direction === "long" ? (
+                              <TrendingUp className="h-3 w-3 mr-1" />
+                            ) : (
+                              <TrendingDown className="h-3 w-3 mr-1" />
+                            )}
+                            {trade.direction.toUpperCase()}
+                          </Badge>
+                          <span className="font-medium text-sm">{trade.asset}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium ${
+                            parseFloat(String(trade.pnl || '0')) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                          }`}>
+                            {parseFloat(String(trade.pnl || '0')) >= 0 ? '+' : ''}${String(trade.pnl || '0.00')}
+                          </span>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditTrade(trade)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Edit className="h-3 w-3" />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[500px]">
+                              <DialogHeader>
+                                <DialogTitle>Edit Trade</DialogTitle>
+                              </DialogHeader>
+                              <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <FormField
+                                      control={form.control}
+                                      name="asset"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormLabel>Asset</FormLabel>
+                                          <FormControl>
+                                            <Input {...field} />
+                                          </FormControl>
+                                          <FormMessage />
+                                        </FormItem>
+                                      )}
+                                    />
+                                    <FormField
+                                      control={form.control}
+                                      name="direction"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormLabel>Direction</FormLabel>
+                                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                              <SelectTrigger>
+                                                <SelectValue />
+                                              </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                              <SelectItem value="long">Long</SelectItem>
+                                              <SelectItem value="short">Short</SelectItem>
+                                            </SelectContent>
+                                          </Select>
+                                          <FormMessage />
+                                        </FormItem>
+                                      )}
+                                    />
+                                  </div>
+
+                                  <div className="grid grid-cols-3 gap-4">
+                                    <FormField
+                                      control={form.control}
+                                      name="entryPrice"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormLabel>Entry Price</FormLabel>
+                                          <FormControl>
+                                            <Input {...field} type="number" step="0.01" />
+                                          </FormControl>
+                                          <FormMessage />
+                                        </FormItem>
+                                      )}
+                                    />
+                                    <FormField
+                                      control={form.control}
+                                      name="exitPrice"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormLabel>Exit Price</FormLabel>
+                                          <FormControl>
+                                            <Input {...field} type="number" step="0.01" />
+                                          </FormControl>
+                                          <FormMessage />
+                                        </FormItem>
+                                      )}
+                                    />
+                                    <FormField
+                                      control={form.control}
+                                      name="size"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormLabel>Size</FormLabel>
+                                          <FormControl>
+                                            <Input {...field} type="number" />
+                                          </FormControl>
+                                          <FormMessage />
+                                        </FormItem>
+                                      )}
+                                    />
+                                  </div>
+
+                                  <FormField
+                                    control={form.control}
+                                    name="tradeDate"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Trade Date</FormLabel>
+                                        <FormControl>
+                                          <Input {...field} type="date" />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+
+                                  <FormField
+                                    control={form.control}
+                                    name="notes"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Notes</FormLabel>
+                                        <FormControl>
+                                          <Textarea {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+
+                                  <FormField
+                                    control={form.control}
+                                    name="tags"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Tags (comma separated)</FormLabel>
+                                        <FormControl>
+                                          <Input {...field} placeholder="momentum, breakout, earnings" />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+
+                                  <div className="flex justify-end space-x-2">
+                                    <Button type="submit" disabled={updateTradeMutation.isPending}>
+                                      {updateTradeMutation.isPending ? "Updating..." : "Update Trade"}
+                                    </Button>
+                                  </div>
+                                </form>
+                              </Form>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
+                      </div>
+                      
+                      {trade.notes && (
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                          {trade.notes}
+                        </p>
+                      )}
+                      
+                      {trade.tags && (() => {
+                        try {
+                          const tags = typeof trade.tags === 'string' ? JSON.parse(trade.tags) : trade.tags;
+                          return tags && tags.length > 0 && (
+                            <div className="flex gap-1 mt-2">
+                              {tags.map((tag: string, index: number) => (
+                                <Badge key={index} variant="outline" className="text-xs">
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          );
+                        } catch {
+                          return null;
+                        }
+                      })()}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-4 text-gray-500 dark:text-gray-400 text-sm">
+                  No trades on this date
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Selected Date Trades */}
           <div className="flex-1 space-y-2">

@@ -96,15 +96,15 @@ export function DailyPnLWidget({ trades = [] }: DailyPnLWidgetProps) {
   }
 
   return (
-    <Card className="h-full">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+    <Card className="h-full flex flex-col">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 flex-shrink-0">
         <CardTitle className="text-base font-medium flex items-center gap-2">
           <BarChart3 className="h-4 w-4" />
           Net Daily P&L
           <Info className="h-3 w-3 text-muted-foreground" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 flex-1 flex flex-col">
         {/* Summary Stats */}
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="space-y-1">
@@ -128,7 +128,7 @@ export function DailyPnLWidget({ trades = [] }: DailyPnLWidgetProps) {
         </div>
 
         {/* Bar Chart */}
-        <div className="h-40">
+        <div className="flex-1 min-h-0">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={dailyPnLData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
               <XAxis 

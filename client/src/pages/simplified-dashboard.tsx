@@ -21,7 +21,10 @@ import { DailyPnLWidget } from "@/components/dashboard-widgets/daily-pnl-widget"
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 import "react-grid-layout/css/styles.css";
 //@ts-ignore
+import "react-resizable/css/styles.css";
+//@ts-ignore
 import GridLayout from "react-grid-layout";
+import "@/components/ui/improved-grid.css";
 import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
 import { getGreeting } from "@/utils/greeting";
 
@@ -35,13 +38,13 @@ export default function SimplifiedDashboard() {
   const [filterTimeframe, setFilterTimeframe] = useState<string>("all");
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [showWidgetSelector, setShowWidgetSelector] = useState(false);
-  // Standard widget sizes: Small (4x4), Medium (6x5), Large (12x6)
+  // Improved grid layout with better positioning
   const [layouts, setLayouts] = useState([
-    { i: "equity-curve", x: 0, y: 0, w: 6, h: 6, minW: 6, minH: 6, maxW: 6, maxH: 6 },
-    { i: "performance-metrics", x: 6, y: 0, w: 6, h: 6, minW: 6, minH: 6, maxW: 6, maxH: 6 },
-    { i: "drawdown", x: 0, y: 6, w: 6, h: 6, minW: 6, minH: 6, maxW: 6, maxH: 6 },
-    { i: "trade-list", x: 6, y: 6, w: 6, h: 6, minW: 6, minH: 6, maxW: 6, maxH: 6 },
-    { i: "calendar", x: 0, y: 12, w: 12, h: 8, minW: 12, minH: 8, maxW: 12, maxH: 8 },
+    { i: "equity-curve", x: 0, y: 0, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "performance-metrics", x: 6, y: 0, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "drawdown", x: 0, y: 6, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "trade-list", x: 6, y: 6, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "calendar", x: 0, y: 12, w: 12, h: 8, minW: 12, minH: 6, maxW: 12, maxH: 12 },
   ]);
   
   const [activeWidgets, setActiveWidgets] = useState([
@@ -185,10 +188,10 @@ export default function SimplifiedDashboard() {
         y: Math.max(...layouts.map(l => l.y + l.h), 0),
         w: size.w,
         h: size.h,
-        minW: size.w,
-        minH: size.h,
-        maxW: size.w,
-        maxH: size.h,
+        minW: 6,
+        minH: 5,
+        maxW: 12,
+        maxH: 12,
       };
       setLayouts([...layouts, newWidget]);
     }
@@ -424,20 +427,21 @@ export default function SimplifiedDashboard() {
                 className="layout"
                 layout={layouts}
                 cols={12}
-                rowHeight={85}
-                width={1168}
+                rowHeight={70}
+                width={1200}
                 autoSize={true}
                 isDraggable={isCustomizing}
-                isResizable={false}
+                isResizable={isCustomizing}
                 onLayoutChange={handleLayoutChange}
                 margin={[16, 16]}
-                containerPadding={[0, 0]}
+                containerPadding={[16, 16]}
                 useCSSTransforms={true}
                 preventCollision={true}
                 compactType="vertical"
+                verticalCompact={true}
               >
                 {activeWidgets.map(widgetId => (
-                  <div key={widgetId} className={isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all relative group" : "relative"}>
+                  <div key={widgetId} className={`widget-container ${isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all relative group" : "relative"}`}>
                     {isCustomizing && (
                       <button
                         onClick={(e) => {

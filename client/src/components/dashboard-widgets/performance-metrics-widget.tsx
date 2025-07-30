@@ -70,8 +70,8 @@ export function PerformanceMetricsWidget({ trades, className }: PerformanceMetri
   ];
 
   return (
-    <Card className={`h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg glass-transition hover:shadow-xl ${className}`}>
-      <CardHeader className="pb-3">
+    <Card className={`h-full flex flex-col bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg glass-transition hover:shadow-xl ${className}`}>
+      <CardHeader className="pb-3 flex-shrink-0">
         <CardTitle className="flex items-center justify-between text-lg font-semibold text-gray-900 dark:text-white">
           <div className="flex items-center">
             <Award className="w-5 h-5 mr-2 text-purple-500" />
@@ -79,7 +79,7 @@ export function PerformanceMetricsWidget({ trades, className }: PerformanceMetri
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1 flex flex-col">
         <div className="grid grid-cols-2 gap-4">
           {metrics.map((metric, index) => {
             const Icon = metric.icon;

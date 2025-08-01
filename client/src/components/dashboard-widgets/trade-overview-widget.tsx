@@ -223,7 +223,7 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
       
       // Filters applied section
       const filtersApplied = [
-        filters.instrument && `Instrument: ${filters.instrument}`,
+        filters.instrument && `Asset: ${filters.instrument}`,
         filters.dateFrom && `From: ${format(filters.dateFrom, 'PPP')}`,
         filters.dateTo && `To: ${format(filters.dateTo, 'PPP')}`,
         filters.tags.length > 0 && `Tags: ${filters.tags.join(', ')}`,
@@ -436,13 +436,13 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
             </div>
             
             <div className="space-y-2">
-              <Label>Instrument</Label>
+              <Label>Assets</Label>
               <Select value={filters.instrument || "all"} onValueChange={(value) => setFilters(prev => ({ ...prev, instrument: value === "all" ? "" : value }))}>
                 <SelectTrigger>
-                  <SelectValue placeholder="All instruments" />
+                  <SelectValue placeholder="All assets" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All instruments</SelectItem>
+                  <SelectItem value="all">All assets</SelectItem>
                   {instruments.map(instrument => (
                     <SelectItem key={instrument} value={instrument}>
                       {instrument}

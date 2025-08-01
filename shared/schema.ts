@@ -52,13 +52,30 @@ export const trades = pgTable("trades", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const notes = pgTable("notes", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  title: text("title").notNull(),
+  content: text("content").notNull().default(""),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 export const userRelations = relations(users, ({ many }) => ({
   trades: many(trades),
+  notes: many(notes),
 }));
 
 export const tradeRelations = relations(trades, ({ one }) => ({
   user: one(users, {
     fields: [trades.userId],
+    references: [users.id],
+  }),
+}));
+
+export const noteRelations = relations(notes, ({ one }) => ({
+  user: one(users, {
+    fields: [notes.userId],
     references: [users.id],
   }),
 }));
@@ -127,6 +144,22 @@ export const updateTradeSchema = createInsertSchema(trades).omit({
   createdAt: true,
 }).partial();
 
+export const insertNoteSchema = createInsertSchema(notes).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  title: z.string().min(1, "Title is required").max(200, "Title must be less than 200 characters"),
+  content: z.string().max(10000, "Content must be less than 10,000 characters"),
+});
+
+export const updateNoteSchema = createInsertSchema(notes).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+}).partial();
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -137,6 +170,9 @@ export type User = typeof users.$inferSelect;
 export type InsertTrade = z.infer<typeof insertTradeSchema>;
 export type UpdateTrade = z.infer<typeof updateTradeSchema>;
 export type Trade = typeof trades.$inferSelect;
+export type InsertNote = z.infer<typeof insertNoteSchema>;
+export type UpdateNote = z.infer<typeof updateNoteSchema>;
+export type Note = typeof notes.$inferSelect;
 
 // Additional types for API responses
 export type TradeStats = {

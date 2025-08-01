@@ -1,12 +1,16 @@
 import { 
   users, 
   trades, 
+  notes,
   sessions,
   type User, 
   type InsertUser, 
   type Trade, 
   type InsertTrade, 
   type UpdateTrade,
+  type Note,
+  type InsertNote,
+  type UpdateNote,
   type UpdateProfileData
 } from "@shared/schema";
 import { db } from "./db";
@@ -46,6 +50,12 @@ export interface IStorage {
   updateTrade(tradeId: number, userId: number, updates: UpdateTrade): Promise<Trade | undefined>;
   deleteTrade(tradeId: number, userId: number): Promise<boolean>;
   getUserTradeCount(userId: number): Promise<number>;
+  
+  // Notes management
+  getUserNotes(userId: number, limit?: number): Promise<Note[]>;
+  createNote(userId: number, note: InsertNote): Promise<Note>;
+  updateNote(noteId: number, userId: number, updates: UpdateNote): Promise<Note | undefined>;
+  deleteNote(noteId: number, userId: number): Promise<boolean>;
   
   getUserStats(userId: number): Promise<{
     totalTrades: number;
@@ -406,6 +416,54 @@ export class DatabaseStorage implements IStorage {
       largestLoss,
       maxDrawdown,
     };
+  }
+
+  async getUserNotes(userId: number, limit?: number): Promise<Note[]> {
+    let query = db
+      .select()
+      .from(notes)
+      .where(eq(notes.userId, userId))
+      .orderBy(desc(notes.updatedAt));
+    
+    if (limit) {
+      return await query.limit(limit);
+    }
+    
+    return await query;
+  }
+
+  async createNote(userId: number, note: InsertNote): Promise<Note> {
+    const [newNote] = await db
+      .insert(notes)
+      .values({
+        ...note,
+        userId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+    return newNote;
+  }
+
+  async updateNote(noteId: number, userId: number, updates: UpdateNote): Promise<Note | undefined> {
+    const [updatedNote] = await db
+      .update(notes)
+      .set({
+        ...updates,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(notes.id, noteId), eq(notes.userId, userId)))
+      .returning();
+    
+    return updatedNote;
+  }
+
+  async deleteNote(noteId: number, userId: number): Promise<boolean> {
+    const result = await db
+      .delete(notes)
+      .where(and(eq(notes.id, noteId), eq(notes.userId, userId)));
+    
+    return (result.rowCount || 0) > 0;
   }
 }
 

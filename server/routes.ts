@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { setupAuth } from "./auth";
 import { storage } from "./storage";
-import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, type BillingInfo, SUBSCRIPTION_PLANS } from "@shared/schema";
+import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, notes, insertNoteSchema, updateNoteSchema, type BillingInfo, SUBSCRIPTION_PLANS, type Note } from "@shared/schema";
 import { z } from "zod";
 import Stripe from "stripe";
 import { db } from "./db";
@@ -210,6 +210,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       if (!success) {
         return res.status(404).json({ message: "Trade not found" });
+      }
+      
+      res.sendStatus(200);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Notes routes
+  app.get("/api/notes", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const userNotes = await storage.getUserNotes(req.user.id);
+      res.json(userNotes);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/notes", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const validatedData = insertNoteSchema.parse(req.body);
+      const note = await storage.createNote(req.user.id, validatedData);
+      res.json(note);
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid note data", errors: error.errors });
+      }
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.put("/api/notes/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const noteId = parseInt(req.params.id);
+      const validatedData = updateNoteSchema.parse(req.body);
+      
+      const note = await storage.updateNote(noteId, req.user.id, validatedData);
+      
+      if (!note) {
+        return res.status(404).json({ message: "Note not found" });
+      }
+      
+      res.json(note);
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid note data", errors: error.errors });
+      }
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.delete("/api/notes/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const noteId = parseInt(req.params.id);
+      const success = await storage.deleteNote(noteId, req.user.id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Note not found" });
       }
       
       res.sendStatus(200);

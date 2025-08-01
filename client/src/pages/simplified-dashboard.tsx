@@ -2,7 +2,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
-import { Moon, Sun, Plus, Filter, Search, Settings, LogOut, Layout, LayoutDashboard, TrendingUp, BarChart3 } from "lucide-react";
+import { Moon, Sun, Plus, Filter, Search, Settings, LogOut, Layout, LayoutDashboard, TrendingUp, BarChart3, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +18,7 @@ import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
 import { DailyPnLWidget } from "@/components/dashboard-widgets/daily-pnl-widget";
 import { TradeOverviewWidget } from "@/components/dashboard-widgets/trade-overview-widget";
 import { StorageUsageWidget } from "@/components/dashboard-widgets/storage-usage-widget";
+import { NotesWidget } from "@/components/dashboard-widgets/notes-widget";
 
 
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
@@ -40,17 +41,19 @@ export default function SimplifiedDashboard() {
   const [filterTimeframe, setFilterTimeframe] = useState<string>("all");
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [showWidgetSelector, setShowWidgetSelector] = useState(false);
+  const [expandedNotesWidget, setExpandedNotesWidget] = useState(false);
   // Improved grid layout with better positioning
   const [layouts, setLayouts] = useState([
     { i: "equity-curve", x: 0, y: 0, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
     { i: "performance-metrics", x: 6, y: 0, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
     { i: "drawdown", x: 0, y: 6, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
     { i: "trade-list", x: 6, y: 6, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
-    { i: "calendar", x: 0, y: 12, w: 12, h: 8, minW: 12, minH: 6, maxW: 12, maxH: 12 },
+    { i: "notes", x: 0, y: 12, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "calendar", x: 0, y: 18, w: 12, h: 8, minW: 12, minH: 6, maxW: 12, maxH: 12 },
   ]);
   
   const [activeWidgets, setActiveWidgets] = useState([
-    "equity-curve", "performance-metrics", "drawdown", "trade-list", "calendar"
+    "equity-curve", "performance-metrics", "drawdown", "trade-list", "notes", "calendar"
   ]);
   
   const availableWidgets = [
@@ -59,6 +62,7 @@ export default function SimplifiedDashboard() {
     { id: "drawdown", name: "Drawdown Analysis", icon: BarChart3, description: "Monitor risk and underwater periods" },
     { id: "performance-metrics", name: "Performance Metrics", icon: LayoutDashboard, description: "Key trading statistics and ratios" },
     { id: "trade-list", name: "Recent Trades", icon: Layout, description: "View your latest trading activity" },
+    { id: "notes", name: "Trading Notes", icon: FileText, description: "Create and manage your trading notes and observations" },
     { id: "calendar", name: "Trade Calendar", icon: Layout, description: "Calendar view of all your trades with editing" },
     { id: "daily-pnl", name: "Daily P&L", icon: BarChart3, description: "Daily profit and loss tracking with charts" },
     { id: "trade-overview", name: "Trade Overview", icon: Filter, description: "Advanced filtering with summary stats and PDF export" },
@@ -156,6 +160,11 @@ export default function SimplifiedDashboard() {
         return <PerformanceMetricsWidget trades={filteredTrades} />;
       case "trade-list":
         return <TradeListWidget trades={filteredTrades} />;
+      case "notes":
+        return <NotesWidget 
+          expanded={expandedNotesWidget} 
+          onToggleExpand={() => setExpandedNotesWidget(!expandedNotesWidget)} 
+        />;
       case "calendar":
         return <CalendarWidget />;
       case "daily-pnl":
@@ -180,6 +189,7 @@ export default function SimplifiedDashboard() {
       "drawdown": { w: 6, h: 6 }, // Uniform - chart with proper spacing
       "performance-metrics": { w: 6, h: 6 }, // Uniform - metrics grid
       "trade-list": { w: 6, h: 6 }, // Uniform - scrollable list
+      "notes": { w: 6, h: 6 }, // Uniform - notes widget with expand functionality
       "calendar": { w: 12, h: 8 }, // Large - calendar needs more space
       "daily-pnl": { w: 6, h: 6 }, // Uniform - daily P&L chart
       "trade-overview": { w: 12, h: 10 }, // Large - comprehensive filtering widget

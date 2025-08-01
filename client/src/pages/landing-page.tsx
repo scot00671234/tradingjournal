@@ -200,8 +200,9 @@ export default function LandingPage() {
           >
             <Button 
               size="lg" 
+              variant="ghost"
               onClick={() => setLocation("/auth")}
-              className="bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 border-0 px-8 py-3 h-auto font-semibold shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 transition-all duration-200"
+              className="btn-golden px-8 py-3 h-auto"
             >
               Start 7-Day Free Trial
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -304,8 +305,9 @@ export default function LandingPage() {
           >
             <Button 
               size="lg" 
+              variant="ghost"
               onClick={() => setLocation("/auth")}
-              className="bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 border-0 px-12 py-4 h-auto font-semibold shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 transition-all duration-200 text-lg"
+              className="btn-golden px-12 py-4 h-auto text-lg"
             >
               Start Your Transformation
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -681,8 +683,9 @@ export default function LandingPage() {
               <div className="flex space-x-4">
                 <Button 
                   size="sm" 
+                  variant="ghost"
                   onClick={() => setLocation("/auth")}
-                  className="bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black text-sm"
+                  className="btn-golden text-sm"
                 >
                   Start Free Trial
                 </Button>

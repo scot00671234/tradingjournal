@@ -53,11 +53,11 @@ export default function LandingPage() {
       description: "For serious traders",
       features: [
         "Unlimited trades",
+        "1GB storage",
+        "1 trading account",
         "Advanced analytics", 
         "Trade screenshots",
-        "Custom tags & notes",
-        "Export data",
-        "Performance insights"
+        "Custom tags & notes"
       ],
       buttonText: "Start 7-Day Free Trial",
       popular: true
@@ -69,13 +69,45 @@ export default function LandingPage() {
       description: "For professional traders",
       features: [
         "Everything in Pro +",
+        "5GB storage",
+        "10 trading accounts",
         "Advanced risk metrics",
-        "Portfolio optimization", 
-        "Custom strategy analysis",
         "Priority support",
-        "API access"
+        "Portfolio optimization"
       ],
       buttonText: "Start 7-Day Free Trial",
+      popular: false
+    },
+    {
+      name: "Diamond",
+      price: "$89",
+      period: "month", 
+      description: "For trading teams",
+      features: [
+        "Everything in Elite +",
+        "10GB storage",
+        "20 trading accounts",
+        "Advanced reporting",
+        "Custom analytics",
+        "Team collaboration"
+      ],
+      buttonText: "Start 7-Day Free Trial",
+      popular: false
+    },
+    {
+      name: "Enterprise",
+      price: "$129",
+      period: "month",
+      description: "For institutions",
+      features: [
+        "Everything in Diamond +", 
+        "30GB storage",
+        "Unlimited accounts",
+        "Custom integrations",
+        "Dedicated support",
+        "White-label options"
+      ],
+      buttonText: "Contact Sales",
       popular: false
     }
   ];
@@ -372,7 +404,7 @@ export default function LandingPage() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {pricingPlans.map((plan, index) => (
               <motion.div
                 key={index}

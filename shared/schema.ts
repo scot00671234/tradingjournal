@@ -14,7 +14,9 @@ export const users = pgTable("users", {
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
   subscriptionStatus: text("subscription_status").default("inactive"), // active, canceled, past_due
-  subscriptionPlan: text("subscription_plan").default("free"), // free, pro, elite
+  subscriptionPlan: text("subscription_plan").default("free"), // free, pro, elite, diamond, enterprise
+  storageUsedBytes: integer("storage_used_bytes").default(0),
+  maxTradingAccounts: integer("max_trading_accounts").default(1),
   isEmailVerified: boolean("is_email_verified").default(false),
   emailVerificationToken: text("email_verification_token"),
   passwordResetToken: text("password_reset_token"),
@@ -162,7 +164,54 @@ export type SubscriptionStatus = {
   status: string;
   tradeCount: number;
   tradeLimit: number | null;
+  storageUsedBytes: number;
+  storageLimit: number; // in bytes
+  maxTradingAccounts: number;
 };
+
+// Plan configurations
+export const SUBSCRIPTION_PLANS = {
+  free: {
+    name: 'Free',
+    price: 0,
+    storageLimit: 100 * 1024 * 1024, // 100MB
+    maxTradingAccounts: 1,
+    tradeLimit: 5,
+    features: ['Basic trade tracking', 'Simple analytics', '100MB storage']
+  },
+  pro: {
+    name: 'Pro',
+    price: 29,
+    storageLimit: 1 * 1024 * 1024 * 1024, // 1GB
+    maxTradingAccounts: 1,
+    tradeLimit: null,
+    features: ['Unlimited trades', 'Advanced analytics', '1GB storage', '1 trading account']
+  },
+  elite: {
+    name: 'Elite',
+    price: 49,
+    storageLimit: 5 * 1024 * 1024 * 1024, // 5GB
+    maxTradingAccounts: 10,
+    tradeLimit: null,
+    features: ['Everything in Pro', '5GB storage', '10 trading accounts', 'Priority support']
+  },
+  diamond: {
+    name: 'Diamond',
+    price: 89,
+    storageLimit: 10 * 1024 * 1024 * 1024, // 10GB
+    maxTradingAccounts: 20,
+    tradeLimit: null,
+    features: ['Everything in Elite', '10GB storage', '20 trading accounts', 'Advanced reporting']
+  },
+  enterprise: {
+    name: 'Enterprise',
+    price: 129,
+    storageLimit: 30 * 1024 * 1024 * 1024, // 30GB
+    maxTradingAccounts: -1, // unlimited
+    tradeLimit: null,
+    features: ['Everything in Diamond', '30GB storage', 'Unlimited trading accounts', 'Custom integrations']
+  }
+} as const;
 
 export type BillingInfo = {
   stripeCustomerId?: string;

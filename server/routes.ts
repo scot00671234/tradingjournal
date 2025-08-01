@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { setupAuth } from "./auth";
 import { storage } from "./storage";
-import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, type BillingInfo } from "@shared/schema";
+import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, type BillingInfo, SUBSCRIPTION_PLANS } from "@shared/schema";
 import { z } from "zod";
 import Stripe from "stripe";
 import { db } from "./db";
@@ -33,7 +33,7 @@ const upload = multer({
     }
   }),
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 10 * 1024 * 1024, // 10MB limit per file
   },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) {
@@ -79,7 +79,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Image upload endpoint
+  // Image upload endpoint with storage limit check
   app.post("/api/upload-image", upload.single('image'), async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.sendStatus(401);
@@ -90,6 +90,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
+      const user = req.user;
+      const planKey = user.subscriptionPlan || 'free';
+      const planConfig = SUBSCRIPTION_PLANS[planKey as keyof typeof SUBSCRIPTION_PLANS] || SUBSCRIPTION_PLANS.free;
+      
+      // Calculate current storage usage
+      const currentStorageUsage = await calculateUserStorageUsage(user.id);
+      const newTotalUsage = currentStorageUsage + req.file.size;
+      
+      // Check if upload would exceed storage limit
+      if (newTotalUsage > planConfig.storageLimit) {
+        // Delete the uploaded file since it exceeds limit
+        fs.unlinkSync(req.file.path);
+        
+        const formatFileSize = (bytes: number): string => {
+          if (bytes === 0) return '0 B';
+          const k = 1024;
+          const sizes = ['B', 'KB', 'MB', 'GB'];
+          const i = Math.floor(Math.log(bytes) / Math.log(k));
+          return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+        };
+        
+        return res.status(413).json({ 
+          message: `Storage limit exceeded. File size: ${formatFileSize(req.file.size)}, Available: ${formatFileSize(planConfig.storageLimit - currentStorageUsage)}, Plan limit: ${formatFileSize(planConfig.storageLimit)}`,
+          currentUsage: currentStorageUsage,
+          limit: planConfig.storageLimit,
+          fileSize: req.file.size
+        });
+      }
+
       const imageUrl = `/uploads/${req.file.filename}`;
       res.json({ imageUrl });
     } catch (error: any) {
@@ -353,6 +382,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Function to calculate user storage usage
+  const calculateUserStorageUsage = async (userId: number): Promise<number> => {
+    try {
+      const userTrades = await db.select({
+        imageUrl: trades.imageUrl
+      }).from(trades).where(eq(trades.userId, userId));
+
+      let totalSize = 0;
+      for (const trade of userTrades) {
+        if (trade.imageUrl && trade.imageUrl.startsWith('/uploads/')) {
+          const filename = trade.imageUrl.replace('/uploads/', '');
+          const filePath = path.join(uploadDir, filename);
+          if (fs.existsSync(filePath)) {
+            const stats = fs.statSync(filePath);
+            totalSize += stats.size;
+          }
+        }
+      }
+      return totalSize;
+    } catch (error) {
+      console.error('Error calculating storage usage:', error);
+      return 0;
+    }
+  };
+
   app.get('/api/subscription-status', async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.sendStatus(401);
@@ -360,14 +414,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     const user = req.user;
     const tradeCount = await storage.getUserTradeCount(user.id);
+    const storageUsedBytes = await calculateUserStorageUsage(user.id);
+    
+    const planKey = user.subscriptionPlan || 'free';
+    const planConfig = SUBSCRIPTION_PLANS[planKey as keyof typeof SUBSCRIPTION_PLANS] || SUBSCRIPTION_PLANS.free;
     
     if (!user.stripeSubscriptionId || !stripe) {
       return res.json({ 
         isActive: false, 
-        plan: 'free',
+        plan: planKey,
         status: 'inactive',
         tradeCount,
-        tradeLimit: 5
+        tradeLimit: planConfig.tradeLimit,
+        storageUsedBytes,
+        storageLimit: planConfig.storageLimit,
+        maxTradingAccounts: planConfig.maxTradingAccounts
       });
     }
 
@@ -377,14 +438,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json({
         isActive,
-        plan: user.subscriptionPlan,
+        plan: planKey,
         status: subscription.status,
         currentPeriodStart: subscription.current_period_start ? new Date(subscription.current_period_start * 1000) : null,
         currentPeriodEnd: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null,
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
         trialEnd: subscription.trial_end,
         tradeCount,
-        tradeLimit: isActive ? null : 5
+        tradeLimit: isActive ? planConfig.tradeLimit : 5,
+        storageUsedBytes,
+        storageLimit: planConfig.storageLimit,
+        maxTradingAccounts: planConfig.maxTradingAccounts
       });
     } catch (error: any) {
       res.status(500).json({ message: error.message });

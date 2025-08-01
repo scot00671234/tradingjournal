@@ -17,6 +17,7 @@ import { TradeListWidget } from "@/components/dashboard-widgets/trade-list-widge
 import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
 import { DailyPnLWidget } from "@/components/dashboard-widgets/daily-pnl-widget";
 import { TradeOverviewWidget } from "@/components/dashboard-widgets/trade-overview-widget";
+import { StorageUsageWidget } from "@/components/dashboard-widgets/storage-usage-widget";
 
 
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
@@ -54,6 +55,7 @@ export default function SimplifiedDashboard() {
   
   const availableWidgets = [
     { id: "equity-curve", name: "Equity Curve", icon: TrendingUp, description: "Track your account value over time" },
+    { id: "storage-usage", name: "Storage Usage", icon: Settings, description: "Monitor your file storage usage" },
     { id: "drawdown", name: "Drawdown Analysis", icon: BarChart3, description: "Monitor risk and underwater periods" },
     { id: "performance-metrics", name: "Performance Metrics", icon: LayoutDashboard, description: "Key trading statistics and ratios" },
     { id: "trade-list", name: "Recent Trades", icon: Layout, description: "View your latest trading activity" },
@@ -160,6 +162,8 @@ export default function SimplifiedDashboard() {
         return <DailyPnLWidget trades={filteredTrades} />;
       case "trade-overview":
         return user ? <TradeOverviewWidget trades={trades} user={user} isCustomizing={isCustomizing} onDelete={() => removeWidget(key)} /> : null;
+      case "storage-usage":
+        return <StorageUsageWidget />;
       default:
         return null;
     }
@@ -179,6 +183,7 @@ export default function SimplifiedDashboard() {
       "calendar": { w: 12, h: 8 }, // Large - calendar needs more space
       "daily-pnl": { w: 6, h: 6 }, // Uniform - daily P&L chart
       "trade-overview": { w: 12, h: 10 }, // Large - comprehensive filtering widget
+      "storage-usage": { w: 6, h: 6 }, // Uniform - storage monitoring
     };
     return sizeMap[widgetId] || { w: 6, h: 6 };
   };

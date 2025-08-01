@@ -1,65 +1,46 @@
 import { useState, useMemo } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Calendar, Download, Filter, X, Search } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { format, startOfMonth, endOfMonth, subMonths } from "date-fns";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { CalendarIcon, Download, Filter, X, Search } from "lucide-react";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import type { Trade } from "@shared/schema";
+import type { Trade, User } from "@shared/schema";
 
 interface TradeOverviewWidgetProps {
+  trades: Trade[];
+  user: User;
+  isCustomizing?: boolean;
   onDelete?: () => void;
-  showDeleteButton?: boolean;
 }
 
 interface FilterState {
   instrument: string;
-  startDate: Date | null;
-  endDate: Date | null;
+  dateFrom: Date | undefined;
+  dateTo: Date | undefined;
   tags: string[];
   searchTerm: string;
 }
 
-interface SummaryStats {
-  totalPnL: number;
-  winRate: number;
-  totalTrades: number;
-  winningTrades: number;
-  losingTrades: number;
-  avgWin: number;
-  avgLoss: number;
-  largestWin: number;
-  largestLoss: number;
-  profitFactor: number;
-}
-
-export function TradeOverviewWidget({ onDelete, showDeleteButton }: TradeOverviewWidgetProps) {
-  const queryClient = useQueryClient();
-  
+export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: TradeOverviewWidgetProps) {
   const [filters, setFilters] = useState<FilterState>({
-    instrument: "all",
-    startDate: startOfMonth(subMonths(new Date(), 2)),
-    endDate: endOfMonth(new Date()),
+    instrument: "",
+    dateFrom: undefined,
+    dateTo: undefined,
     tags: [],
     searchTerm: ""
   });
 
-  const [showFilters, setShowFilters] = useState(false);
-  const [tagInput, setTagInput] = useState("");
+  const [showInstrumentSearch, setShowInstrumentSearch] = useState(false);
 
-  // Fetch all trades
-  const { data: trades = [], isLoading } = useQuery<Trade[]>({
-    queryKey: ['/api/trades']
-  });
-
-  // Get unique instruments and tags for filter options
+  // Get unique instruments and tags from trades
   const { instruments, allTags } = useMemo(() => {
     const instrumentSet = new Set<string>();
     const tagSet = new Set<string>();
@@ -72,13 +53,15 @@ export function TradeOverviewWidget({ onDelete, showDeleteButton }: TradeOvervie
           if (Array.isArray(tradeTags)) {
             tradeTags.forEach(tag => tagSet.add(tag));
           }
-        } catch {
-          // Handle legacy string tags
-          trade.tags.split(',').forEach(tag => tagSet.add(tag.trim()));
+        } catch (e) {
+          // Handle non-JSON tags
+          if (trade.tags.trim()) {
+            tagSet.add(trade.tags.trim());
+          }
         }
       }
     });
-
+    
     return {
       instruments: Array.from(instrumentSet).sort(),
       allTags: Array.from(tagSet).sort()
@@ -89,24 +72,30 @@ export function TradeOverviewWidget({ onDelete, showDeleteButton }: TradeOvervie
   const filteredTrades = useMemo(() => {
     return trades.filter(trade => {
       // Instrument filter
-      if (filters.instrument !== "all" && trade.asset !== filters.instrument) {
+      if (filters.instrument && trade.asset !== filters.instrument) {
         return false;
       }
 
       // Date range filter
       const tradeDate = new Date(trade.tradeDate);
-      if (filters.startDate && tradeDate < filters.startDate) return false;
-      if (filters.endDate && tradeDate > filters.endDate) return false;
+      if (filters.dateFrom && tradeDate < filters.dateFrom) {
+        return false;
+      }
+      if (filters.dateTo && tradeDate > filters.dateTo) {
+        return false;
+      }
 
       // Tags filter
       if (filters.tags.length > 0) {
         let tradeTags: string[] = [];
         if (trade.tags) {
           try {
-            const parsed = JSON.parse(trade.tags);
-            tradeTags = Array.isArray(parsed) ? parsed : [];
-          } catch {
-            tradeTags = trade.tags.split(',').map(tag => tag.trim());
+            tradeTags = JSON.parse(trade.tags);
+            if (!Array.isArray(tradeTags)) {
+              tradeTags = [trade.tags];
+            }
+          } catch (e) {
+            tradeTags = trade.tags ? [trade.tags] : [];
           }
         }
         
@@ -115,464 +104,383 @@ export function TradeOverviewWidget({ onDelete, showDeleteButton }: TradeOvervie
             tradeTag.toLowerCase().includes(filterTag.toLowerCase())
           )
         );
+        
         if (!hasMatchingTag) return false;
       }
 
       // Search term filter
       if (filters.searchTerm) {
         const searchLower = filters.searchTerm.toLowerCase();
-        const matchesAsset = trade.asset.toLowerCase().includes(searchLower);
-        const matchesNotes = trade.notes?.toLowerCase().includes(searchLower);
-        const matchesDirection = trade.direction.toLowerCase().includes(searchLower);
+        const matchesSearch = 
+          trade.asset.toLowerCase().includes(searchLower) ||
+          trade.direction.toLowerCase().includes(searchLower) ||
+          (trade.notes && trade.notes.toLowerCase().includes(searchLower)) ||
+          (trade.tags && trade.tags.toLowerCase().includes(searchLower));
         
-        if (!matchesAsset && !matchesNotes && !matchesDirection) return false;
+        if (!matchesSearch) return false;
       }
 
       return true;
     });
   }, [trades, filters]);
 
-  // Calculate summary statistics
-  const summaryStats = useMemo((): SummaryStats => {
+  // Calculate summary stats
+  const summaryStats = useMemo(() => {
     const completedTrades = filteredTrades.filter(trade => trade.isCompleted && trade.pnl !== null);
-    
-    if (completedTrades.length === 0) {
-      return {
-        totalPnL: 0,
-        winRate: 0,
-        totalTrades: 0,
-        winningTrades: 0,
-        losingTrades: 0,
-        avgWin: 0,
-        avgLoss: 0,
-        largestWin: 0,
-        largestLoss: 0,
-        profitFactor: 0
-      };
-    }
-
-    const winningTrades = completedTrades.filter(trade => (trade.pnl || 0) > 0);
-    const losingTrades = completedTrades.filter(trade => (trade.pnl || 0) < 0);
-    
     const totalPnL = completedTrades.reduce((sum, trade) => sum + (trade.pnl || 0), 0);
-    const winRate = (winningTrades.length / completedTrades.length) * 100;
-    
-    const totalWins = winningTrades.reduce((sum, trade) => sum + (trade.pnl || 0), 0);
-    const totalLosses = Math.abs(losingTrades.reduce((sum, trade) => sum + (trade.pnl || 0), 0));
-    
-    const avgWin = winningTrades.length > 0 ? totalWins / winningTrades.length : 0;
-    const avgLoss = losingTrades.length > 0 ? totalLosses / losingTrades.length : 0;
-    
-    const largestWin = winningTrades.length > 0 ? Math.max(...winningTrades.map(t => t.pnl || 0)) : 0;
-    const largestLoss = losingTrades.length > 0 ? Math.min(...losingTrades.map(t => t.pnl || 0)) : 0;
-    
-    const profitFactor = totalLosses > 0 ? totalWins / totalLosses : totalWins > 0 ? 999 : 0;
+    const winningTrades = completedTrades.filter(trade => (trade.pnl || 0) > 0);
+    const winRate = completedTrades.length > 0 ? (winningTrades.length / completedTrades.length) * 100 : 0;
+    const avgWin = winningTrades.length > 0 ? winningTrades.reduce((sum, trade) => sum + (trade.pnl || 0), 0) / winningTrades.length : 0;
+    const losingTrades = completedTrades.filter(trade => (trade.pnl || 0) < 0);
+    const avgLoss = losingTrades.length > 0 ? Math.abs(losingTrades.reduce((sum, trade) => sum + (trade.pnl || 0), 0) / losingTrades.length) : 0;
+    const profitFactor = avgLoss > 0 ? avgWin / avgLoss : avgWin > 0 ? Infinity : 0;
 
     return {
+      totalTrades: filteredTrades.length,
+      completedTrades: completedTrades.length,
       totalPnL,
       winRate,
-      totalTrades: completedTrades.length,
-      winningTrades: winningTrades.length,
-      losingTrades: losingTrades.length,
       avgWin,
       avgLoss,
-      largestWin,
-      largestLoss,
       profitFactor
     };
   }, [filteredTrades]);
 
-  const handleAddTag = (tag: string) => {
-    if (tag && !filters.tags.includes(tag)) {
-      setFilters(prev => ({
-        ...prev,
-        tags: [...prev.tags, tag]
-      }));
-    }
-    setTagInput("");
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: user.preferredCurrency || 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
   };
 
-  const handleRemoveTag = (tagToRemove: string) => {
-    setFilters(prev => ({
-      ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }));
-  };
-
-  const clearAllFilters = () => {
+  const clearFilters = () => {
     setFilters({
-      instrument: "all",
-      startDate: startOfMonth(subMonths(new Date(), 2)),
-      endDate: endOfMonth(new Date()),
+      instrument: "",
+      dateFrom: undefined,
+      dateTo: undefined,
       tags: [],
       searchTerm: ""
     });
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(value);
+  const addTagFilter = (tag: string) => {
+    if (!filters.tags.includes(tag)) {
+      setFilters(prev => ({
+        ...prev,
+        tags: [...prev.tags, tag]
+      }));
+    }
   };
 
-  const exportToPDF = async () => {
-    // Create a comprehensive PDF export
-    const printContent = `
-      <!DOCTYPE html>
-      <html>
+  const removeTagFilter = (tag: string) => {
+    setFilters(prev => ({
+      ...prev,
+      tags: prev.tags.filter(t => t !== tag)
+    }));
+  };
+
+  const generatePDF = async () => {
+    try {
+      // Create a simple PDF export using window.print() with custom styles
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) return;
+
+      const filtersApplied = [
+        filters.instrument && `Instrument: ${filters.instrument}`,
+        filters.dateFrom && `From: ${format(filters.dateFrom, 'PPP')}`,
+        filters.dateTo && `To: ${format(filters.dateTo, 'PPP')}`,
+        filters.tags.length > 0 && `Tags: ${filters.tags.join(', ')}`,
+        filters.searchTerm && `Search: ${filters.searchTerm}`
+      ].filter(Boolean).join(' | ');
+
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html>
         <head>
-          <title>CoinFeedly - Trade Overview Report</title>
+          <title>CoinFeedly Trade Overview Report</title>
           <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 20px; color: #333; }
-            .header { border-bottom: 2px solid #e5e7eb; padding-bottom: 20px; margin-bottom: 30px; }
-            .header h1 { margin: 0; color: #1f2937; font-size: 28px; }
-            .header .subtitle { color: #6b7280; margin: 5px 0; }
-            .filters-section { background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
-            .filters-section h3 { margin-top: 0; color: #374151; }
-            .filter-item { margin: 8px 0; }
+            body { font-family: Arial, sans-serif; margin: 40px; }
+            .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 20px; }
+            .filters { margin-bottom: 20px; font-size: 14px; color: #666; }
             .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-            .stat-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center; }
+            .stat-card { border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
             .stat-value { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
-            .stat-label { color: #6b7280; font-size: 14px; }
+            .stat-label { font-size: 14px; color: #666; }
             .positive { color: #059669; }
             .negative { color: #dc2626; }
-            .neutral { color: #6b7280; }
-            .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 12px; }
           </style>
         </head>
         <body>
           <div class="header">
             <h1>CoinFeedly Trade Overview Report</h1>
-            <div class="subtitle">Generated on ${new Date().toLocaleString()}</div>
+            <p>Generated on ${format(new Date(), 'PPP')}</p>
+            ${filtersApplied ? `<p class="filters">Filters Applied: ${filtersApplied}</p>` : ''}
           </div>
           
-          <div class="filters-section">
-            <h3>Applied Filters</h3>
-            <div class="filter-item"><strong>Instrument:</strong> ${filters.instrument === 'all' ? 'All Instruments' : filters.instrument}</div>
-            <div class="filter-item"><strong>Date Range:</strong> ${filters.startDate ? format(filters.startDate, 'MMM dd, yyyy') : 'No start date'} - ${filters.endDate ? format(filters.endDate, 'MMM dd, yyyy') : 'No end date'}</div>
-            <div class="filter-item"><strong>Tags:</strong> ${filters.tags.length > 0 ? filters.tags.join(', ') : 'None'}</div>
-            <div class="filter-item"><strong>Search Term:</strong> ${filters.searchTerm || 'None'}</div>
-          </div>
-
-          <h3>Summary Statistics</h3>
           <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">${summaryStats.totalTrades}</div>
+              <div class="stat-label">Total Trades</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">${summaryStats.completedTrades}</div>
+              <div class="stat-label">Completed Trades</div>
+            </div>
             <div class="stat-card">
               <div class="stat-value ${summaryStats.totalPnL >= 0 ? 'positive' : 'negative'}">${formatCurrency(summaryStats.totalPnL)}</div>
               <div class="stat-label">Total P&L</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value neutral">${summaryStats.winRate.toFixed(1)}%</div>
+              <div class="stat-value">${summaryStats.winRate.toFixed(1)}%</div>
               <div class="stat-label">Win Rate</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value neutral">${summaryStats.totalTrades}</div>
-              <div class="stat-label">Total Trades</div>
-            </div>
-            <div class="stat-card">
               <div class="stat-value positive">${formatCurrency(summaryStats.avgWin)}</div>
-              <div class="stat-label">Avg Win</div>
+              <div class="stat-label">Average Win</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value negative">${formatCurrency(Math.abs(summaryStats.avgLoss))}</div>
-              <div class="stat-label">Avg Loss</div>
+              <div class="stat-value negative">${formatCurrency(summaryStats.avgLoss)}</div>
+              <div class="stat-label">Average Loss</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value neutral">${summaryStats.profitFactor.toFixed(2)}</div>
+              <div class="stat-value">${summaryStats.profitFactor === Infinity ? '∞' : summaryStats.profitFactor.toFixed(2)}</div>
               <div class="stat-label">Profit Factor</div>
             </div>
           </div>
-
-          <div class="footer">
-            <p>CoinFeedly Trading Journal - Professional Trading Analysis</p>
-            <p>This report contains ${filteredTrades.length} filtered trades out of ${trades.length} total trades.</p>
-          </div>
         </body>
-      </html>
-    `;
+        </html>
+      `;
 
-    // Open print dialog
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(printContent);
+      printWindow.document.write(htmlContent);
       printWindow.document.close();
-      printWindow.print();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 250);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
     }
   };
 
-  if (isLoading) {
-    return (
-      <Card className="h-full">
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            Trade Overview
-            {showDeleteButton && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onDelete}
-                className="text-red-500 hover:text-red-700 hover:bg-red-50"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center h-48">
-            <div className="text-gray-500">Loading trades...</div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  const filteredInstruments = instruments.filter(instrument =>
+    instrument.toLowerCase().includes(filters.searchTerm.toLowerCase())
+  );
 
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+    <Card className="h-full flex flex-col">
+      <CardHeader className="flex-shrink-0">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            Trade Overview
-            <Badge variant="secondary">{filteredTrades.length} trades</Badge>
+            <Filter className="w-5 h-5 text-amber-500" />
+            <CardTitle className="text-lg">Trade Overview</CardTitle>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2"
-            >
-              <Filter className="h-4 w-4" />
-              Filters
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={exportToPDF}
-              className="flex items-center gap-2"
-            >
-              <Download className="h-4 w-4" />
-              PDF
-            </Button>
-            {showDeleteButton && (
+            {isCustomizing && (
               <Button
-                variant="ghost"
+                variant="destructive"
                 size="sm"
-                onClick={onDelete}
-                className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete?.();
+                }}
+                className="opacity-70 hover:opacity-100"
               >
-                <X className="h-4 w-4" />
+                <X className="w-4 h-4" />
               </Button>
             )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={generatePDF}
+              className="flex items-center gap-1"
+              disabled={filteredTrades.length === 0}
+            >
+              <Download className="w-4 h-4" />
+              PDF
+            </Button>
           </div>
-        </CardTitle>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      
+      <CardContent className="flex-1 flex flex-col space-y-4">
         {/* Filter Controls */}
-        {showFilters && (
-          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
-            <div className="flex items-center justify-between">
-              <h4 className="font-medium">Filters</h4>
-              <Button variant="ghost" size="sm" onClick={clearAllFilters}>
-                Clear All
-              </Button>
+        <div className="space-y-3">
+          {/* Search and Instrument Filter */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <Label>Search</Label>
+              <div className="relative">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search trades..."
+                  value={filters.searchTerm}
+                  onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
+                  className="pl-9"
+                />
+              </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Instrument Filter */}
-              <div>
-                <Label htmlFor="instrument">Instrument</Label>
-                <Select value={filters.instrument} onValueChange={(value) => setFilters(prev => ({ ...prev, instrument: value }))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select instrument" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Instruments</SelectItem>
-                    {instruments.map(instrument => (
-                      <SelectItem key={instrument} value={instrument}>{instrument}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Search */}
-              <div>
-                <Label htmlFor="search">Search</Label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="search"
-                    placeholder="Search trades..."
-                    value={filters.searchTerm}
-                    onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-
-              {/* Date Range */}
-              <div>
-                <Label>Start Date</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal">
-                      <Calendar className="mr-2 h-4 w-4" />
-                      {filters.startDate ? format(filters.startDate, "MMM dd, yyyy") : "Select start date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <CalendarComponent
-                      mode="single"
-                      selected={filters.startDate || undefined}
-                      onSelect={(date) => setFilters(prev => ({ ...prev, startDate: date || null }))}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              <div>
-                <Label>End Date</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal">
-                      <Calendar className="mr-2 h-4 w-4" />
-                      {filters.endDate ? format(filters.endDate, "MMM dd, yyyy") : "Select end date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <CalendarComponent
-                      mode="single"
-                      selected={filters.endDate || undefined}
-                      onSelect={(date) => setFilters(prev => ({ ...prev, endDate: date || null }))}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-
-            {/* Tags Filter */}
-            <div>
-              <Label htmlFor="tags">Strategy Tags</Label>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {filters.tags.map(tag => (
-                  <Badge key={tag} variant="secondary" className="flex items-center gap-1">
-                    {tag}
-                    <X className="h-3 w-3 cursor-pointer" onClick={() => handleRemoveTag(tag)} />
-                  </Badge>
-                ))}
-              </div>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Add tag..."
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      handleAddTag(tagInput);
-                    }
-                  }}
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => handleAddTag(tagInput)}
-                  disabled={!tagInput}
-                >
-                  Add
-                </Button>
-              </div>
-              {allTags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {allTags.filter(tag => !filters.tags.includes(tag)).slice(0, 10).map(tag => (
-                    <Button
-                      key={tag}
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleAddTag(tag)}
-                      className="text-xs h-6 px-2"
-                    >
-                      {tag}
-                    </Button>
+            <div className="space-y-2">
+              <Label>Instrument</Label>
+              <Select value={filters.instrument} onValueChange={(value) => setFilters(prev => ({ ...prev, instrument: value }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All instruments" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All instruments</SelectItem>
+                  {instruments.map(instrument => (
+                    <SelectItem key={instrument} value={instrument}>
+                      {instrument}
+                    </SelectItem>
                   ))}
-                </div>
-              )}
+                </SelectContent>
+              </Select>
             </div>
           </div>
-        )}
+
+          {/* Date Range Filters */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <Label>From Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !filters.dateFrom && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {filters.dateFrom ? format(filters.dateFrom, "PPP") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={filters.dateFrom}
+                    onSelect={(date) => setFilters(prev => ({ ...prev, dateFrom: date }))}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>To Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !filters.dateTo && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {filters.dateTo ? format(filters.dateTo, "PPP") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={filters.dateTo}
+                    onSelect={(date) => setFilters(prev => ({ ...prev, dateTo: date }))}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+
+          {/* Strategy Tags */}
+          <div className="space-y-2">
+            <Label>Strategy Tags</Label>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {filters.tags.map(tag => (
+                <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                  {tag}
+                  <X 
+                    className="w-3 h-3 cursor-pointer hover:text-red-500" 
+                    onClick={() => removeTagFilter(tag)}
+                  />
+                </Badge>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {allTags.filter(tag => !filters.tags.includes(tag)).map(tag => (
+                <Badge 
+                  key={tag} 
+                  variant="outline" 
+                  className="cursor-pointer hover:bg-accent"
+                  onClick={() => addTagFilter(tag)}
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          {/* Clear Filters */}
+          {(filters.instrument || filters.dateFrom || filters.dateTo || filters.tags.length > 0 || filters.searchTerm) && (
+            <Button variant="outline" size="sm" onClick={clearFilters} className="w-full">
+              Clear All Filters
+            </Button>
+          )}
+        </div>
 
         <Separator />
 
         {/* Summary Stats */}
-        <div>
-          <h4 className="font-medium mb-4">Summary Statistics</h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
+        <div className="space-y-3">
+          <h3 className="font-semibold text-sm text-muted-foreground">SUMMARY STATISTICS</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold">{summaryStats.totalTrades}</div>
+              <div className="text-xs text-muted-foreground">Total Trades</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold">{summaryStats.completedTrades}</div>
+              <div className="text-xs text-muted-foreground">Completed</div>
+            </div>
+            <div className="text-center">
               <div className={cn("text-2xl font-bold", summaryStats.totalPnL >= 0 ? "text-green-600" : "text-red-600")}>
                 {formatCurrency(summaryStats.totalPnL)}
               </div>
-              <div className="text-sm text-gray-600">Total P&L</div>
+              <div className="text-xs text-muted-foreground">Total P&L</div>
             </div>
-
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-900">
-                {summaryStats.winRate.toFixed(1)}%
-              </div>
-              <div className="text-sm text-gray-600">Win Rate</div>
+            <div className="text-center">
+              <div className="text-2xl font-bold">{summaryStats.winRate.toFixed(1)}%</div>
+              <div className="text-xs text-muted-foreground">Win Rate</div>
             </div>
-
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-900">
-                {summaryStats.totalTrades}
-              </div>
-              <div className="text-sm text-gray-600">Total Trades</div>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+            <div className="text-center">
+              <div className="text-lg font-bold text-green-600">{formatCurrency(summaryStats.avgWin)}</div>
+              <div className="text-xs text-muted-foreground">Avg Win</div>
             </div>
-
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-green-600">
-                {formatCurrency(summaryStats.avgWin)}
-              </div>
-              <div className="text-sm text-gray-600">Avg Win</div>
+            <div className="text-center">
+              <div className="text-lg font-bold text-red-600">{formatCurrency(summaryStats.avgLoss)}</div>
+              <div className="text-xs text-muted-foreground">Avg Loss</div>
             </div>
-
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-red-600">
-                {formatCurrency(Math.abs(summaryStats.avgLoss))}
+            <div className="text-center">
+              <div className="text-lg font-bold">
+                {summaryStats.profitFactor === Infinity ? '∞' : summaryStats.profitFactor.toFixed(2)}
               </div>
-              <div className="text-sm text-gray-600">Avg Loss</div>
-            </div>
-
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-900">
-                {summaryStats.profitFactor.toFixed(2)}
-              </div>
-              <div className="text-sm text-gray-600">Profit Factor</div>
+              <div className="text-xs text-muted-foreground">Profit Factor</div>
             </div>
           </div>
         </div>
 
-        {/* Additional Stats */}
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex justify-between">
-            <span className="text-gray-600">Winning Trades:</span>
-            <span className="font-medium text-green-600">{summaryStats.winningTrades}</span>
+        {filteredTrades.length === 0 && (
+          <div className="flex-1 flex items-center justify-center text-muted-foreground">
+            No trades match the current filters
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Losing Trades:</span>
-            <span className="font-medium text-red-600">{summaryStats.losingTrades}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Largest Win:</span>
-            <span className="font-medium text-green-600">{formatCurrency(summaryStats.largestWin)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Largest Loss:</span>
-            <span className="font-medium text-red-600">{formatCurrency(summaryStats.largestLoss)}</span>
-          </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -16,6 +16,7 @@ import { PerformanceMetricsWidget } from "@/components/dashboard-widgets/perform
 import { TradeListWidget } from "@/components/dashboard-widgets/trade-list-widget";
 import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
 import { DailyPnLWidget } from "@/components/dashboard-widgets/daily-pnl-widget";
+import { TradeOverviewWidget } from "@/components/dashboard-widgets/trade-overview-widget";
 
 
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
@@ -58,6 +59,7 @@ export default function SimplifiedDashboard() {
     { id: "trade-list", name: "Recent Trades", icon: Layout, description: "View your latest trading activity" },
     { id: "calendar", name: "Trade Calendar", icon: Layout, description: "Calendar view of all your trades with editing" },
     { id: "daily-pnl", name: "Daily P&L", icon: BarChart3, description: "Daily profit and loss tracking with charts" },
+    { id: "trade-overview", name: "Trade Overview", icon: Filter, description: "Advanced filtering with summary stats and PDF export" },
   ];
 
   const { data: stats } = useQuery<TradeStats>({
@@ -156,6 +158,8 @@ export default function SimplifiedDashboard() {
         return <CalendarWidget />;
       case "daily-pnl":
         return <DailyPnLWidget trades={filteredTrades} />;
+      case "trade-overview":
+        return user ? <TradeOverviewWidget trades={trades} user={user} isCustomizing={isCustomizing} onDelete={() => removeWidget(key)} /> : null;
       default:
         return null;
     }
@@ -174,6 +178,7 @@ export default function SimplifiedDashboard() {
       "trade-list": { w: 6, h: 6 }, // Uniform - scrollable list
       "calendar": { w: 12, h: 8 }, // Large - calendar needs more space
       "daily-pnl": { w: 6, h: 6 }, // Uniform - daily P&L chart
+      "trade-overview": { w: 12, h: 10 }, // Large - comprehensive filtering widget
     };
     return sizeMap[widgetId] || { w: 6, h: 6 };
   };

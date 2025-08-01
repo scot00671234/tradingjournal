@@ -73,6 +73,24 @@
     transform: translateY(-1px) !important;
   }
 
+  /* Dialog z-index fixes */
+  [data-radix-dialog-content] {
+    z-index: 9999 !important;
+  }
+  
+  [data-radix-dialog-overlay] {
+    z-index: 9998 !important;
+  }
+
+  /* Ensure note dialogs appear above expanded widgets */
+  .z-\[9999\] {
+    z-index: 9999 !important;
+  }
+  
+  .z-\[8888\] {
+    z-index: 8888 !important;
+  }
+
   .glass-button:hover {
     background: rgba(255, 255, 255, 0.9) !important;
     transform: translateY(-1px) !important;

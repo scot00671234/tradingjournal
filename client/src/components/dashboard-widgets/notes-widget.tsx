@@ -103,7 +103,7 @@ export function NotesWidget({ expanded = false, onToggleExpand }: NotesWidgetPro
   if (expanded) {
     return (
       <Dialog open={expanded} onOpenChange={() => onToggleExpand?.()}>
-        <DialogContent className="max-w-5xl max-h-[90vh] p-0">
+        <DialogContent className="max-w-5xl max-h-[90vh] p-0 z-[8888]" style={{ zIndex: 8888 }}>
           <DialogHeader className="p-6 pb-0">
             <div className="flex items-center justify-between">
               <DialogTitle className="flex items-center gap-2">
@@ -281,7 +281,7 @@ export function NotesWidget({ expanded = false, onToggleExpand }: NotesWidgetPro
 
       {/* Create Note Dialog */}
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DialogContent>
+        <DialogContent className="z-[9999]" style={{ zIndex: 9999 }}>
           <DialogHeader>
             <DialogTitle>Create New Note</DialogTitle>
           </DialogHeader>
@@ -326,7 +326,7 @@ export function NotesWidget({ expanded = false, onToggleExpand }: NotesWidgetPro
 
       {/* Edit Note Dialog */}
       <Dialog open={!!editingNote} onOpenChange={() => cancelEditing()}>
-        <DialogContent>
+        <DialogContent className="z-[9999]" style={{ zIndex: 9999 }}>
           <DialogHeader>
             <DialogTitle>Edit Note</DialogTitle>
           </DialogHeader>

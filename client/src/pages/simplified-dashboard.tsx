@@ -457,9 +457,12 @@ export default function SimplifiedDashboard() {
                 margin={[16, 16]}
                 containerPadding={[16, 16]}
                 useCSSTransforms={true}
-                preventCollision={true}
+                preventCollision={false}
                 compactType="vertical"
                 verticalCompact={true}
+                allowOverlap={false}
+                dragAllowedRoles={['customizing']}
+                resizeAllowedRoles={['customizing']}
               >
                 {activeWidgets.map(widgetId => (
                   <div key={widgetId} className={`widget-container ${isCustomizing ? "drag-handle cursor-move border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-lg transition-all relative group" : "relative"}`}>

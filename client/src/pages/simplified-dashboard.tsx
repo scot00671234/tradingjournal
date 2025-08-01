@@ -480,7 +480,7 @@ export default function SimplifiedDashboard() {
               <Button
                 variant="glass"
                 onClick={() => setShowWidgetSelector(!showWidgetSelector)}
-                className="fixed bottom-6 right-6 z-50 backdrop-blur-[16px] bg-gradient-to-r from-yellow-400/80 to-amber-500/80 hover:from-yellow-500/90 hover:to-amber-600/90 text-white shadow-lg shadow-yellow-500/30 hover:shadow-yellow-500/50 rounded-full w-12 h-12 transition-all duration-300 transform hover:scale-110 active:scale-95 border border-yellow-300/40"
+                className="fixed bottom-6 right-6 z-50 backdrop-blur-[20px] bg-gradient-to-r from-yellow-400/90 to-amber-500/90 hover:from-yellow-500 hover:to-amber-600 text-white shadow-lg rounded-full w-12 h-12 transition-all duration-200 hover:scale-105 active:scale-95 border border-yellow-300/30"
                 size="sm"
               >
                 <Plus className="w-5 h-5" />

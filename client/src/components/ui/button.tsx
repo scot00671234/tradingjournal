@@ -18,7 +18,7 @@ const buttonVariants = cva(
           "glass-button dark:glass-button-dark bg-secondary/60 text-secondary-foreground border-secondary/30",
         ghost: "backdrop-blur-sm bg-transparent hover:glass-button dark:hover:glass-button-dark text-foreground",
         link: "text-primary underline-offset-4 hover:underline bg-transparent",
-        glass: "glass-button dark:glass-button-dark text-foreground font-semibold shadow-lg hover:shadow-xl backdrop-blur-[12px] bg-white/60 dark:bg-gray-900/60 border border-white/30 dark:border-white/20 hover:bg-white/80 dark:hover:bg-gray-900/80 hover:transform hover:-translate-y-0.5",
+        glass: "glass-button dark:glass-button-dark text-foreground font-medium",
       },
       size: {
         default: "h-10 px-4 py-2",

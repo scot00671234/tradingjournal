@@ -47,7 +47,7 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-card border-r border-border flex flex-col">
+    <aside className="w-64 glass-nav dark:glass-nav-dark border-r border-white/20 dark:border-white/10 flex flex-col">
       {/* Logo */}
       <div className="p-6">
         <div className="flex items-center space-x-3">
@@ -66,7 +66,7 @@ export function Sidebar() {
         {menuItems.map((item) => (
           <Button
             key={item.path}
-            variant={location === item.path ? "default" : "ghost"}
+            variant={location === item.path ? "glass" : "ghost"}
             className="w-full justify-start"
             onClick={() => setLocation(item.path)}
           >

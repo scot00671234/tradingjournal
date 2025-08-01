@@ -60,7 +60,7 @@ export default function LandingPage() {
         "Custom tags & notes"
       ],
       buttonText: "Start 7-Day Free Trial",
-      popular: true
+      popular: false
     },
     {
       name: "Elite",
@@ -76,7 +76,7 @@ export default function LandingPage() {
         "Portfolio optimization"
       ],
       buttonText: "Start 7-Day Free Trial",
-      popular: false
+      popular: true
     },
     {
       name: "Diamond",
@@ -201,7 +201,7 @@ export default function LandingPage() {
             <Button 
               size="lg" 
               onClick={() => setLocation("/auth")}
-              className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 px-8 py-3 h-auto font-medium shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300"
+              className="bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 border-0 px-8 py-3 h-auto font-semibold shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 transition-all duration-200"
             >
               Start 7-Day Free Trial
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -305,7 +305,7 @@ export default function LandingPage() {
             <Button 
               size="lg" 
               onClick={() => setLocation("/auth")}
-              className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 px-12 py-4 h-auto font-medium shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300 text-lg"
+              className="bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 border-0 px-12 py-4 h-auto font-semibold shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 transition-all duration-200 text-lg"
             >
               Start Your Transformation
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -415,12 +415,12 @@ export default function LandingPage() {
               >
                 <Card className={`relative border shadow-sm hover:shadow-md transition-shadow duration-200 ${
                   plan.popular 
-                    ? 'border-black dark:border-white' 
+                    ? 'border-yellow-400 ring-2 ring-yellow-400/20' 
                     : 'border-gray-200 dark:border-gray-800'
                 }`}>
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-black dark:bg-white text-white dark:text-black text-xs font-medium px-3 py-1 rounded-full">
+                      <span className="bg-gradient-to-r from-yellow-400 to-amber-500 text-white text-xs font-medium px-3 py-1 rounded-full shadow-lg">
                         Most Popular
                       </span>
                     </div>
@@ -452,8 +452,8 @@ export default function LandingPage() {
                     <Button 
                       className={`w-full ${
                         plan.popular 
-                          ? 'bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black' 
-                          : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 text-black dark:text-white'
+                          ? 'bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white shadow-lg shadow-yellow-400/30' 
+                          : 'backdrop-blur-[12px] bg-white/80 hover:bg-white/90 dark:bg-gray-900/80 dark:hover:bg-gray-900/90 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700'
                       }`}
                       onClick={() => setLocation("/auth")}
                     >

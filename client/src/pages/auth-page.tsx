@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema, type InsertUser } from "@shared/schema";
 import { z } from "zod";
-import { TrendingUp, Shield, BarChart3, Target } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
 
@@ -23,7 +21,8 @@ type LoginData = z.infer<typeof loginSchema>;
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState("login");
+  const [activeTab, setActiveTab] = useState("register");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -72,211 +71,207 @@ export default function AuthPage() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 flex">
-      {/* Left side - Forms */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md space-y-6">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-3 mb-4">
-              <img 
-                src={coinFeedlyLogo} 
-                alt="CoinFeedly" 
-                className="h-10 w-auto"
-              />
-              <h1 className="text-2xl font-light tracking-wider text-gray-900 dark:text-white">
-                Coin<span className="font-medium ml-1">Feedly</span>
-              </h1>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">Track your trades. Analyze your performance.</p>
-          </div>
+  const handleForgotPassword = () => {
+    // For now, just show a simple message - can be enhanced later
+    alert("Please contact support for password reset assistance.");
+  };
 
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+      <div className="w-full max-w-lg">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <img src={coinFeedlyLogo} alt="CoinFeedly" className="w-8 h-8" />
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">Coin Feedly</span>
+          </div>
+          <p className="text-gray-600 dark:text-gray-400">Track your trades. Analyze your performance.</p>
+        </div>
+
+        {/* Auth Form */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="register">Register</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-100 dark:bg-gray-700">
+              <TabsTrigger 
+                value="login" 
+                className="text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-600"
+              >
+                Login
+              </TabsTrigger>
+              <TabsTrigger 
+                value="register" 
+                className="text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-600"
+              >
+                Register
+              </TabsTrigger>
             </TabsList>
             
-            <TabsContent value="login" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Welcome back</CardTitle>
-                  <CardDescription>
-                    Sign in to your trading journal
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Form {...loginForm}>
-                    <form onSubmit={loginForm.handleSubmit(onLogin)} className="space-y-4">
-                      <FormField
-                        control={loginForm.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input type="email" placeholder="Enter your email" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={loginForm.control}
-                        name="password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <Input type="password" placeholder="Enter your password" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button 
-                        type="submit" 
-                        className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300" 
-                        disabled={loginMutation.isPending}
-                      >
-                        {loginMutation.isPending ? "Signing in..." : "Sign in"}
-                      </Button>
-                    </form>
-                  </Form>
+            {/* Login Tab */}
+            <TabsContent value="login" className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome back</h2>
+                <p className="text-gray-600 dark:text-gray-400">Sign in to your trading journal</p>
+              </div>
+
+              <Form {...loginForm}>
+                <form onSubmit={loginForm.handleSubmit(onLogin)} className="space-y-4">
+                  <FormField
+                    control={loginForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700 dark:text-gray-300">Email</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="email" 
+                            placeholder="Enter your email" 
+                            className="h-12 border-gray-200 dark:border-gray-600"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={loginForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700 dark:text-gray-300">Password</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="password" 
+                            placeholder="Enter your password" 
+                            className="h-12 border-gray-200 dark:border-gray-600"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   
-                  <div className="mt-4 text-center">
+                  <div className="text-right">
                     <button
-                      onClick={() => setLocation('/forgot-password')}
-                      className="text-sm text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 transition-colors"
+                      type="button"
+                      onClick={handleForgotPassword}
+                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
                     >
                       Forgot your password?
                     </button>
-                    {import.meta.env.DEV && (
-                      <div className="mt-2 text-xs text-gray-500">
-                        Development mode: Email verification bypassed
-                      </div>
-                    )}
                   </div>
-                </CardContent>
-              </Card>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 btn-golden text-base font-medium" 
+                    disabled={loginMutation.isPending}
+                  >
+                    {loginMutation.isPending ? "Signing in..." : "Sign in"}
+                  </Button>
+                </form>
+              </Form>
             </TabsContent>
             
-            <TabsContent value="register" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Create your account</CardTitle>
-                  <CardDescription>
-                    Start your trading journal today
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Form {...registerForm}>
-                    <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <FormField
-                          control={registerForm.control}
-                          name="firstName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>First Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Enter your first name" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={registerForm.control}
-                          name="lastName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Last Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Enter your last name" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <FormField
-                        control={registerForm.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input type="email" placeholder="Enter your email" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={registerForm.control}
-                        name="password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <Input type="password" placeholder="Create a password" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button 
-                        type="submit" 
-                        className="w-full bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300" 
-                        disabled={registerMutation.isPending}
-                      >
-                        {registerMutation.isPending ? "Creating account..." : "Create account"}
-                      </Button>
-                    </form>
-                  </Form>
-                </CardContent>
-              </Card>
+            {/* Register Tab */}
+            <TabsContent value="register" className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Create your account</h2>
+                <p className="text-gray-600 dark:text-gray-400">Start your trading journal today</p>
+              </div>
+
+              <Form {...registerForm}>
+                <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={registerForm.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">First Name</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Enter your first name" 
+                              className="h-12 border-gray-200 dark:border-gray-600"
+                              {...field} 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={registerForm.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">Last Name</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Enter your last name" 
+                              className="h-12 border-gray-200 dark:border-gray-600"
+                              {...field} 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={registerForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700 dark:text-gray-300">Email</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="email" 
+                            placeholder="Enter your email" 
+                            className="h-12 border-gray-200 dark:border-gray-600"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={registerForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700 dark:text-gray-300">Password</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="password" 
+                            placeholder="Create a password" 
+                            className="h-12 border-gray-200 dark:border-gray-600"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 btn-golden text-base font-medium" 
+                    disabled={registerMutation.isPending}
+                  >
+                    {registerMutation.isPending ? "Creating account..." : "Create account"}
+                  </Button>
+                </form>
+              </Form>
             </TabsContent>
           </Tabs>
         </div>
-      </div>
-
-      {/* Right side - Hero */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gray-50 dark:bg-gray-900 p-8 flex-col justify-center">
-        <div className="max-w-md">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-            Professional Trading Journal
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-8">
-            Take your trading to the next level with detailed analytics, performance tracking, and insights designed for serious traders.
-          </p>
-          
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-4 h-4 text-emerald-400" />
-              </div>
-              <span className="text-slate-300">Advanced Analytics & Insights</span>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                <Target className="w-4 h-4 text-blue-400" />
-              </div>
-              <span className="text-slate-300">Risk Management Tools</span>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                <Shield className="w-4 h-4 text-purple-400" />
-              </div>
-              <span className="text-slate-300">Secure & Private</span>
-            </div>
+        
+        {import.meta.env.DEV && (
+          <div className="mt-4 text-center text-xs text-gray-500">
+            Development mode: Email verification bypassed
           </div>
-          
-
-        </div>
+        )}
       </div>
     </div>
   );

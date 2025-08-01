@@ -201,6 +201,19 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
         filters.searchTerm && `Search: ${filters.searchTerm}`
       ].filter(Boolean).join(' | ');
 
+      const tradesTableRows = filteredTrades.map(trade => `
+        <tr>
+          <td>${format(new Date(trade.tradeDate), 'MMM d, yyyy')}</td>
+          <td>${trade.asset}</td>
+          <td>${trade.direction.toUpperCase()}</td>
+          <td>${formatCurrency(trade.entryPrice)}</td>
+          <td>${trade.exitPrice ? formatCurrency(trade.exitPrice) : '-'}</td>
+          <td>${trade.size}</td>
+          <td class="${trade.pnl ? (trade.pnl >= 0 ? 'positive' : 'negative') : ''}">${trade.pnl ? formatCurrency(trade.pnl) : 'Open'}</td>
+          <td>${trade.notes || '-'}</td>
+        </tr>
+      `).join('');
+
       const htmlContent = `
         <!DOCTYPE html>
         <html>
@@ -216,6 +229,10 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
             .stat-label { font-size: 14px; color: #666; }
             .positive { color: #059669; }
             .negative { color: #dc2626; }
+            .trades-table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+            .trades-table th, .trades-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            .trades-table th { background-color: #f5f5f5; font-weight: bold; }
+            .trades-table tr:nth-child(even) { background-color: #f9f9f9; }
           </style>
         </head>
         <body>
@@ -255,6 +272,26 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
               <div class="stat-label">Profit Factor</div>
             </div>
           </div>
+
+          ${filteredTrades.length > 0 ? `
+          <table class="trades-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Asset</th>
+                <th>Direction</th>
+                <th>Entry Price</th>
+                <th>Exit Price</th>
+                <th>Size</th>
+                <th>P&L</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tradesTableRows}
+            </tbody>
+          </table>
+          ` : ''}
         </body>
         </html>
       `;
@@ -482,9 +519,51 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
           </div>
         </div>
 
+        {/* Trade List Section */}
+        {filteredTrades.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="font-semibold text-sm text-muted-foreground">FILTERED TRADES ({filteredTrades.length})</h3>
+            <div className="max-h-64 overflow-y-auto space-y-2 border rounded-lg p-3 bg-muted/20">
+              {filteredTrades.map((trade) => (
+                <div
+                  key={trade.id}
+                  className="flex items-center justify-between p-3 bg-background rounded-lg border shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className={cn(
+                      "w-2 h-2 rounded-full",
+                      trade.direction === "long" ? "bg-green-500" : "bg-red-500"
+                    )} />
+                    <div>
+                      <div className="font-medium text-sm">{trade.asset}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {trade.direction.toUpperCase()} • {format(new Date(trade.tradeDate), "MMM d, yyyy")}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className={cn(
+                      "font-medium text-sm",
+                      trade.pnl ? (trade.pnl >= 0 ? "text-green-600" : "text-red-600") : "text-muted-foreground"
+                    )}>
+                      {trade.pnl ? formatCurrency(trade.pnl) : "Open"}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Size: {trade.size}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {filteredTrades.length === 0 && (
-          <div className="flex-1 flex items-center justify-center text-muted-foreground">
-            No trades match the current filters
+          <div className="flex-1 flex items-center justify-center text-muted-foreground py-8">
+            <div className="text-center">
+              <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
+              <p>No trades match the current filters</p>
+            </div>
           </div>
         )}
       </CardContent>

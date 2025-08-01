@@ -480,7 +480,7 @@ export default function SimplifiedDashboard() {
               <Button
                 variant="glass"
                 onClick={() => setShowWidgetSelector(!showWidgetSelector)}
-                className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-yellow-400/90 to-amber-500/90 hover:from-yellow-500/95 hover:to-amber-600/95 text-white shadow-lg shadow-yellow-500/30 hover:shadow-yellow-500/50 rounded-full w-12 h-12 transition-all duration-300 transform hover:scale-110 active:scale-95 border border-white/30"
+                className="fixed bottom-6 right-6 z-50 backdrop-blur-[16px] bg-gradient-to-r from-yellow-400/80 to-amber-500/80 hover:from-yellow-500/90 hover:to-amber-600/90 text-white shadow-lg shadow-yellow-500/30 hover:shadow-yellow-500/50 rounded-full w-12 h-12 transition-all duration-300 transform hover:scale-110 active:scale-95 border border-yellow-300/40"
                 size="sm"
               >
                 <Plus className="w-5 h-5" />
@@ -553,12 +553,12 @@ export default function SimplifiedDashboard() {
           )}
 
           {/* Recent Trades with Glass Effect */}
-          <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-lg glass-transition hover:shadow-xl"
+          <div className="glass-card dark:glass-card-dark rounded-2xl shadow-lg glass-transition hover:shadow-xl"
                style={{ 
                  marginLeft: '16px', 
                  marginRight: '16px' 
                }}>
-            <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="p-6 border-b border-white/20 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Trades</h3>
                 <div className="flex items-center space-x-2">

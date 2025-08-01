@@ -10,13 +10,13 @@ interface PerformanceMetricsWidgetProps {
 export function PerformanceMetricsWidget({ trades, className }: PerformanceMetricsWidgetProps) {
   // Calculate key trading metrics
   const totalTrades = trades.length;
-  const winningTrades = trades.filter(t => parseFloat(t.pnl || '0') > 0);
-  const losingTrades = trades.filter(t => parseFloat(t.pnl || '0') < 0);
+  const winningTrades = trades.filter(t => parseFloat(String(t.pnl || '0')) > 0);
+  const losingTrades = trades.filter(t => parseFloat(String(t.pnl || '0')) < 0);
   
   const winRate = totalTrades > 0 ? (winningTrades.length / totalTrades) * 100 : 0;
   
-  const totalWins = winningTrades.reduce((sum, t) => sum + parseFloat(t.pnl || '0'), 0);
-  const totalLosses = Math.abs(losingTrades.reduce((sum, t) => sum + parseFloat(t.pnl || '0'), 0));
+  const totalWins = winningTrades.reduce((sum, t) => sum + parseFloat(String(t.pnl || '0')), 0);
+  const totalLosses = Math.abs(losingTrades.reduce((sum, t) => sum + parseFloat(String(t.pnl || '0')), 0));
   
   const profitFactor = totalLosses > 0 ? totalWins / totalLosses : totalWins > 0 ? 999 : 0;
   
@@ -115,7 +115,7 @@ export function PerformanceMetricsWidget({ trades, className }: PerformanceMetri
             </div>
             <div>
               <div className="text-lg font-semibold text-gray-600 dark:text-gray-400">
-                {trades.filter(t => parseFloat(t.pnl || '0') === 0).length}
+                {trades.filter(t => parseFloat(String(t.pnl || '0')) === 0).length}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">Breakeven</div>
             </div>

@@ -11,13 +11,13 @@ interface EquityCurveWidgetProps {
 export function EquityCurveWidget({ trades, className }: EquityCurveWidgetProps) {
   // Calculate equity curve data
   const equityData = trades.map((trade, index) => {
-    const cumulativePnL = trades.slice(0, index + 1).reduce((sum, t) => sum + parseFloat(t.pnl || '0'), 0);
+    const cumulativePnL = trades.slice(0, index + 1).reduce((sum, t) => sum + parseFloat(String(t.pnl || '0')), 0);
     const startingBalance = 10000; // Starting balance - could be configurable
     
     return {
       tradeNumber: index + 1,
       equity: startingBalance + cumulativePnL,
-      pnl: parseFloat(trade.pnl || '0'),
+      pnl: parseFloat(String(trade.pnl || '0')),
       date: new Date(trade.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       asset: trade.asset,
       direction: trade.direction

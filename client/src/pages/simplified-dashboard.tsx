@@ -217,7 +217,7 @@ export default function SimplifiedDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-amber-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       {/* Floating Nav Bar */}
       <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-4">
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-yellow-100/30 dark:border-yellow-900/30 rounded-2xl px-6 py-3 shadow-lg shadow-yellow-500/10 dark:shadow-yellow-400/10">
+        <div className="glass-nav dark:glass-nav-dark border border-yellow-100/30 dark:border-yellow-900/30 rounded-2xl px-6 py-3 shadow-lg shadow-yellow-500/10 dark:shadow-yellow-400/10">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
@@ -250,27 +250,28 @@ export default function SimplifiedDashboard() {
             <div className="flex items-center space-x-2">
               <Button
                 size="sm"
+                variant="glass"
                 onClick={() => setShowTradeEntry(!showTradeEntry)}
-                className="bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white border-0 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300"
+                className="bg-gradient-to-r from-yellow-500/80 to-amber-600/80 hover:from-yellow-600/90 hover:to-amber-700/90 text-white border-yellow-300/50 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Trade
               </Button>
               
               <Button
-                variant={isCustomizing ? "default" : "ghost"}
+                variant={isCustomizing ? "glass" : "ghost"}
                 size="sm"
                 onClick={() => setIsCustomizing(!isCustomizing)}
                 className={isCustomizing 
-                  ? "bg-yellow-600 text-white hover:bg-yellow-700" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-yellow-600/80 text-white hover:bg-yellow-700/90 border-yellow-400/50" 
+                  : "glass-button dark:glass-button-dark"
                 }
               >
                 <LayoutDashboard className="w-4 h-4 mr-2" />
                 {isCustomizing ? "Done" : "Customize"}
               </Button>
               
-              <Button variant="ghost" size="sm" onClick={toggleTheme}>
+              <Button variant="ghost" size="sm" onClick={toggleTheme} className="glass-button dark:glass-button-dark">
                 {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
               
@@ -278,6 +279,7 @@ export default function SimplifiedDashboard() {
                 variant="ghost" 
                 size="sm"
                 onClick={() => window.location.href = "/settings"}
+                className="glass-button dark:glass-button-dark"
               >
                 <Settings className="h-4 w-4" />
               </Button>
@@ -476,13 +478,10 @@ export default function SimplifiedDashboard() {
               
               {/* Enhanced Widget Selector Button */}
               <Button
+                variant="glass"
                 onClick={() => setShowWidgetSelector(!showWidgetSelector)}
-                className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white shadow-lg shadow-yellow-500/30 hover:shadow-yellow-500/50 rounded-full w-12 h-12 transition-all duration-300 transform hover:scale-110 active:scale-95 backdrop-blur-sm border border-white/20"
+                className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-yellow-400/90 to-amber-500/90 hover:from-yellow-500/95 hover:to-amber-600/95 text-white shadow-lg shadow-yellow-500/30 hover:shadow-yellow-500/50 rounded-full w-12 h-12 transition-all duration-300 transform hover:scale-110 active:scale-95 border border-white/30"
                 size="sm"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%), linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                  boxShadow: '0 8px 32px rgba(245, 158, 11, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
-                }}
               >
                 <Plus className="w-5 h-5" />
               </Button>
@@ -494,7 +493,7 @@ export default function SimplifiedDashboard() {
                     className="fixed inset-0 z-40 bg-black/20" 
                     onClick={() => setShowWidgetSelector(false)}
                   />
-                  <div className="fixed bottom-20 right-6 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-xl p-4 shadow-xl min-w-[320px] max-h-[400px] overflow-y-auto">
+                  <div className="fixed bottom-20 right-6 z-50 glass-card dark:glass-card-dark rounded-xl p-4 shadow-xl min-w-[320px] max-h-[400px] overflow-y-auto glass-transition">
                     <div className="flex items-center justify-between mb-4">
                       <h4 className="font-semibold text-gray-900 dark:text-white">Add Widget</h4>
                       <button
@@ -565,11 +564,11 @@ export default function SimplifiedDashboard() {
                 <div className="flex items-center space-x-2">
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="glass" size="sm">
                         <Filter className="w-4 h-4" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-80 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50">
+                    <PopoverContent className="w-80 glass-card dark:glass-card-dark glass-transition">
                       <div className="space-y-4">
                         <h4 className="font-medium text-gray-900 dark:text-white">Filter Trades</h4>
                         
@@ -619,7 +618,7 @@ export default function SimplifiedDashboard() {
                         </div>
 
                         <Button 
-                          variant="outline" 
+                          variant="glass" 
                           size="sm" 
                           onClick={() => {
                             setFilterDirection("all");

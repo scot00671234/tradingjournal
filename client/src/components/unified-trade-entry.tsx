@@ -222,7 +222,7 @@ export function UnifiedTradeEntry({
     subscriptionStatus.tradeCount >= (subscriptionStatus.tradeLimit || 5);
 
   return (
-    <Card className="bg-card border-border">
+    <Card className="glass-card dark:glass-card-dark glass-transition">
       {showHeader && (
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
@@ -255,14 +255,14 @@ export function UnifiedTradeEntry({
                   <div key={asset} className="relative group">
                     <Button
                       type="button"
-                      variant="outline"
+                      variant="glass"
                       size="sm"
                       onClick={() => {
                         form.setValue("asset", asset);
                         setNewAsset(asset);
                         setSelectedAsset(asset);
                       }}
-                      className={`text-xs pr-8 ${selectedAsset === asset ? 'bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800' : ''}`}
+                      className={`text-xs pr-8 ${selectedAsset === asset ? 'bg-yellow-50/80 hover:bg-yellow-100/90 dark:bg-yellow-950/50 dark:hover:bg-yellow-900/60 border-yellow-200/60 dark:border-yellow-800/60' : ''}`}
                     >
                       {asset}
                     </Button>
@@ -349,12 +349,12 @@ export function UnifiedTradeEntry({
             <div className="flex space-x-2">
               <Button
                 type="button"
-                variant="outline"
+                variant="glass"
                 size="sm"
                 onClick={() => setDirection("long")}
                 className={`flex-1 ${direction === "long" 
-                  ? 'bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/40 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-200' 
-                  : 'hover:bg-yellow-50 dark:hover:bg-yellow-950/20 border-gray-200 dark:border-gray-700'
+                  ? 'bg-green-600/80 hover:bg-green-700/90 text-white border-green-400/50' 
+                  : 'hover:bg-yellow-50/80 dark:hover:bg-yellow-950/30'
                 }`}
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
@@ -362,12 +362,12 @@ export function UnifiedTradeEntry({
               </Button>
               <Button
                 type="button"
-                variant="outline"
+                variant="glass"
                 size="sm"
                 onClick={() => setDirection("short")}
                 className={`flex-1 ${direction === "short" 
-                  ? 'bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/30 dark:hover:bg-yellow-900/40 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-200' 
-                  : 'hover:bg-yellow-50 dark:hover:bg-yellow-950/20 border-gray-200 dark:border-gray-700'
+                  ? 'bg-red-600/80 hover:bg-red-700/90 text-white border-red-400/50' 
+                  : 'hover:bg-yellow-50/80 dark:hover:bg-yellow-950/30'
                 }`}
               >
                 <TrendingDown className="w-4 h-4 mr-2" />
@@ -446,8 +446,7 @@ export function UnifiedTradeEntry({
                 type="button" 
                 onClick={addTag} 
                 size="sm"
-                variant="outline"
-                className="bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 border-gray-200 dark:border-gray-700"
+                variant="glass"
               >
                 Add
               </Button>
@@ -498,7 +497,7 @@ export function UnifiedTradeEntry({
                 />
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="glass"
                   onClick={() => fileInputRef.current?.click()}
                   className="flex items-center"
                   disabled={createTradeMutation.isPending}
@@ -509,10 +508,10 @@ export function UnifiedTradeEntry({
                 {selectedImage && (
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="glass"
                     size="sm"
                     onClick={removeImage}
-                    className="text-red-600 hover:text-red-700"
+                    className="text-red-600 hover:text-red-700 border-red-200 dark:border-red-800"
                   >
                     <Trash2 className="w-4 h-4 mr-1" />
                     Remove
@@ -532,10 +531,10 @@ export function UnifiedTradeEntry({
                     <div className="absolute top-2 right-2">
                       <Button
                         type="button"
-                        variant="outline"
+                        variant="glass"
                         size="sm"
                         onClick={removeImage}
-                        className="bg-white/90 hover:bg-white"
+                        className="bg-white/90 hover:bg-white dark:bg-gray-900/90 dark:hover:bg-gray-900"
                       >
                         <X className="w-4 h-4" />
                       </Button>
@@ -557,15 +556,16 @@ export function UnifiedTradeEntry({
           {/* Submit Button */}
           <div className="flex justify-end">
             {isFreeLimitReached ? (
-              <Button type="button" onClick={() => setLocation("/subscribe")} className="w-full">
+              <Button type="button" variant="glass" onClick={() => setLocation("/subscribe")} className="w-full bg-gradient-to-r from-purple-500/80 to-blue-500/80 hover:from-purple-600/90 hover:to-blue-600/90 text-white border-purple-300/50">
                 <Crown className="w-4 h-4 mr-2" />
                 Upgrade to Pro for Unlimited Trades
               </Button>
             ) : (
               <Button 
                 type="submit" 
+                variant="glass"
                 disabled={createTradeMutation.isPending}
-                className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white border-0 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300"
+                className="w-full bg-gradient-to-r from-yellow-400/90 to-amber-500/90 hover:from-yellow-500/95 hover:to-amber-600/95 text-white border-yellow-300/50 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 {createTradeMutation.isPending ? "Adding..." : "Add Trade"}

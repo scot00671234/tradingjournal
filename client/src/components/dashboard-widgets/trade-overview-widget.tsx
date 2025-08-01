@@ -46,12 +46,18 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
     const tagSet = new Set<string>();
     
     trades.forEach(trade => {
-      instrumentSet.add(trade.asset);
-      if (trade.tags) {
+      if (trade.asset && trade.asset.trim()) {
+        instrumentSet.add(trade.asset.trim());
+      }
+      if (trade.tags && trade.tags.trim()) {
         try {
           const tradeTags = JSON.parse(trade.tags);
           if (Array.isArray(tradeTags)) {
-            tradeTags.forEach(tag => tagSet.add(tag));
+            tradeTags.forEach(tag => {
+              if (tag && typeof tag === 'string' && tag.trim()) {
+                tagSet.add(tag.trim());
+              }
+            });
           }
         } catch (e) {
           // Handle non-JSON tags
@@ -63,8 +69,8 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
     });
     
     return {
-      instruments: Array.from(instrumentSet).sort(),
-      allTags: Array.from(tagSet).sort()
+      instruments: Array.from(instrumentSet).filter(Boolean).sort(),
+      allTags: Array.from(tagSet).filter(Boolean).sort()
     };
   }, [trades]);
 
@@ -325,12 +331,12 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
             
             <div className="space-y-2">
               <Label>Instrument</Label>
-              <Select value={filters.instrument} onValueChange={(value) => setFilters(prev => ({ ...prev, instrument: value }))}>
+              <Select value={filters.instrument || "all"} onValueChange={(value) => setFilters(prev => ({ ...prev, instrument: value === "all" ? "" : value }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="All instruments" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All instruments</SelectItem>
+                  <SelectItem value="all">All instruments</SelectItem>
                   {instruments.map(instrument => (
                     <SelectItem key={instrument} value={instrument}>
                       {instrument}

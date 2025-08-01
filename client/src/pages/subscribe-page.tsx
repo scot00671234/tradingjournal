@@ -62,7 +62,7 @@ const SubscribeForm = () => {
       <PaymentElement />
       <Button 
         type="submit" 
-        className="w-full bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 font-semibold shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 transition-all duration-200" 
+        className="w-full btn-golden transition-all duration-200 hover:scale-105 active:scale-95" 
         disabled={!stripe || isProcessing}
       >
         {isProcessing ? (

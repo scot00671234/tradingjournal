@@ -114,7 +114,7 @@ export function NotesWidget({ expanded = false, onToggleExpand }: NotesWidgetPro
                 <Button
                   onClick={() => setShowCreateDialog(true)}
                   size="sm"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black"
+                  className="btn-golden"
                 >
                   <Plus className="h-4 w-4 mr-1" />
                   New Note
@@ -315,7 +315,7 @@ export function NotesWidget({ expanded = false, onToggleExpand }: NotesWidgetPro
               <Button
                 onClick={handleCreateNote}
                 disabled={createMutation.isPending}
-                className="bg-yellow-500 hover:bg-yellow-600 text-black"
+                className="btn-golden"
               >
                 {createMutation.isPending ? "Creating..." : "Create Note"}
               </Button>
@@ -360,7 +360,7 @@ export function NotesWidget({ expanded = false, onToggleExpand }: NotesWidgetPro
               <Button
                 onClick={handleUpdateNote}
                 disabled={updateMutation.isPending}
-                className="bg-yellow-500 hover:bg-yellow-600 text-black"
+                className="btn-golden"
               >
                 {updateMutation.isPending ? "Saving..." : "Save Changes"}
               </Button>

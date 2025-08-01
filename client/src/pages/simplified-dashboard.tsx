@@ -261,7 +261,7 @@ export default function SimplifiedDashboard() {
               <Button
                 size="sm"
                 onClick={() => setShowTradeEntry(!showTradeEntry)}
-                className="backdrop-blur-[12px] bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 font-semibold border border-yellow-200 shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 transition-all duration-200"
+                className="btn-golden transition-all duration-200"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Trade
@@ -488,7 +488,7 @@ export default function SimplifiedDashboard() {
               {/* Enhanced Widget Selector Button */}
               <Button
                 onClick={() => setShowWidgetSelector(!showWidgetSelector)}
-                className="fixed bottom-6 right-6 z-50 backdrop-blur-[16px] bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 font-semibold shadow-lg shadow-yellow-400/30 rounded-full w-12 h-12 transition-all duration-200 hover:scale-105 active:scale-95 border border-yellow-200"
+                className="fixed bottom-6 right-6 z-50 btn-golden rounded-full w-12 h-12 transition-all duration-200 hover:scale-105 active:scale-95"
                 size="sm"
               >
                 <Plus className="w-5 h-5" />

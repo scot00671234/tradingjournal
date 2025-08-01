@@ -556,7 +556,7 @@ export function UnifiedTradeEntry({
           {/* Submit Button */}
           <div className="flex justify-end">
             {isFreeLimitReached ? (
-              <Button type="button" onClick={() => setLocation("/subscribe")} className="w-full backdrop-blur-[12px] bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 font-semibold border border-yellow-200 shadow-lg shadow-yellow-400/30">
+              <Button type="button" onClick={() => setLocation("/subscribe")} className="w-full btn-golden">
                 <Crown className="w-4 h-4 mr-2" />
                 Upgrade to Pro for Unlimited Trades
               </Button>
@@ -564,7 +564,7 @@ export function UnifiedTradeEntry({
               <Button 
                 type="submit" 
                 disabled={createTradeMutation.isPending}
-                className="w-full backdrop-blur-[12px] bg-gradient-to-r from-yellow-300 to-amber-400 hover:from-yellow-400 hover:to-amber-500 text-gray-900 font-semibold border border-yellow-200 shadow-lg shadow-yellow-400/30 hover:shadow-yellow-400/50 transition-all duration-200"
+                className="w-full btn-golden transition-all duration-200"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 {createTradeMutation.isPending ? "Adding..." : "Add Trade"}

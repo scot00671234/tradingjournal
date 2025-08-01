@@ -13,6 +13,8 @@ import { CalendarIcon, Download, Filter, X, Search } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import type { Trade, User } from "@shared/schema";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 interface TradeOverviewWidgetProps {
   trades: Trade[];
@@ -189,122 +191,189 @@ export function TradeOverviewWidget({ trades, user, isCustomizing, onDelete }: T
 
   const generatePDF = async () => {
     try {
-      // Create a simple PDF export using window.print() with custom styles
-      const printWindow = window.open('', '_blank');
-      if (!printWindow) return;
-
+      // Create new PDF document with CoinFeedly branding
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.width;
+      const pageHeight = doc.internal.pageSize.height;
+      
+      // CoinFeedly brand colors
+      const brandGold = [245, 158, 11]; // #f59e0b
+      const brandDark = [17, 24, 39]; // #111827
+      const textDark = [55, 65, 81]; // #374151
+      const lightGray = [249, 250, 251]; // #f9fafb
+      
+      // Header with brand styling
+      doc.setFillColor(...brandGold);
+      doc.rect(0, 0, pageWidth, 40, 'F');
+      
+      // CoinFeedly logo/title
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(24);
+      doc.setFont('helvetica', 'bold');
+      doc.text('CoinFeedly', 20, 25);
+      
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Trade Overview Report', pageWidth - 20, 25, { align: 'right' });
+      
+      // Report date
+      doc.setTextColor(...textDark);
+      doc.setFontSize(10);
+      doc.text(`Generated on ${format(new Date(), 'PPP')}`, pageWidth - 20, 50, { align: 'right' });
+      
+      // Filters applied section
       const filtersApplied = [
         filters.instrument && `Instrument: ${filters.instrument}`,
         filters.dateFrom && `From: ${format(filters.dateFrom, 'PPP')}`,
         filters.dateTo && `To: ${format(filters.dateTo, 'PPP')}`,
         filters.tags.length > 0 && `Tags: ${filters.tags.join(', ')}`,
         filters.searchTerm && `Search: ${filters.searchTerm}`
-      ].filter(Boolean).join(' | ');
-
-      const tradesTableRows = filteredTrades.map(trade => `
-        <tr>
-          <td>${format(new Date(trade.tradeDate), 'MMM d, yyyy')}</td>
-          <td>${trade.asset}</td>
-          <td>${trade.direction.toUpperCase()}</td>
-          <td>${formatCurrency(trade.entryPrice)}</td>
-          <td>${trade.exitPrice ? formatCurrency(trade.exitPrice) : '-'}</td>
-          <td>${trade.size}</td>
-          <td class="${trade.pnl ? (trade.pnl >= 0 ? 'positive' : 'negative') : ''}">${trade.pnl ? formatCurrency(trade.pnl) : 'Open'}</td>
-          <td>${trade.notes || '-'}</td>
-        </tr>
-      `).join('');
-
-      const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>CoinFeedly Trade Overview Report</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 40px; }
-            .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 20px; }
-            .filters { margin-bottom: 20px; font-size: 14px; color: #666; }
-            .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-            .stat-card { border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
-            .stat-value { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
-            .stat-label { font-size: 14px; color: #666; }
-            .positive { color: #059669; }
-            .negative { color: #dc2626; }
-            .trades-table { width: 100%; border-collapse: collapse; margin-top: 30px; }
-            .trades-table th, .trades-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-            .trades-table th { background-color: #f5f5f5; font-weight: bold; }
-            .trades-table tr:nth-child(even) { background-color: #f9f9f9; }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>CoinFeedly Trade Overview Report</h1>
-            <p>Generated on ${format(new Date(), 'PPP')}</p>
-            ${filtersApplied ? `<p class="filters">Filters Applied: ${filtersApplied}</p>` : ''}
-          </div>
-          
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-value">${summaryStats.totalTrades}</div>
-              <div class="stat-label">Total Trades</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value">${summaryStats.completedTrades}</div>
-              <div class="stat-label">Completed Trades</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value ${summaryStats.totalPnL >= 0 ? 'positive' : 'negative'}">${formatCurrency(summaryStats.totalPnL)}</div>
-              <div class="stat-label">Total P&L</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value">${summaryStats.winRate.toFixed(1)}%</div>
-              <div class="stat-label">Win Rate</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value positive">${formatCurrency(summaryStats.avgWin)}</div>
-              <div class="stat-label">Average Win</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value negative">${formatCurrency(summaryStats.avgLoss)}</div>
-              <div class="stat-label">Average Loss</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value">${summaryStats.profitFactor === Infinity ? '∞' : summaryStats.profitFactor.toFixed(2)}</div>
-              <div class="stat-label">Profit Factor</div>
-            </div>
-          </div>
-
-          ${filteredTrades.length > 0 ? `
-          <table class="trades-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Asset</th>
-                <th>Direction</th>
-                <th>Entry Price</th>
-                <th>Exit Price</th>
-                <th>Size</th>
-                <th>P&L</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${tradesTableRows}
-            </tbody>
-          </table>
-          ` : ''}
-        </body>
-        </html>
-      `;
-
-      printWindow.document.write(htmlContent);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-      }, 250);
+      ].filter(Boolean);
+      
+      if (filtersApplied.length > 0) {
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Applied Filters:', 20, 65);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.text(filtersApplied.join(' | '), 20, 75, { maxWidth: pageWidth - 40 });
+      }
+      
+      // Summary statistics section
+      let yPos = filtersApplied.length > 0 ? 90 : 70;
+      
+      doc.setFillColor(...lightGray);
+      doc.rect(10, yPos, pageWidth - 20, 8, 'F');
+      
+      doc.setTextColor(...brandDark);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('SUMMARY STATISTICS', 20, yPos + 6);
+      
+      yPos += 20;
+      
+      // Stats grid
+      const stats = [
+        { label: 'Total Trades', value: summaryStats.totalTrades.toString() },
+        { label: 'Completed Trades', value: summaryStats.completedTrades.toString() },
+        { label: 'Total P&L', value: formatCurrency(summaryStats.totalPnL), color: summaryStats.totalPnL >= 0 ? [5, 150, 105] : [220, 38, 38] },
+        { label: 'Win Rate', value: `${summaryStats.winRate.toFixed(1)}%` },
+        { label: 'Average Win', value: formatCurrency(summaryStats.avgWin), color: [5, 150, 105] },
+        { label: 'Average Loss', value: formatCurrency(summaryStats.avgLoss), color: [220, 38, 38] },
+        { label: 'Profit Factor', value: summaryStats.profitFactor === Infinity ? '∞' : summaryStats.profitFactor.toFixed(2) }
+      ];
+      
+      const colWidth = (pageWidth - 40) / 4;
+      const rowHeight = 25;
+      
+      stats.forEach((stat, index) => {
+        const col = index % 4;
+        const row = Math.floor(index / 4);
+        const x = 20 + col * colWidth;
+        const y = yPos + row * rowHeight;
+        
+        // Stat card background
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(229, 231, 235);
+        doc.rect(x, y, colWidth - 5, rowHeight - 5, 'FD');
+        
+        // Stat value
+        doc.setTextColor(...(stat.color || textDark));
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text(stat.value, x + 5, y + 12);
+        
+        // Stat label
+        doc.setTextColor(...textDark);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.text(stat.label, x + 5, y + 20);
+      });
+      
+      // Trades table
+      if (filteredTrades.length > 0) {
+        yPos += Math.ceil(stats.length / 4) * rowHeight + 20;
+        
+        doc.setFillColor(...lightGray);
+        doc.rect(10, yPos, pageWidth - 20, 8, 'F');
+        
+        doc.setTextColor(...brandDark);
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`FILTERED TRADES (${filteredTrades.length})`, 20, yPos + 6);
+        
+        yPos += 15;
+        
+        // Prepare table data
+        const tableData = filteredTrades.map(trade => [
+          format(new Date(trade.tradeDate), 'MMM d, yyyy'),
+          trade.asset,
+          trade.direction.toUpperCase(),
+          formatCurrency(trade.entryPrice),
+          trade.exitPrice ? formatCurrency(trade.exitPrice) : '-',
+          trade.size.toString(),
+          trade.pnl ? formatCurrency(trade.pnl) : 'Open',
+          trade.notes ? (trade.notes.length > 30 ? trade.notes.substring(0, 30) + '...' : trade.notes) : '-'
+        ]);
+        
+        // Add table using autoTable
+        (doc as any).autoTable({
+          head: [['Date', 'Asset', 'Direction', 'Entry', 'Exit', 'Size', 'P&L', 'Notes']],
+          body: tableData,
+          startY: yPos,
+          theme: 'grid',
+          headStyles: {
+            fillColor: brandGold,
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            fontSize: 10
+          },
+          bodyStyles: {
+            fontSize: 9,
+            textColor: textDark
+          },
+          columnStyles: {
+            6: { // P&L column
+              cellWidth: 20,
+              halign: 'right'
+            }
+          },
+          didParseCell: function(data: any) {
+            // Color P&L column based on value
+            if (data.column.index === 6 && data.section === 'body') {
+              const pnlText = data.cell.text[0];
+              if (pnlText && pnlText !== 'Open' && pnlText !== '-') {
+                const isPositive = !pnlText.startsWith('-') && !pnlText.startsWith('($');
+                data.cell.styles.textColor = isPositive ? [5, 150, 105] : [220, 38, 38];
+              }
+            }
+          },
+          margin: { left: 20, right: 20 }
+        });
+      }
+      
+      // Footer
+      const footerY = pageHeight - 20;
+      doc.setTextColor(...textDark);
+      doc.setFontSize(8);
+      doc.text('Generated by CoinFeedly Trading Journal', pageWidth / 2, footerY, { align: 'center' });
+      
+      // Save the PDF
+      const fileName = `coinfeedly-trade-overview-${format(new Date(), 'yyyy-MM-dd')}.pdf`;
+      doc.save(fileName);
+      
     } catch (error) {
       console.error('Error generating PDF:', error);
+      // Fallback to simple download
+      const blob = new Blob([JSON.stringify(filteredTrades, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `coinfeedly-trades-${format(new Date(), 'yyyy-MM-dd')}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   };
 

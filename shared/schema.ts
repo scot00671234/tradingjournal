@@ -116,6 +116,7 @@ export const insertTradeSchema = createInsertSchema(trades).omit({
   exitPrice: z.string().optional(),
   size: z.coerce.number().int().positive("Size must be a positive integer"),
   tradeDate: z.string().min(1, "Trade date is required"),
+  imageUrl: z.string().optional(),
 });
 
 export const updateTradeSchema = createInsertSchema(trades).omit({

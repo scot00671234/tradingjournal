@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, TrendingUp, TrendingDown, Crown, X } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, Crown, X, Upload, Image, Trash2 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
@@ -45,6 +45,9 @@ export function UnifiedTradeEntry({
   const [allAssets, setAllAssets] = useState<string[]>(defaultAssets);
   const [newAsset, setNewAsset] = useState("");
   const [selectedAsset, setSelectedAsset] = useState("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<InsertTrade>({
     resolver: zodResolver(insertTradeSchema),
@@ -58,11 +61,37 @@ export function UnifiedTradeEntry({
       tags: "",
       tradeDate: new Date().toISOString().split('T')[0],
       isCompleted: false,
+      imageUrl: "",
     },
   });
 
   const createTradeMutation = useMutation({
     mutationFn: async (data: InsertTrade) => {
+      let imageUrl = "";
+      
+      // Upload image if selected
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append("image", selectedImage);
+        
+        try {
+          const uploadRes = await fetch('/api/upload-image', {
+            method: 'POST',
+            body: formData,
+          });
+          
+          if (!uploadRes.ok) {
+            throw new Error('Upload failed');
+          }
+          
+          const uploadData = await uploadRes.json();
+          imageUrl = uploadData.imageUrl;
+        } catch (error) {
+          console.error("Image upload failed:", error);
+          throw new Error("Failed to upload image");
+        }
+      }
+      
       const tradeData = {
         ...data,
         direction,
@@ -70,6 +99,7 @@ export function UnifiedTradeEntry({
         tradeDate: new Date(data.tradeDate).toISOString(),
         entryPrice: data.entryPrice,
         exitPrice: data.exitPrice || undefined,
+        imageUrl: imageUrl || undefined,
       };
       
       const res = await apiRequest("POST", "/api/trades", tradeData);
@@ -84,6 +114,8 @@ export function UnifiedTradeEntry({
       form.reset();
       setTags([]);
       setDirection("long");
+      setSelectedImage(null);
+      setImagePreview(null);
       
       if (redirectAfterSubmit) {
         setLocation(redirectAfterSubmit);
@@ -141,6 +173,48 @@ export function UnifiedTradeEntry({
       form.setValue("asset", upperValue);
       setSelectedAsset(upperValue);
       // Keep the asset in the input field, don't clear it
+    }
+  };
+
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please select an image file.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Image must be smaller than 5MB.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setSelectedImage(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -406,6 +480,78 @@ export function UnifiedTradeEntry({
               placeholder="Trade notes and observations..."
               {...form.register("notes")}
             />
+          </div>
+
+          {/* Trade Screenshot/Image Upload */}
+          <div className="space-y-2">
+            <Label>Trade Screenshot (Optional)</Label>
+            <div className="space-y-3">
+              {/* Image Upload Section */}
+              <div className="flex items-center space-x-3">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  className="hidden"
+                  id="trade-image-upload"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center"
+                  disabled={createTradeMutation.isPending}
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  {selectedImage ? "Change Image" : "Upload Screenshot"}
+                </Button>
+                {selectedImage && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={removeImage}
+                    className="text-red-600 hover:text-red-700"
+                  >
+                    <Trash2 className="w-4 h-4 mr-1" />
+                    Remove
+                  </Button>
+                )}
+              </div>
+
+              {/* Image Preview */}
+              {imagePreview && (
+                <div className="mt-3">
+                  <div className="relative border rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-900">
+                    <img
+                      src={imagePreview}
+                      alt="Trade screenshot preview"
+                      className="w-full h-48 object-contain"
+                    />
+                    <div className="absolute top-2 right-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={removeImage}
+                        className="bg-white/90 hover:bg-white"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {selectedImage?.name} ({((selectedImage?.size || 0) / 1024 / 1024).toFixed(2)} MB)
+                  </p>
+                </div>
+              )}
+
+              {/* Helper Text */}
+              <p className="text-xs text-muted-foreground">
+                Upload a screenshot of your trade entry/exit. Supports JPG, PNG, GIF. Max size: 5MB.
+              </p>
+            </div>
           </div>
 
           {/* Submit Button */}

@@ -69,16 +69,8 @@ export default function DashboardPage() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center space-x-2 p-2 hover:bg-muted rounded-lg border-none bg-transparent">
-                    <div 
-                      className="w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer"
-                      style={{ 
-                        backgroundColor: '#facc15',
-                        color: 'white'
-                      }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = '#f59e0b'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = '#facc15'}
-                    >
-                      <span className="text-sm font-medium">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer bg-yellow-400 hover:bg-yellow-500">
+                      <span className="text-white text-sm font-medium">
                         {user?.username?.charAt(0).toUpperCase()}
                       </span>
                     </div>

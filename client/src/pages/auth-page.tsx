@@ -164,7 +164,7 @@ export default function AuthPage() {
 
                   <Button 
                     type="submit" 
-                    className="w-full h-10 bg-yellow-300 hover:bg-yellow-400 text-black border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm" 
+                    className="w-full h-10 bg-yellow-400 hover:bg-yellow-500 text-white border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm" 
                     disabled={loginMutation.isPending}
                   >
                     {loginMutation.isPending ? "Signing in..." : "Sign In"}
@@ -256,7 +256,7 @@ export default function AuthPage() {
                   />
                   <Button 
                     type="submit" 
-                    className="w-full h-10 bg-yellow-300 hover:bg-yellow-400 text-black border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm" 
+                    className="w-full h-10 bg-yellow-400 hover:bg-yellow-500 text-white border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm" 
                     disabled={registerMutation.isPending}
                   >
                     {registerMutation.isPending ? "Creating Account..." : "Create Account"}

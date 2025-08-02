@@ -307,10 +307,10 @@ export default function LandingPage() {
               size="default" 
               variant="ghost"
               onClick={() => setLocation("/auth")}
-              className="bg-yellow-400 hover:bg-yellow-500 text-black border-none font-medium px-8 py-3 h-auto text-sm rounded-full transition-all duration-200 shadow-lg font-system tracking-tight"
+              className="bg-yellow-400 hover:bg-yellow-500 text-white border-none font-medium px-8 py-3 h-auto text-sm rounded-full transition-all duration-200 shadow-lg font-system tracking-tight"
             >
               Start Your Transformation
-              <ArrowRight className="ml-2 h-4 w-4 text-black" />
+              <ArrowRight className="ml-2 h-4 w-4 text-white" />
             </Button>
           </motion.div>
         </div>
@@ -660,10 +660,10 @@ export default function LandingPage() {
           <Button 
             size="lg" 
             onClick={() => setLocation("/auth")}
-            className="bg-yellow-400 hover:bg-yellow-500 text-black border-none font-medium px-8 py-3 h-auto rounded-full transition-all duration-200 shadow-lg"
+            className="bg-yellow-400 hover:bg-yellow-500 text-white border-none font-medium px-8 py-3 h-auto rounded-full transition-all duration-200 shadow-lg"
           >
             Start for free now
-            <ArrowRight className="ml-2 h-4 w-4 text-black" />
+            <ArrowRight className="ml-2 h-4 w-4 text-white" />
           </Button>
         </div>
       </section>
@@ -685,7 +685,7 @@ export default function LandingPage() {
                   size="sm" 
                   variant="ghost"
                   onClick={() => setLocation("/auth")}
-                  className="btn-golden text-sm"
+                  className="bg-yellow-400 hover:bg-yellow-500 text-white border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm px-4 py-2"
                 >
                   Start Free Trial
                 </Button>

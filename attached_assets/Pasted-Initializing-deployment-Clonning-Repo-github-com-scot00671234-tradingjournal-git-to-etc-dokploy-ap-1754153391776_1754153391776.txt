@@ -1,0 +1,107 @@
+Initializing deployment
+Clonning Repo github.com/scot00671234/tradingjournal.git to /etc/dokploy/applications/coin-feedly-app-oydehj/code: ✅
+Cloning into '/etc/dokploy/applications/coin-feedly-app-oydehj/code'...
+remote: Enumerating objects: 341, done.
+Cloned github.com/scot00671234/tradingjournal.git: ✅
+Build railpack: ✅
+Source Type: github: ✅
+╭─────────────────╮
+│ Railpack 0.0.64 │
+╰─────────────────╯
+↳ Detected Python
+↳ Using uv
+Packages
+──────────
+python  │  3.11.13  │  railpack default (3.11)
+pipx    │  1.7.1    │  railpack default (latest)
+Steps
+──────────
+▸ install
+$ pipx install uv
+$ uv sync --locked --no-dev --no-install-project
+$ uv sync --locked --no-dev --no-editable
+#0 building with "builder-containerd" instance using docker-container driver
+#1 [internal] load build definition from railpack-plan.json
+#1 transferring dockerfile: 4.45kB done
+#1 DONE 0.0s
+#2 resolve image config for docker-image://ghcr.io/railwayapp/railpack-frontend:v0.0.64
+#2 DONE 0.4s
+#3 docker-image://ghcr.io/railwayapp/railpack-frontend:v0.0.64@sha256:7278141308bef8c97508eb2f4b4f9f6a738afd0371d2ccc70b57f4c958b0bc6d
+#3 resolve ghcr.io/railwayapp/railpack-frontend:v0.0.64@sha256:7278141308bef8c97508eb2f4b4f9f6a738afd0371d2ccc70b57f4c958b0bc6d 0.0s done
+#3 CACHED
+#4 load build definition from railpack-plan.json
+#4 transferring dockerfile: 4.45kB done
+#4 DONE 0.0s
+#5 loading .
+#5 DONE 0.0s
+#6 docker-image://ghcr.io/railwayapp/railpack-builder:latest
+#6 resolve ghcr.io/railwayapp/railpack-builder:latest
+#6 ...
+#7 docker-image://ghcr.io/railwayapp/railpack-runtime:latest
+#7 resolve ghcr.io/railwayapp/railpack-runtime:latest 0.3s done
+#7 DONE 0.3s
+#6 docker-image://ghcr.io/railwayapp/railpack-builder:latest
+#6 resolve ghcr.io/railwayapp/railpack-builder:latest 0.3s done
+#6 DONE 0.3s
+#5 loading .
+#5 transferring context: 758.13kB 0.1s
+#5 transferring context: 90.59MB 3.6s done
+#5 DONE 3.6s
+#8 install mise packages: pipx, python
+#8 CACHED
+#9 copy pyproject.toml
+#9 CACHED
+#10 install apt packages: libpq-dev python3-dev
+#10 CACHED
+#11 mkdir /etc/mise
+#11 CACHED
+#12 pipx install uv
+#12 CACHED
+#13 copy uv.lock
+#13 CACHED
+#14 create mise config
+#14 CACHED
+#15 uv sync --locked --no-dev --no-install-project
+#15 CACHED
+#16 copy .
+#16 DONE 0.3s
+#17 uv sync --locked --no-dev --no-editable
+#17 0.218 Resolved 26 packages in 11ms
+#17 1.593 Bytecode compiled 2304 files in 1.36s
+#17 DONE 1.6s
+#18 copy .
+#18 DONE 0.5s
+#19 install apt packages: libpq5
+#19 CACHED
+#20 copy /usr/local/bin/mise
+#20 CACHED
+#21 copy /etc/mise/config.toml
+#21 CACHED
+#22 copy /mise/shims
+#22 CACHED
+#23 copy /mise/installs
+#23 CACHED
+#24 copy /root/.local/state/mise
+#24 CACHED
+#25 copy /app/.venv
+#25 CACHED
+#26 copy /app
+#26 DONE 0.5s
+#27 [railpack] merge $packages:apt:runtime, $packages:mise, $build, $build
+#27 DONE 0.0s
+#28 exporting to docker image format
+#28 exporting layers
+#28 exporting layers 4.1s done
+#28 exporting manifest sha256:9184548a66d8af50b58809da73e3ce70b48bd7577023b6a2d8dafae329d174a4
+#28 exporting manifest sha256:9184548a66d8af50b58809da73e3ce70b48bd7577023b6a2d8dafae329d174a4 done
+#28 exporting config sha256:e57612204f66fc6d580b10ae9585671dbf41ea2ae85eed5785e64a6c0851ae3e done
+#28 sending tarball
+#28 ...
+#29 importing to docker
+#29 loading layer 067092b84732 557.06kB / 88.59MB
+#29 loading layer 067092b84732 88.59MB / 88.59MB 0.7s done
+#29 DONE 0.7s
+#28 exporting to docker image format
+#28 sending tarball 8.4s done
+#28 DONE 12.5s
+Docker Deployed: ✅

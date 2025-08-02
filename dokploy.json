@@ -1,7 +1,7 @@
 {
   "name": "coinfeedly",
   "type": "application",
-  "dockerFile": "Dockerfile",
+  "dockerFile": "Dockerfile.web",
   "buildType": "dockerfile",
   "sourceType": "github",
   "buildCommand": "npm ci && npm run build",

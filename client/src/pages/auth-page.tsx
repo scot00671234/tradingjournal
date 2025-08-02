@@ -124,7 +124,7 @@ export default function AuthPage() {
                         <FormControl>
                           <Input 
                             type="email" 
-                            placeholder="Enter your email" 
+                            placeholder="Enter Your Email" 
                             className="h-12 border-gray-200 dark:border-gray-600"
                             {...field} 
                           />
@@ -142,7 +142,7 @@ export default function AuthPage() {
                         <FormControl>
                           <Input 
                             type="password" 
-                            placeholder="Enter your password" 
+                            placeholder="Enter Your Password" 
                             className="h-12 border-gray-200 dark:border-gray-600"
                             {...field} 
                           />
@@ -164,10 +164,10 @@ export default function AuthPage() {
 
                   <Button 
                     type="submit" 
-                    className="w-full h-10 bg-yellow-400 hover:bg-yellow-400 text-white border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm" 
+                    className="w-full h-10 bg-yellow-300 hover:bg-yellow-400 text-black border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm" 
                     disabled={loginMutation.isPending}
                   >
-                    {loginMutation.isPending ? "Signing in..." : "Sign in"}
+                    {loginMutation.isPending ? "Signing in..." : "Sign In"}
                   </Button>
                 </form>
               </Form>
@@ -191,7 +191,7 @@ export default function AuthPage() {
                           <FormLabel className="text-gray-700 dark:text-gray-300">First Name</FormLabel>
                           <FormControl>
                             <Input 
-                              placeholder="Enter your first name" 
+                              placeholder="Enter Your First Name" 
                               className="h-12 border-gray-200 dark:border-gray-600"
                               {...field} 
                             />
@@ -208,7 +208,7 @@ export default function AuthPage() {
                           <FormLabel className="text-gray-700 dark:text-gray-300">Last Name</FormLabel>
                           <FormControl>
                             <Input 
-                              placeholder="Enter your last name" 
+                              placeholder="Enter Your Last Name" 
                               className="h-12 border-gray-200 dark:border-gray-600"
                               {...field} 
                             />
@@ -227,7 +227,7 @@ export default function AuthPage() {
                         <FormControl>
                           <Input 
                             type="email" 
-                            placeholder="Enter your email" 
+                            placeholder="Enter Your Email" 
                             className="h-12 border-gray-200 dark:border-gray-600"
                             {...field} 
                           />
@@ -245,7 +245,7 @@ export default function AuthPage() {
                         <FormControl>
                           <Input 
                             type="password" 
-                            placeholder="Create a password" 
+                            placeholder="Create A Password" 
                             className="h-12 border-gray-200 dark:border-gray-600"
                             {...field} 
                           />
@@ -256,10 +256,10 @@ export default function AuthPage() {
                   />
                   <Button 
                     type="submit" 
-                    className="w-full h-10 bg-yellow-400 hover:bg-yellow-400 text-white border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm" 
+                    className="w-full h-10 bg-yellow-300 hover:bg-yellow-400 text-black border-none font-medium text-sm rounded-full transition-all duration-200 shadow-sm" 
                     disabled={registerMutation.isPending}
                   >
-                    {registerMutation.isPending ? "Creating account..." : "Create account"}
+                    {registerMutation.isPending ? "Creating Account..." : "Create Account"}
                   </Button>
                 </form>
               </Form>

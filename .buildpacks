@@ -1,2 +1,0 @@
-# This file disables automatic buildpack detection and forces Docker build
-# Dokploy should use Dockerfile instead of detecting language

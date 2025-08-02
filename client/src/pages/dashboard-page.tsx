@@ -4,9 +4,16 @@ import { TradeStatsCards } from "@/components/trade-stats-cards";
 import { UnifiedTradeEntry } from "@/components/unified-trade-entry";
 import { RecentTradesTable } from "@/components/recent-trades-table";
 import { useAuth } from "@/hooks/use-auth";
-import { Settings, Moon, Sun } from "lucide-react";
+import { Settings, Moon, Sun, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/ui/theme-provider";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
 
 export default function DashboardPage() {
@@ -59,14 +66,38 @@ export default function DashboardPage() {
               >
                 <Settings className="h-5 w-5" />
               </Button>
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-primary-foreground text-sm font-medium">
-                    {user?.username?.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <span className="text-foreground">{user?.username}</span>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center space-x-2 p-2 hover:bg-muted rounded-lg">
+                    <div className="w-8 h-8 bg-yellow-400 hover:bg-yellow-500 rounded-full flex items-center justify-center transition-colors">
+                      <span className="text-white text-sm font-medium">
+                        {user?.username?.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <span className="text-foreground">{user?.username}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem 
+                    onClick={() => window.location.href = "/settings"}
+                    className="cursor-pointer"
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    Profile Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      fetch('/api/logout', { method: 'POST' })
+                        .then(() => window.location.href = '/auth');
+                    }}
+                    className="cursor-pointer text-red-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </header>

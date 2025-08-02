@@ -15,7 +15,7 @@ import { nanoid } from "nanoid";
 // Initialize Stripe with production-ready configuration
 const stripe = process.env.STRIPE_SECRET_KEY ? 
   new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2023-10-16',
+    apiVersion: '2025-07-30.basil',
     appInfo: {
       name: 'CoinFeedly',
       version: '1.0.0',

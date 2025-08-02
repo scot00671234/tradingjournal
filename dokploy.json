@@ -4,6 +4,8 @@
   "dockerFile": "Dockerfile",
   "buildType": "dockerfile",
   "sourceType": "github",
+  "buildCommand": "npm ci && npm run build",
+  "startCommand": "./start-production.sh",
   "environments": [
     {
       "name": "NODE_ENV",
@@ -12,6 +14,10 @@
     {
       "name": "PORT",
       "value": "3000"
+    },
+    {
+      "name": "SESSION_SECRET",
+      "value": "your-production-session-secret-here"
     }
   ],
   "mounts": [
@@ -23,7 +29,7 @@
   ],
   "domains": [
     {
-      "host": "coinfeedly.example.com",
+      "host": "coinfeedly.com",
       "port": 3000,
       "https": true
     }

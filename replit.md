@@ -47,6 +47,8 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes (January 2025)
 - **Migration Complete**: Successfully migrated from Replit Agent to standard Replit environment with PostgreSQL database
+- **Production Deployment**: Fixed Dokploy deployment configuration to properly detect Node.js (not Python), added proper .dockerignore, Procfile, and troubleshooting guide
+- **Docker Configuration**: Enhanced Dockerfile with proper health checks, ES modules support, and production optimizations
 - **UI Improvements**: Refined golden button styling with better font rendering and proportional sizing  
 - **Golden Avatar**: Implemented light gold avatar button with dropdown logout menu functionality
 - **Button Consistency**: All golden buttons now use consistent styling with white text and proper hover states
@@ -54,4 +56,3 @@ Preferred communication style: Simple, everyday language.
 - **Trading Accounts**: Added multi-account functionality with subscription-based limits
 - **Database Schema**: Extended to include trading_accounts table with proper relations
 - **Stripe Integration**: Enhanced with production-ready configuration and API versioning
-- **Dokploy Deployment**: Production-ready configuration for VPS deployment via Dokploy with Docker, health checks, and comprehensive deployment guide

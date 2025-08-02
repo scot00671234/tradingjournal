@@ -1,0 +1,284 @@
+
+
+My Organization
+
+Home
+Projects
+Monitoring
+Schedules
+Traefik File System
+Docker
+Swarm
+Requests
+Settings
+Web Server
+Profile
+Remote Servers
+Users
+SSH Keys
+AI
+Git
+Registry
+S3 Destinations
+Certificates
+Cluster
+Notifications
+Extra
+Documentation
+Support
+Sponsor
+
+CN
+Account
+scot00671234@gmail.com
+Version v0.22.7
+
+Projects
+Coin Feedly
+app
+
+app
+coin-feedly-app-oydehj
+Dokploy Server
+General
+Environment
+Domains
+Preview Deployments
+Schedules
+Deployments
+Logs
+Monitoring
+Advanced
+Deployments
+See all the 10 last deployments for this application
+
+If you want to re-deploy this application use this URL in the config of your git provider or docker
+Webhook URL:
+http://147.93.87.98:3000/api/deploy/-IbYnKnkon0k1V1xIF6dE
+
+1. error
+Add image asset to enhance visual appeal and user experience Adds a new image asset: attached_assets/image_1754154479572.png. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 332fdeac-8648-47b4-9b4a-750e582dda30 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/f3f7ab7b-c1f0-4129-8d81-73dbdfe31e74/332fdeac-8648-47b4-9b4a-750e582dda30/AKaGnay
+Hash: 8dda308579c891f5c1c6e08708609cc76903f002
+
+4 minutes ago
+18s
+2. error
+Add image to enhance visual appeal and provide more context to users Adds a new image asset: attached_assets/image_1754153829047.png. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 332fdeac-8648-47b4-9b4a-750e582dda30 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/f3f7ab7b-c1f0-4129-8d81-73dbdfe31e74/332fdeac-8648-47b4-9b4a-750e582dda30/AKaGnay
+Hash: 583648ee0f75fbb26e372d88df547aaa0a5ee5be
+
+19 minutes ago
+1m 39s
+3. done
+Manual deployment
+
+36 minutes ago
+44s
+4. done
+Manual deployment
+
+about 1 hour ago
+1m 7s
+5. done
+Prepare application for deployment on a virtual private server Adds Dokploy configuration, documentation, and improves Docker setup for VPS deployment. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 112bc2a4-7ed3-4853-801b-617b0aa856b2 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/16089faf-a00d-40ea-b1ad-2d6e0cc4eb6c/112bc2a4-7ed3-4853-801b-617b0aa856b2/bhhoyWu
+Hash: 887928623d47c61a1c00595a1de88fc249fddec7
+
+about 6 hours ago
+56s
+6. done
+Update the appearance of gold buttons on landing and dashboard pages Change button color from yellow-500 to yellow-400 in auth, landing, and dashboard components to maintain consistent styling. Replit-Commit-Author: Agent Replit-Commit-Session-Id: d4a15e34-dd3c-4079-9604-1583d25e8eb5 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/be87ce50-1b38-456a-8c51-02e6dea1f403/d4a15e34-dd3c-4079-9604-1583d25e8eb5/ym8b9ZG
+Hash: cbe260a7c009595755914ec73654fa3713a7f533
+
+about 7 hours ago
+1m 14s
+7. done
+Ensure new note pop-up appears in front and widgets work with snap grid Adjusts z-index for dialogs and modifies react-grid-layout props to improve widget placement and prevent collisions. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 682350db-ce0d-4fcf-a1aa-595d46296249 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/55d81577-112a-41c8-b432-7f6c6b075c61/682350db-ce0d-4fcf-a1aa-595d46296249/eCFlwc2
+Hash: 38f7325ec3d04de8f87784ae1240f8197e1b34df
+
+about 20 hours ago
+1m 0s
+8. done
+Enhance landing page aesthetics with light gold buttons and visual appeal Implements .btn-golden class in index.css and applies it to buttons on landing-page.tsx, also adding assets. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 143e81cc-eacb-41de-890e-1a943df69965 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/755dc963-03b6-43cd-8a65-79871e1bd371/143e81cc-eacb-41de-890e-1a943df69965/eCa4lHl
+Hash: a6cd283a9c77e7113f34fb93223df26b52e27839
+
+about 23 hours ago
+1m 5s
+9. done
+Allow users to add images to their trades for better record keeping Implements image upload functionality to the trade entry form and API. Replit-Commit-Author: Agent Replit-Commit-Session-Id: efa06eaf-3cce-4dfe-b099-f405760967ec Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/91815a64-7fbe-4eda-a580-62010c02c892/efa06eaf-3cce-4dfe-b099-f405760967ec/IyaqraB
+Hash: 97561829fa08857c56f0f85700ef1cd3ad04f42e
+
+1 day ago
+1m 32s
+10. done
+Manual deployment
+
+3 days ago
+22s
+11. done
+Manual deployment
+
+3 days ago
+21s
+Deployment
+See all the details of this deployment | 
+
+Initializing deployment
+Clonning Repo github.com/scot00671234/tradingjournal.git to /etc/dokploy/applications/coin-feedly-app-oydehj/code: ✅
+Cloning into '/etc/dokploy/applications/coin-feedly-app-oydehj/code'...
+remote: Enumerating objects: 353, done.
+Cloned github.com/scot00671234/tradingjournal.git: ✅
+Build dockerfile: ✅
+Source Type: github: ✅
+#0 building with "default" instance using docker driver
+#1 [internal] load build definition from Dockerfile.web
+#1 transferring dockerfile: 1.63kB done
+#1 DONE 0.0s
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#2 DONE 0.7s
+#3 [internal] load .dockerignore
+#3 transferring context: 713B done
+#3 DONE 0.0s
+#4 [builder 1/6] FROM docker.io/library/node:20-alpine@sha256:df02558528d3d3d0d621f112e232611aecfee7cbc654f6b375765f72bb262799
+#4 DONE 0.0s
+#5 [internal] load build context
+#5 transferring context: 3.20MB 0.1s done
+#5 DONE 0.1s
+#6 [production  5/12] COPY package*.json ./
+#6 CACHED
+#7 [production  2/12] RUN apk add --no-cache dumb-init curl
+#7 CACHED
+#8 [production  3/12] RUN addgroup -g 1001 -S nodejs &&     adduser -S coinfeedly -u 1001
+#8 CACHED
+#9 [production  4/12] WORKDIR /app
+#9 CACHED
+#10 [production  6/12] RUN npm ci --only=production --verbose && npm cache clean --force
+#10 CACHED
+#11 [builder 3/6] COPY package*.json ./
+#11 CACHED
+#12 [builder 2/6] WORKDIR /app
+#12 CACHED
+#13 [builder 4/6] RUN npm ci --verbose
+#13 CACHED
+#14 [builder 5/6] COPY . .
+#14 DONE 0.0s
+#15 [builder 6/6] RUN npm run build
+#15 1.184
+#15 1.184 > rest-express@1.0.0 build
+#15 1.184 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+#15 1.184
+#15 2.098 vite v5.4.19 building for production...
+#15 2.180 transforming...
+#15 3.061 Browserslist: browsers data (caniuse-lite) is 10 months old. Please run:
+#15 3.061   npx update-browserslist-db@latest
+#15 3.061   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+#15 14.38 ✓ 1791 modules transformed.
+#15 14.38 x Build failed in 12.25s
+#15 14.39 error during build:
+#15 14.39 [vite:asset] Could not load /app/attached_assets/logo coin feedly (1)_1753637229790.png (imported by client/src/pages/simplified-dashboard.tsx): ENOENT: no such file or directory, open '/app/attached_assets/logo coin feedly (1)_1753637229790.png'
+#15 14.39     at async open (node:internal/fs/promises:639:25)
+#15 14.39     at async Object.readFile (node:internal/fs/promises:1246:14)
+#15 14.39     at async fileToBuiltUrl (file:///app/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:20428:19)
+#15 14.39     at async Object.load (file:///app/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:20328:17)
+#15 14.39     at async PluginDriver.hookFirstAndGetPlugin (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20689:28)
+#15 14.39     at async file:///app/node_modules/rollup/dist/es/shared/node-entry.js:19809:33
+#15 14.39     at async Queue.work (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20899:32)
+#15 ERROR: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
+------
+> [builder 6/6] RUN npm run build:
+14.38 x Build failed in 12.25s
+14.39 error during build:
+14.39 [vite:asset] Could not load /app/attached_assets/logo coin feedly (1)_1753637229790.png (imported by client/src/pages/simplified-dashboard.tsx): ENOENT: no such file or directory, open '/app/attached_assets/logo coin feedly (1)_1753637229790.png'
+14.39     at async open (node:internal/fs/promises:639:25)
+14.39     at async Object.readFile (node:internal/fs/promises:1246:14)
+14.39     at async fileToBuiltUrl (file:///app/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:20428:19)
+14.39     at async Object.load (file:///app/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:20328:17)
+14.39     at async PluginDriver.hookFirstAndGetPlugin (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20689:28)
+14.39     at async file:///app/node_modules/rollup/dist/es/shared/node-entry.js:19809:33
+14.39     at async Queue.work (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20899:32)
+------
+Dockerfile.web:17
+--------------------
+|
+|     # Build the application
+| >>> RUN npm run build
+|
+|     # Production stage
+--------------------
+ERROR: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
+Error ❌
+#0 building with "default" instance using docker driver
+#1 [internal] load build definition from Dockerfile.web
+#1 transferring dockerfile: 1.63kB done
+#1 DONE 0.0s
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#2 DONE 0.7s
+#3 [internal] load .dockerignore
+#3 transferring context: 713B done
+#3 DONE 0.0s
+#4 [builder 1/6] FROM docker.io/library/node:20-alpine@sha256:df02558528d3d3d0d621f112e232611aecfee7cbc654f6b375765f72bb262799
+#4 DONE 0.0s
+#5 [internal] load build context
+#5 transferring context: 3.20MB 0.1s done
+#5 DONE 0.1s
+#6 [production  5/12] COPY package*.json ./
+#6 CACHED
+#7 [production  2/12] RUN apk add --no-cache dumb-init curl
+#7 CACHED
+#8 [production  3/12] RUN addgroup -g 1001 -S nodejs &&     adduser -S coinfeedly -u 1001
+#8 CACHED
+#9 [production  4/12] WORKDIR /app
+#9 CACHED
+#10 [production  6/12] RUN npm ci --only=production --verbose && npm cache clean --force
+#10 CACHED
+#11 [builder 3/6] COPY package*.json ./
+#11 CACHED
+#12 [builder 2/6] WORKDIR /app
+#12 CACHED
+#13 [builder 4/6] RUN npm ci --verbose
+#13 CACHED
+#14 [builder 5/6] COPY . .
+#14 DONE 0.0s
+#15 [builder 6/6] RUN npm run build
+#15 1.184
+#15 1.184 > rest-express@1.0.0 build
+#15 1.184 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+#15 1.184
+#15 2.098 vite v5.4.19 building for production...
+#15 2.180 transforming...
+#15 3.061 Browserslist: browsers data (caniuse-lite) is 10 months old. Please run:
+#15 3.061   npx update-browserslist-db@latest
+#15 3.061   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+#15 14.38 ✓ 1791 modules transformed.
+#15 14.38 x Build failed in 12.25s
+#15 14.39 error during build:
+#15 14.39 [vite:asset] Could not load /app/attached_assets/logo coin feedly (1)_1753637229790.png (imported by client/src/pages/simplified-dashboard.tsx): ENOENT: no such file or directory, open '/app/attached_assets/logo coin feedly (1)_1753637229790.png'
+#15 14.39     at async open (node:internal/fs/promises:639:25)
+#15 14.39     at async Object.readFile (node:internal/fs/promises:1246:14)
+#15 14.39     at async fileToBuiltUrl (file:///app/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:20428:19)
+#15 14.39     at async Object.load (file:///app/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:20328:17)
+#15 14.39     at async PluginDriver.hookFirstAndGetPlugin (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20689:28)
+#15 14.39     at async file:///app/node_modules/rollup/dist/es/shared/node-entry.js:19809:33
+#15 14.39     at async Queue.work (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20899:32)
+#15 ERROR: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
+------
+> [builder 6/6] RUN npm run build:
+14.38 x Build failed in 12.25s
+14.39 error during build:
+14.39 [vite:asset] Could not load /app/attached_assets/logo coin feedly (1)_1753637229790.png (imported by client/src/pages/simplified-dashboard.tsx): ENOENT: no such file or directory, open '/app/attached_assets/logo coin feedly (1)_1753637229790.png'
+14.39     at async open (node:internal/fs/promises:639:25)
+14.39     at async Object.readFile (node:internal/fs/promises:1246:14)
+14.39     at async fileToBuiltUrl (file:///app/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:20428:19)
+14.39     at async Object.load (file:///app/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:20328:17)
+14.39     at async PluginDriver.hookFirstAndGetPlugin (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20689:28)
+14.39     at async file:///app/node_modules/rollup/dist/es/shared/node-entry.js:19809:33
+14.39     at async Queue.work (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20899:32)
+------
+Dockerfile.web:17
+--------------------
+|
+|     # Build the application
+| >>> RUN npm run build
+|
+|     # Production stage
+--------------------
+ERROR: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
+Close

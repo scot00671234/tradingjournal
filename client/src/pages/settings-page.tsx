@@ -14,7 +14,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
+// Use public asset for production builds
+const coinFeedlyLogo = "/coinfeedly-logo.svg";
 
 const updateProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),

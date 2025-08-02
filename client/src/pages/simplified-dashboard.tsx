@@ -29,7 +29,8 @@ import "react-resizable/css/styles.css";
 //@ts-ignore
 import GridLayout from "react-grid-layout";
 import "@/components/ui/improved-grid.css";
-import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
+// Fallback to public asset if attached asset fails in production build
+const coinFeedlyLogo = "/coinfeedly-logo.svg";
 import { getGreeting } from "@/utils/greeting";
 
 export default function SimplifiedDashboard() {

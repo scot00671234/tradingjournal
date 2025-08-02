@@ -62,5 +62,4 @@ docker-compose.yml
 Dockerfile.dev
 .dockerignore
 
-# Attached assets (if not needed in production)
-attached_assets/
+# Keep attached_assets for Vite build process that imports logo files

@@ -11,18 +11,19 @@ import {
   Sparkles
 } from "lucide-react";
 import { motion } from "framer-motion";
-import luxuryCar from "@assets/pexels-pixabay-326259_1753623060677.jpg";
-import luxuryRoom from "@assets/pexels-joao-gustavo-rezende-15265-68389_1753623060676.jpg";
-import watchCollection from "@assets/pexels-bemistermister-380782_1753623060677.jpg";
-import penthouseView from "@assets/pexels-rpnickson-2417842_1753623060678.jpg";
-import tradingCharts from "@assets/pexels-energepic-com-27411-159888_1753623332929.jpg";
-import bmwTrading from "@assets/pexels-dvaughnbell-2068664_1753623332929.jpg";
-import modernVilla from "@assets/pexels-alex-staudinger-829197-1732414_1753624512468.jpg";
-import rolexWatch from "@assets/pexels-pixabay-364822_1753624512469.jpg";
-import porscheSports from "@assets/pexels-adrian-dorobantu-989175-2127740_1753624512469.jpg";
-import tropicalVilla from "@assets/pexels-asadphoto-3155666_1753624512470.jpg";
-import heroVideo from "@assets/Copy of Black and White Modern Quote Motivation Success Video_1753634070768.mp4";
-import coinFeedlyLogo from "@assets/logo coin feedly (1)_1753637229790.png";
+// Use placeholder images for production builds to avoid asset import issues
+const luxuryCar = "https://images.unsplash.com/photo-1493238792000-8113da705763?w=400&h=300&fit=crop&crop=faces";
+const luxuryRoom = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop&crop=faces";
+const watchCollection = "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=400&h=300&fit=crop&crop=faces";
+const penthouseView = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=300&fit=crop&crop=faces";
+const tradingCharts = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop&crop=faces";
+const bmwTrading = "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=300&fit=crop&crop=faces";
+const modernVilla = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop&crop=faces";
+const rolexWatch = "https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=400&h=300&fit=crop&crop=faces";
+const porscheSports = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop&crop=faces";
+const tropicalVilla = "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=400&h=300&fit=crop&crop=faces";
+const heroVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const coinFeedlyLogo = "/coinfeedly-logo.svg";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();

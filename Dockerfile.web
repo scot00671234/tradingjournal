@@ -1,28 +1,64 @@
-# Simplified production Dockerfile to force Docker detection
+# Production Dockerfile for CoinFeedly Trading Journal
 FROM node:20-alpine AS builder
 
+# Set working directory
 WORKDIR /app
+
+# Copy package files first for better caching
 COPY package*.json ./
-RUN npm ci
+
+# Install all dependencies (including dev dependencies for build)
+RUN npm ci --verbose
+
+# Copy source code
 COPY . .
+
+# Build the application
 RUN npm run build
 
+# Production stage
 FROM node:20-alpine AS production
-RUN apk add --no-cache dumb-init
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init curl
+
+# Create app directory and user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S coinfeedly -u 1001
+
+# Set working directory
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
 
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/shared ./shared
-COPY drizzle.config.ts ./
-COPY start-production.sh ./
+# Install only production dependencies
+RUN npm ci --only=production --verbose && npm cache clean --force
+
+# Copy built application from builder stage
+COPY --from=builder --chown=coinfeedly:nodejs /app/dist ./dist
+COPY --from=builder --chown=coinfeedly:nodejs /app/shared ./shared
+
+# Copy configuration files
+COPY --chown=coinfeedly:nodejs drizzle.config.ts ./
+COPY --chown=coinfeedly:nodejs start-production.sh ./
+
+# Make startup script executable
 RUN chmod +x start-production.sh
 
-EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "import('http').then(({default: http}) => { http.get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }) })"
+# Create uploads directory with proper permissions
+RUN mkdir -p uploads && chown -R coinfeedly:nodejs uploads
 
+# Switch to non-root user
+USER coinfeedly
+
+# Expose port
+EXPOSE 3000
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+  CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Start the application
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["./start-production.sh"]

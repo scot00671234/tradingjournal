@@ -2,7 +2,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
-import { Moon, Sun, Plus, Filter, Search, Settings, LogOut, Layout, LayoutDashboard, TrendingUp, BarChart3, FileText } from "lucide-react";
+import { Moon, Sun, Plus, Filter, Search, Settings, LogOut, Layout, LayoutDashboard, TrendingUp, BarChart3, FileText, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,7 @@ import { DailyPnLWidget } from "@/components/dashboard-widgets/daily-pnl-widget"
 import { TradeOverviewWidget } from "@/components/dashboard-widgets/trade-overview-widget";
 import { StorageUsageWidget } from "@/components/dashboard-widgets/storage-usage-widget";
 import { NotesWidget } from "@/components/dashboard-widgets/notes-widget";
+import { AccountsWidget } from "@/components/dashboard-widgets/accounts-widget";
 
 
 import type { TradeStats, SubscriptionStatus, Trade } from "@shared/schema";
@@ -44,19 +45,21 @@ export default function SimplifiedDashboard() {
   const [expandedNotesWidget, setExpandedNotesWidget] = useState(false);
   // Improved grid layout with better positioning
   const [layouts, setLayouts] = useState([
-    { i: "equity-curve", x: 0, y: 0, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
-    { i: "performance-metrics", x: 6, y: 0, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
-    { i: "drawdown", x: 0, y: 6, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
-    { i: "trade-list", x: 6, y: 6, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
-    { i: "notes", x: 0, y: 12, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "accounts", x: 0, y: 0, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "equity-curve", x: 6, y: 0, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "performance-metrics", x: 0, y: 6, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "drawdown", x: 6, y: 6, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "trade-list", x: 0, y: 12, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
+    { i: "notes", x: 6, y: 12, w: 6, h: 6, minW: 6, minH: 5, maxW: 12, maxH: 10 },
     { i: "calendar", x: 0, y: 18, w: 12, h: 8, minW: 12, minH: 6, maxW: 12, maxH: 12 },
   ]);
   
   const [activeWidgets, setActiveWidgets] = useState([
-    "equity-curve", "performance-metrics", "drawdown", "trade-list", "notes", "calendar"
+    "accounts", "equity-curve", "performance-metrics", "drawdown", "trade-list", "notes", "calendar"
   ]);
   
   const availableWidgets = [
+    { id: "accounts", name: "Trading Accounts", icon: CreditCard, description: "Manage your trading accounts and balances" },
     { id: "equity-curve", name: "Equity Curve", icon: TrendingUp, description: "Track your account value over time" },
     { id: "storage-usage", name: "Storage Usage", icon: Settings, description: "Monitor your file storage usage" },
     { id: "drawdown", name: "Drawdown Analysis", icon: BarChart3, description: "Monitor risk and underwater periods" },
@@ -149,17 +152,17 @@ export default function SimplifiedDashboard() {
 
   // Widget rendering function
   const renderWidget = (key: string) => {
-    if (!trades) return null;
-    
     switch (key) {
+      case "accounts":
+        return <AccountsWidget />;
       case "equity-curve":
-        return <EquityCurveWidget trades={filteredTrades} />;
+        return trades ? <EquityCurveWidget trades={filteredTrades} /> : null;
       case "drawdown":
-        return <DrawdownWidget trades={filteredTrades} />;
+        return trades ? <DrawdownWidget trades={filteredTrades} /> : null;
       case "performance-metrics":
-        return <PerformanceMetricsWidget trades={filteredTrades} />;
+        return trades ? <PerformanceMetricsWidget trades={filteredTrades} /> : null;
       case "trade-list":
-        return <TradeListWidget trades={filteredTrades} />;
+        return trades ? <TradeListWidget trades={filteredTrades} /> : null;
       case "notes":
         return <NotesWidget 
           expanded={expandedNotesWidget} 
@@ -168,9 +171,9 @@ export default function SimplifiedDashboard() {
       case "calendar":
         return <CalendarWidget />;
       case "daily-pnl":
-        return <DailyPnLWidget trades={filteredTrades} />;
+        return trades ? <DailyPnLWidget trades={filteredTrades} /> : null;
       case "trade-overview":
-        return user ? <TradeOverviewWidget trades={trades} user={user} isCustomizing={isCustomizing} onDelete={() => removeWidget(key)} /> : null;
+        return user && trades ? <TradeOverviewWidget trades={trades} user={user} isCustomizing={isCustomizing} onDelete={() => removeWidget(key)} /> : null;
       case "storage-usage":
         return <StorageUsageWidget />;
       default:
@@ -261,26 +264,31 @@ export default function SimplifiedDashboard() {
               <Button
                 size="sm"
                 onClick={() => setShowTradeEntry(!showTradeEntry)}
-                className="btn-golden transition-all duration-200"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white border-none font-medium px-4 py-2 h-8 rounded-lg transition-all duration-200 shadow-sm"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Trade
               </Button>
               
               <Button
-                variant={isCustomizing ? "glass" : "ghost"}
+                variant="ghost"
                 size="sm"
                 onClick={() => setIsCustomizing(!isCustomizing)}
                 className={isCustomizing 
-                  ? "bg-yellow-600/80 text-white hover:bg-yellow-700/90 border-yellow-400/50" 
-                  : "glass-button dark:glass-button-dark"
+                  ? "bg-yellow-500 text-white hover:bg-yellow-600 border-none font-medium px-4 py-2 h-8 rounded-lg transition-all duration-200" 
+                  : "bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 font-medium px-4 py-2 h-8 rounded-lg transition-all duration-200"
                 }
               >
                 <LayoutDashboard className="w-4 h-4 mr-2" />
                 {isCustomizing ? "Done" : "Customize"}
               </Button>
               
-              <Button variant="ghost" size="sm" onClick={toggleTheme} className="glass-button dark:glass-button-dark">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={toggleTheme} 
+                className="bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 w-8 h-8 p-0 rounded-lg transition-all duration-200"
+              >
                 {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
               
@@ -288,7 +296,7 @@ export default function SimplifiedDashboard() {
                 variant="ghost" 
                 size="sm"
                 onClick={() => window.location.href = "/settings"}
-                className="glass-button dark:glass-button-dark"
+                className="bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 w-8 h-8 p-0 rounded-lg transition-all duration-200"
               >
                 <Settings className="h-4 w-4" />
               </Button>

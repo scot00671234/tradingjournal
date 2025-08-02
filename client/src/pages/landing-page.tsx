@@ -202,9 +202,9 @@ export default function LandingPage() {
               size="lg" 
               variant="ghost"
               onClick={() => setLocation("/auth")}
-              className="btn-golden px-8 py-3 h-auto"
+              className="bg-yellow-500 hover:bg-yellow-600 text-white border-none font-medium px-8 py-3 h-auto rounded-lg transition-all duration-200 shadow-lg"
             >
-              Start 7-Day Free Trial
+              Start for free now
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             
@@ -307,7 +307,7 @@ export default function LandingPage() {
               size="lg" 
               variant="ghost"
               onClick={() => setLocation("/auth")}
-              className="btn-golden px-12 py-4 h-auto text-lg"
+              className="bg-yellow-500 hover:bg-yellow-600 text-white border-none font-medium px-12 py-4 h-auto text-lg rounded-lg transition-all duration-200 shadow-lg"
             >
               Start Your Transformation
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -660,9 +660,9 @@ export default function LandingPage() {
           <Button 
             size="lg" 
             onClick={() => setLocation("/auth")}
-            className="bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black px-8 py-3 h-auto font-medium shadow-lg"
+            className="bg-yellow-500 hover:bg-yellow-600 text-white border-none font-medium px-8 py-3 h-auto rounded-lg transition-all duration-200 shadow-lg"
           >
-            Start 7-Day Free Trial
+            Start for free now
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

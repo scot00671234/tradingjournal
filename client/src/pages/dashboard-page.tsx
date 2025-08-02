@@ -69,7 +69,7 @@ export default function DashboardPage() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-2 p-2 hover:bg-muted rounded-lg">
-                    <div className="w-8 h-8 bg-yellow-400 hover:bg-yellow-500 rounded-full flex items-center justify-center transition-colors">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center transition-colors" style={{ backgroundColor: 'rgb(251 191 36)' }}>
                       <span className="text-white text-sm font-medium">
                         {user?.username?.charAt(0).toUpperCase()}
                       </span>

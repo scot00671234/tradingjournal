@@ -125,6 +125,26 @@
     -webkit-backdrop-filter: none !important;
   }
 
+  /* Force avatar button to be golden */
+  div.bg-yellow-400,
+  .bg-yellow-400 div {
+    background-color: rgb(251 191 36) !important;
+  }
+
+  div.bg-yellow-400:hover,
+  .bg-yellow-400:hover div {
+    background-color: rgb(245 158 11) !important;
+  }
+
+  /* Override any primary color on avatar */
+  .bg-primary {
+    background-color: rgb(251 191 36) !important;
+  }
+
+  .bg-primary:hover {
+    background-color: rgb(245 158 11) !important;
+  }
+
   /* Dialog z-index fixes */
   [data-radix-dialog-content] {
     z-index: 9999 !important;

@@ -59,8 +59,8 @@
 
   /* Golden Button Override */
   .btn-golden {
-    background: linear-gradient(to right, rgb(253 224 71), rgb(251 191 36)) !important;
-    color: rgb(17 24 39) !important;
+    background: rgb(251 191 36) !important;
+    color: white !important;
     border: none !important;
     font-weight: 500 !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
@@ -69,8 +69,8 @@
   }
 
   .btn-golden:hover {
-    background: linear-gradient(to right, rgb(250 204 21), rgb(245 158 11)) !important;
-    color: rgb(17 24 39) !important;
+    background: rgb(245 158 11) !important;
+    color: white !important;
     font-weight: 500 !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     letter-spacing: -0.01em !important;
@@ -81,6 +81,24 @@
   /* Font system utility */
   .font-system {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  }
+
+  /* Force golden buttons to NEVER turn white */
+  .bg-yellow-400:hover {
+    background-color: rgb(245 158 11) !important;
+    color: white !important;
+  }
+
+  .hover\:bg-yellow-500:hover {
+    background-color: rgb(245 158 11) !important;
+    color: white !important;
+  }
+
+  /* Override any glass button effects on golden buttons */
+  .bg-yellow-400.glass-button:hover,
+  .bg-yellow-400:hover.glass-button {
+    background: rgb(245 158 11) !important;
+    color: white !important;
   }
 
   /* Dialog z-index fixes */

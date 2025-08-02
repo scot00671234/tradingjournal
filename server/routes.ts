@@ -165,12 +165,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const validatedData = insertTradeSchema.parse(req.body);
       
-      // Convert string prices to numbers for database storage
+      // Keep validated data as-is since schema expects strings but storage will handle conversion
       const tradeData = {
         ...validatedData,
         userId: req.user.id,
-        entryPrice: parseFloat(validatedData.entryPrice),
-        exitPrice: validatedData.exitPrice ? parseFloat(validatedData.exitPrice) : undefined,
       };
       
       const trade = await storage.createTrade(tradeData);

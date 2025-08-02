@@ -653,17 +653,17 @@ export default function LandingPage() {
           <h2 className="text-3xl lg:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
             Tired of emotional trades draining your account?
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-black dark:text-white mb-8 max-w-2xl mx-auto font-medium">
             Build the system. Control your edge.
           </p>
           
           <Button 
             size="lg" 
             onClick={() => setLocation("/auth")}
-            className="bg-yellow-400 hover:bg-yellow-400 text-white border-none font-medium px-8 py-3 h-auto rounded-full transition-all duration-200 shadow-lg"
+            className="bg-yellow-400 hover:bg-yellow-500 text-black border-none font-medium px-8 py-3 h-auto rounded-full transition-all duration-200 shadow-lg"
           >
             Start for free now
-            <ArrowRight className="ml-2 h-4 w-4 text-white" />
+            <ArrowRight className="ml-2 h-4 w-4 text-black" />
           </Button>
         </div>
       </section>

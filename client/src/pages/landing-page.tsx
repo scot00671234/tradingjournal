@@ -204,7 +204,7 @@ export default function LandingPage() {
               onClick={() => setLocation("/auth")}
               className="bg-yellow-400 hover:bg-yellow-500 text-white border-none font-medium px-8 py-3 h-auto rounded-full transition-all duration-200 shadow-lg"
             >
-              Start for free now
+              Start Free Now
               <ArrowRight className="ml-2 h-4 w-4 text-white" />
             </Button>
             
@@ -662,7 +662,7 @@ export default function LandingPage() {
             onClick={() => setLocation("/auth")}
             className="bg-yellow-400 hover:bg-yellow-500 text-white border-none font-medium px-8 py-3 h-auto rounded-full transition-all duration-200 shadow-lg"
           >
-            Start for free now
+            Start Free Now
             <ArrowRight className="ml-2 h-4 w-4 text-white" />
           </Button>
         </div>

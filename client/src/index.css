@@ -101,6 +101,30 @@
     color: white !important;
   }
 
+  /* Force ALL buttons with yellow backgrounds to be consistent */
+  button.bg-yellow-400,
+  .bg-yellow-400 {
+    background-color: rgb(251 191 36) !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  button.bg-yellow-400:hover,
+  .bg-yellow-400:hover {
+    background-color: rgb(245 158 11) !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  /* Override glass button base styles for yellow buttons */
+  .bg-yellow-400.glass-button,
+  button.bg-yellow-400.glass-button {
+    background: rgb(251 191 36) !important;
+    color: white !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
   /* Dialog z-index fixes */
   [data-radix-dialog-content] {
     z-index: 9999 !important;

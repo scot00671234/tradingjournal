@@ -199,7 +199,7 @@ export function AccountsWidget({ className }: AccountsWidgetProps) {
                 size="sm" 
                 variant="outline"
                 disabled={!canCreateAccount()}
-                className="h-7 px-2 text-xs bg-yellow-500 hover:bg-yellow-400 text-white border-none rounded-full"
+                className="h-7 px-2 text-xs bg-yellow-400 hover:bg-yellow-400 text-white border-none rounded-full"
               >
                 <Plus className="h-3 w-3 mr-1 text-white" />
                 Add

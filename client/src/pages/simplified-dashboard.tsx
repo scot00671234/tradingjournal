@@ -264,7 +264,7 @@ export default function SimplifiedDashboard() {
               <Button
                 size="sm"
                 onClick={() => setShowTradeEntry(!showTradeEntry)}
-                className="bg-yellow-500 hover:bg-yellow-400 text-white border-none font-medium px-4 py-2 h-8 rounded-full transition-all duration-200 shadow-sm"
+                className="bg-yellow-400 hover:bg-yellow-400 text-white border-none font-medium px-4 py-2 h-8 rounded-full transition-all duration-200 shadow-sm"
               >
                 <Plus className="w-4 h-4 mr-2 text-white" />
                 Add Trade
@@ -275,7 +275,7 @@ export default function SimplifiedDashboard() {
                 size="sm"
                 onClick={() => setIsCustomizing(!isCustomizing)}
                 className={isCustomizing 
-                  ? "bg-yellow-500 text-white hover:bg-yellow-400 border-none font-medium px-4 py-2 h-8 rounded-full transition-all duration-200" 
+                  ? "bg-yellow-400 text-white hover:bg-yellow-400 border-none font-medium px-4 py-2 h-8 rounded-full transition-all duration-200" 
                   : "bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50 font-medium px-4 py-2 h-8 rounded-full transition-all duration-200"
                 }
               >

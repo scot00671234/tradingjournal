@@ -38,6 +38,7 @@ export const sessions = pgTable("sessions", {
 export const trades = pgTable("trades", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id).notNull(),
+  tradingAccountId: integer("trading_account_id").references(() => tradingAccounts.id).notNull(),
   asset: text("asset").notNull(),
   direction: text("direction").notNull(), // 'long' or 'short'
   entryPrice: real("entry_price").notNull(),
@@ -50,7 +51,10 @@ export const trades = pgTable("trades", {
   tradeDate: timestamp("trade_date").notNull(),
   isCompleted: boolean("is_completed").default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+}, (table) => [
+  index("idx_trades_user_id").on(table.userId),
+  index("idx_trades_trading_account_id").on(table.tradingAccountId),
+]);
 
 export const notes = pgTable("notes", {
   id: serial("id").primaryKey(),
@@ -61,15 +65,34 @@ export const notes = pgTable("notes", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+export const tradingAccounts = pgTable("trading_accounts", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  initialBalance: real("initial_balance").notNull().default(0),
+  currentBalance: real("current_balance").notNull().default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => [
+  index("idx_trading_accounts_user_id").on(table.userId),
+]);
+
 export const userRelations = relations(users, ({ many }) => ({
   trades: many(trades),
   notes: many(notes),
+  tradingAccounts: many(tradingAccounts),
 }));
 
 export const tradeRelations = relations(trades, ({ one }) => ({
   user: one(users, {
     fields: [trades.userId],
     references: [users.id],
+  }),
+  tradingAccount: one(tradingAccounts, {
+    fields: [trades.tradingAccountId],
+    references: [tradingAccounts.id],
   }),
 }));
 
@@ -78,6 +101,14 @@ export const noteRelations = relations(notes, ({ one }) => ({
     fields: [notes.userId],
     references: [users.id],
   }),
+}));
+
+export const tradingAccountRelations = relations(tradingAccounts, ({ one, many }) => ({
+  user: one(users, {
+    fields: [tradingAccounts.userId],
+    references: [users.id],
+  }),
+  trades: many(trades),
 }));
 
 export const insertUserSchema = createInsertSchema(users).omit({
@@ -131,6 +162,7 @@ export const insertTradeSchema = createInsertSchema(trades).omit({
   createdAt: true,
   pnl: true,
 }).extend({
+  tradingAccountId: z.number().int().positive("Trading account is required"),
   entryPrice: z.string().min(1, "Entry price is required"),
   exitPrice: z.string().optional(),
   size: z.coerce.number().int().positive("Size must be a positive integer"),
@@ -160,6 +192,23 @@ export const updateNoteSchema = createInsertSchema(notes).omit({
   createdAt: true,
 }).partial();
 
+export const insertTradingAccountSchema = createInsertSchema(tradingAccounts).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  name: z.string().min(1, "Account name is required").max(100, "Account name must be less than 100 characters"),
+  description: z.string().max(500, "Description must be less than 500 characters").optional(),
+  initialBalance: z.coerce.number().min(0, "Initial balance must be non-negative"),
+});
+
+export const updateTradingAccountSchema = createInsertSchema(tradingAccounts).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+}).partial();
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -173,6 +222,9 @@ export type Trade = typeof trades.$inferSelect;
 export type InsertNote = z.infer<typeof insertNoteSchema>;
 export type UpdateNote = z.infer<typeof updateNoteSchema>;
 export type Note = typeof notes.$inferSelect;
+export type InsertTradingAccount = z.infer<typeof insertTradingAccountSchema>;
+export type UpdateTradingAccount = z.infer<typeof updateTradingAccountSchema>;
+export type TradingAccount = typeof tradingAccounts.$inferSelect;
 
 // Additional types for API responses
 export type TradeStats = {
@@ -212,8 +264,8 @@ export const SUBSCRIPTION_PLANS = {
     price: 0,
     storageLimit: 100 * 1024 * 1024, // 100MB
     maxTradingAccounts: 1,
-    tradeLimit: 5,
-    features: ['Basic trade tracking', 'Simple analytics', '100MB storage']
+    tradeLimit: 3,
+    features: ['3 free trades', 'Basic trade tracking', 'Simple analytics', '100MB storage']
   },
   pro: {
     name: 'Pro',
@@ -221,7 +273,7 @@ export const SUBSCRIPTION_PLANS = {
     storageLimit: 1 * 1024 * 1024 * 1024, // 1GB
     maxTradingAccounts: 1,
     tradeLimit: null,
-    features: ['Unlimited trades', 'Advanced analytics', '1GB storage', '1 trading account']
+    features: ['Unlimited trades', 'Advanced analytics', '1GB storage', '1 trading account', 'Trade screenshots', 'Custom tags & notes']
   },
   elite: {
     name: 'Elite',
@@ -229,7 +281,7 @@ export const SUBSCRIPTION_PLANS = {
     storageLimit: 5 * 1024 * 1024 * 1024, // 5GB
     maxTradingAccounts: 10,
     tradeLimit: null,
-    features: ['Everything in Pro', '5GB storage', '10 trading accounts', 'Priority support']
+    features: ['Everything in Pro +', '5GB storage', '10 trading accounts', 'Advanced risk metrics', 'Priority support', 'Portfolio optimization']
   },
   diamond: {
     name: 'Diamond',
@@ -237,7 +289,7 @@ export const SUBSCRIPTION_PLANS = {
     storageLimit: 10 * 1024 * 1024 * 1024, // 10GB
     maxTradingAccounts: 20,
     tradeLimit: null,
-    features: ['Everything in Elite', '10GB storage', '20 trading accounts', 'Advanced reporting']
+    features: ['Everything in Elite +', '10GB storage', '20 trading accounts', 'Advanced reporting', 'Custom analytics', 'Team collaboration']
   },
   enterprise: {
     name: 'Enterprise',
@@ -245,7 +297,7 @@ export const SUBSCRIPTION_PLANS = {
     storageLimit: 30 * 1024 * 1024 * 1024, // 30GB
     maxTradingAccounts: -1, // unlimited
     tradeLimit: null,
-    features: ['Everything in Diamond', '30GB storage', 'Unlimited trading accounts', 'Custom integrations']
+    features: ['Everything in Diamond +', '30GB storage', 'Unlimited accounts', 'Custom integrations', 'Dedicated support', 'White-label options']
   }
 } as const;
 

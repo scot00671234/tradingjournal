@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { setupAuth } from "./auth";
 import { storage } from "./storage";
-import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, notes, insertNoteSchema, updateNoteSchema, type BillingInfo, SUBSCRIPTION_PLANS, type Note } from "@shared/schema";
+import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, notes, tradingAccounts, insertNoteSchema, updateNoteSchema, insertTradingAccountSchema, updateTradingAccountSchema, type BillingInfo, SUBSCRIPTION_PLANS, type Note, type TradingAccount } from "@shared/schema";
 import { z } from "zod";
 import Stripe from "stripe";
 import { db } from "./db";
@@ -12,9 +12,15 @@ import path from "path";
 import fs from "fs";
 import { nanoid } from "nanoid";
 
-// Initialize Stripe (will use environment variables in production)
+// Initialize Stripe with production-ready configuration
 const stripe = process.env.STRIPE_SECRET_KEY ? 
-  new Stripe(process.env.STRIPE_SECRET_KEY) : 
+  new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2023-10-16',
+    appInfo: {
+      name: 'CoinFeedly',
+      version: '1.0.0',
+    },
+  }) : 
   null;
 
 // Configure multer for image uploads
@@ -148,9 +154,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Check if user is within trade limits
       const tradeCount = await storage.getUserTradeCount(req.user.id);
-      if (!req.user.isProUser && tradeCount >= 5) {
+      const planKey = req.user.subscriptionPlan || 'free';
+      const planConfig = SUBSCRIPTION_PLANS[planKey as keyof typeof SUBSCRIPTION_PLANS] || SUBSCRIPTION_PLANS.free;
+      
+      if (planConfig.tradeLimit && tradeCount >= planConfig.tradeLimit) {
         return res.status(403).json({ 
-          message: "Free plan limited to 5 trades. Upgrade to Pro for unlimited trades." 
+          message: `${planConfig.name} plan limited to ${planConfig.tradeLimit} trades. Upgrade to Pro for unlimited trades.` 
         });
       }
 
@@ -451,6 +460,92 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await storage.updateUserSubscription(user.id, user.subscriptionPlan || 'free', 'active');
       
       res.json({ message: 'Subscription reactivated successfully' });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Trading accounts routes
+  app.get("/api/trading-accounts", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const accounts = await storage.getUserTradingAccounts(req.user.id);
+      res.json(accounts);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/trading-accounts", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      // Check if user can create more trading accounts
+      const existingAccounts = await storage.getUserTradingAccounts(req.user.id);
+      const planKey = req.user.subscriptionPlan || 'free';
+      const planConfig = SUBSCRIPTION_PLANS[planKey as keyof typeof SUBSCRIPTION_PLANS] || SUBSCRIPTION_PLANS.free;
+      
+      if (planConfig.maxTradingAccounts !== -1 && existingAccounts.length >= planConfig.maxTradingAccounts) {
+        return res.status(403).json({ 
+          message: `${planConfig.name} plan limited to ${planConfig.maxTradingAccounts} trading account${planConfig.maxTradingAccounts > 1 ? 's' : ''}. Upgrade for more accounts.` 
+        });
+      }
+
+      const validatedData = insertTradingAccountSchema.parse(req.body);
+      const account = await storage.createTradingAccount(req.user.id, validatedData);
+      
+      res.status(201).json(account);
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid account data", errors: error.errors });
+      }
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.put("/api/trading-accounts/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const accountId = parseInt(req.params.id);
+      const validatedData = updateTradingAccountSchema.parse(req.body);
+      
+      const account = await storage.updateTradingAccount(accountId, req.user.id, validatedData);
+      
+      if (!account) {
+        return res.status(404).json({ message: "Trading account not found" });
+      }
+      
+      res.json(account);
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid account data", errors: error.errors });
+      }
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.delete("/api/trading-accounts/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const accountId = parseInt(req.params.id);
+      const success = await storage.deleteTradingAccount(accountId, req.user.id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Trading account not found" });
+      }
+      
+      res.sendStatus(200);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }

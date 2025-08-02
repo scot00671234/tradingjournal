@@ -3,6 +3,7 @@ import {
   trades, 
   notes,
   sessions,
+  tradingAccounts,
   type User, 
   type InsertUser, 
   type Trade, 
@@ -11,7 +12,10 @@ import {
   type Note,
   type InsertNote,
   type UpdateNote,
-  type UpdateProfileData
+  type UpdateProfileData,
+  type TradingAccount,
+  type InsertTradingAccount,
+  type UpdateTradingAccount
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, count, sum, avg, lt } from "drizzle-orm";
@@ -44,6 +48,13 @@ export interface IStorage {
   
   // Currency preference
   updateUserCurrency(userId: number, currency: string): Promise<User>;
+  
+  // Trading accounts
+  getUserTradingAccounts(userId: number): Promise<TradingAccount[]>;
+  createTradingAccount(userId: number, account: InsertTradingAccount): Promise<TradingAccount>;
+  updateTradingAccount(accountId: number, userId: number, updates: UpdateTradingAccount): Promise<TradingAccount | undefined>;
+  deleteTradingAccount(accountId: number, userId: number): Promise<boolean>;
+  getTradingAccount(accountId: number, userId: number): Promise<TradingAccount | undefined>;
   
   getUserTrades(userId: number, limit?: number): Promise<Trade[]>;
   createTrade(trade: InsertTrade & { userId: number }): Promise<Trade>;
@@ -276,39 +287,37 @@ export class DatabaseStorage implements IStorage {
     return await query;
   }
 
-  async createTrade(trade: any): Promise<Trade> {
+  async createTrade(tradeData: InsertTrade & { userId: number }): Promise<Trade> {
     // Calculate P&L if both entry and exit prices are provided
     let pnl = null;
-    if (trade.entryPrice && trade.exitPrice) {
-      const entryPrice = typeof trade.entryPrice === 'string' ? parseFloat(trade.entryPrice) : trade.entryPrice;
-      const exitPrice = typeof trade.exitPrice === 'string' ? parseFloat(trade.exitPrice) : trade.exitPrice;
-      const size = trade.size;
+    if (tradeData.entryPrice && tradeData.exitPrice) {
+      const entryPrice = typeof tradeData.entryPrice === 'string' ? parseFloat(tradeData.entryPrice) : tradeData.entryPrice;
+      const exitPrice = typeof tradeData.exitPrice === 'string' ? parseFloat(tradeData.exitPrice) : tradeData.exitPrice;
+      const size = tradeData.size;
       
-      if (trade.direction === 'long') {
+      if (tradeData.direction === 'long') {
         pnl = (exitPrice - entryPrice) * size;
       } else {
         pnl = (entryPrice - exitPrice) * size;
       }
     }
 
-    const [newTrade] = await db
-      .insert(trades)
-      .values({
-        userId: trade.userId,
-        asset: trade.asset,
-        direction: trade.direction,
-        entryPrice: typeof trade.entryPrice === 'string' ? parseFloat(trade.entryPrice) : trade.entryPrice,
-        exitPrice: trade.exitPrice ? (typeof trade.exitPrice === 'string' ? parseFloat(trade.exitPrice) : trade.exitPrice) : null,
-        size: trade.size,
-        notes: trade.notes || null,
-        tags: trade.tags || null,
-        imageUrl: trade.imageUrl || null,
-        tradeDate: new Date(trade.tradeDate),
-        pnl,
-        isCompleted: !!(trade.exitPrice),
-      })
-      .returning();
-    return newTrade;
+    const [trade] = await db.insert(trades).values({
+      userId: tradeData.userId,
+      tradingAccountId: tradeData.tradingAccountId,
+      asset: tradeData.asset,
+      direction: tradeData.direction,
+      entryPrice: typeof tradeData.entryPrice === 'string' ? parseFloat(tradeData.entryPrice) : tradeData.entryPrice,
+      exitPrice: tradeData.exitPrice ? (typeof tradeData.exitPrice === 'string' ? parseFloat(tradeData.exitPrice) : tradeData.exitPrice) : null,
+      size: tradeData.size,
+      pnl,
+      notes: tradeData.notes || null,
+      tags: tradeData.tags || null,
+      imageUrl: tradeData.imageUrl || null,
+      tradeDate: new Date(tradeData.tradeDate),
+      isCompleted: !!(tradeData.exitPrice),
+    }).returning();
+    return trade;
   }
 
   async updateTrade(tradeId: number, userId: number, updates: UpdateTrade): Promise<Trade | undefined> {
@@ -464,6 +473,47 @@ export class DatabaseStorage implements IStorage {
       .where(and(eq(notes.id, noteId), eq(notes.userId, userId)));
     
     return (result.rowCount || 0) > 0;
+  }
+
+  // Trading accounts
+  async getUserTradingAccounts(userId: number): Promise<TradingAccount[]> {
+    return await db.select().from(tradingAccounts).where(eq(tradingAccounts.userId, userId)).orderBy(desc(tradingAccounts.createdAt));
+  }
+
+  async createTradingAccount(userId: number, accountData: InsertTradingAccount): Promise<TradingAccount> {
+    const [account] = await db.insert(tradingAccounts).values({
+      userId,
+      name: accountData.name,
+      description: accountData.description,
+      initialBalance: accountData.initialBalance,
+      currentBalance: accountData.currentBalance || accountData.initialBalance,
+      isActive: accountData.isActive,
+    }).returning();
+    return account;
+  }
+
+  async updateTradingAccount(accountId: number, userId: number, updates: UpdateTradingAccount): Promise<TradingAccount | undefined> {
+    const [account] = await db
+      .update(tradingAccounts)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(and(eq(tradingAccounts.id, accountId), eq(tradingAccounts.userId, userId)))
+      .returning();
+    return account;
+  }
+
+  async deleteTradingAccount(accountId: number, userId: number): Promise<boolean> {
+    const result = await db
+      .delete(tradingAccounts)
+      .where(and(eq(tradingAccounts.id, accountId), eq(tradingAccounts.userId, userId)));
+    return (result.rowCount || 0) > 0;
+  }
+
+  async getTradingAccount(accountId: number, userId: number): Promise<TradingAccount | undefined> {
+    const [account] = await db
+      .select()
+      .from(tradingAccounts)
+      .where(and(eq(tradingAccounts.id, accountId), eq(tradingAccounts.userId, userId)));
+    return account;
   }
 }
 

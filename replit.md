@@ -27,18 +27,28 @@ Preferred communication style: Simple, everyday language.
 
 ### Database Design
 - **ORM**: Drizzle ORM with PostgreSQL adapter
-- **Connection**: Neon Database (serverless)
-- **Schema**: Includes users and trades tables, with migrations managed by Drizzle Kit.
+- **Connection**: PostgreSQL (serverless compatible)
+- **Schema**: Includes users, trades, trading_accounts, notes, and sessions tables, with migrations managed by Drizzle Kit.
 
 ### Core Features
 - **Trading Journal**: Comprehensive trade entry (asset, direction, prices, P&L, notes, tags), history tracking, and analytics.
+- **Trading Accounts**: Multi-account management based on subscription tiers (Free: 1 account, Pro: 1, Elite: 10, Diamond: 20, Enterprise: unlimited).
+- **Subscription Model**: 3-trade limit for free users (changed from 7-day trial), with Pro/Elite/Diamond/Enterprise tiers offering unlimited trades.
 - **Dashboard**: Customizable with essential trading widgets including Equity Curve, Performance Metrics, Drawdown Analysis, Trade List, Daily P&L, and an enhanced visual Trade Calendar.
 - **User Management**: Professional authentication, account settings, currency selection, and profile management.
 - **Deployment Readiness**: Optimized for production VPS deployment (Docker, docker-compose, Nginx, Dokploy) and Cloudron integration.
 
 ## External Dependencies
-- **Stripe**: For subscription management and payment processing.
-- **Neon Database**: Serverless PostgreSQL hosting.
+- **Stripe**: For subscription management and payment processing (production-ready with test/live key support).
+- **PostgreSQL**: Database hosting (compatible with Neon, Railway, Supabase, etc.).
 - **SendGrid**: For email verification and password reset functionalities.
 - **shadcn/ui**: UI component library based on Radix UI and Tailwind CSS.
 - **React Grid Layout**: For customizable drag-and-drop dashboard functionality.
+
+## Recent Changes (January 2025)
+- **Migration**: Successfully migrated from Replit Agent to standard Replit environment
+- **Subscription Model**: Changed from 7-day free trial to 3-trade limit for free users
+- **Trading Accounts**: Added multi-account functionality with subscription-based limits
+- **Database Schema**: Extended to include trading_accounts table with proper relations
+- **Stripe Integration**: Enhanced with production-ready configuration and API versioning
+- **Landing Page**: Updated pricing text to "Start for free now" instead of trial language

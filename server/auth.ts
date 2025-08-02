@@ -85,6 +85,15 @@ export function setupAuth(app: Express) {
         preferredCurrency: 'USD'
       });
 
+      // Create default trading account for new user
+      await storage.createTradingAccount(user.id, {
+        name: "Main Account",
+        description: "Your primary trading account",
+        initialBalance: 0,
+        currentBalance: 0,
+        isActive: true,
+      });
+
       // In development, auto-verify emails for easier testing
       if (process.env.NODE_ENV === 'development') {
         // Update the user to mark email as verified in development

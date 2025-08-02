@@ -59,7 +59,7 @@ export default function LandingPage() {
         "Trade screenshots",
         "Custom tags & notes"
       ],
-      buttonText: "Start 7-Day Free Trial",
+      buttonText: "Start for free now",
       popular: false
     },
     {
@@ -75,7 +75,7 @@ export default function LandingPage() {
         "Priority support",
         "Portfolio optimization"
       ],
-      buttonText: "Start 7-Day Free Trial",
+      buttonText: "Start for free now",
       popular: true
     },
     {
@@ -91,7 +91,7 @@ export default function LandingPage() {
         "Custom analytics",
         "Team collaboration"
       ],
-      buttonText: "Start 7-Day Free Trial",
+      buttonText: "Start for free now",
       popular: false
     },
     {

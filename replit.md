@@ -36,7 +36,7 @@ Preferred communication style: Simple, everyday language.
 - **Subscription Model**: 3-trade limit for free users (changed from 7-day trial), with Pro/Elite/Diamond/Enterprise tiers offering unlimited trades.
 - **Dashboard**: Customizable with essential trading widgets including Equity Curve, Performance Metrics, Drawdown Analysis, Trade List, Daily P&L, and an enhanced visual Trade Calendar.
 - **User Management**: Professional authentication, account settings, currency selection, and profile management.
-- **Deployment Readiness**: Optimized for production VPS deployment (Docker, docker-compose, Nginx, Dokploy) and Cloudron integration.
+- **Deployment Readiness**: Production-ready with multi-stage Docker builds, health checks, database migrations, and Dokploy configuration for seamless VPS deployment.
 
 ## External Dependencies
 - **Stripe**: For subscription management and payment processing (production-ready with test/live key support).
@@ -48,8 +48,10 @@ Preferred communication style: Simple, everyday language.
 ## Recent Changes (January 2025)
 - **Migration Complete**: Successfully migrated from Replit Agent to standard Replit environment with PostgreSQL database
 - **UI Improvements**: Refined golden button styling with better font rendering and proportional sizing  
+- **Golden Avatar**: Implemented light gold avatar button with dropdown logout menu functionality
+- **Button Consistency**: All golden buttons now use consistent styling with white text and proper hover states
 - **Subscription Model**: Changed from 7-day free trial to 3-trade limit for free users
 - **Trading Accounts**: Added multi-account functionality with subscription-based limits
 - **Database Schema**: Extended to include trading_accounts table with proper relations
 - **Stripe Integration**: Enhanced with production-ready configuration and API versioning
-- **Landing Page**: Updated pricing text to "Start for free now" instead of trial language
+- **Dokploy Deployment**: Production-ready configuration for VPS deployment via Dokploy with Docker, health checks, and comprehensive deployment guide

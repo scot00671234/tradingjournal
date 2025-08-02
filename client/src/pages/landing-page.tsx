@@ -304,13 +304,13 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <Button 
-              size="lg" 
+              size="default" 
               variant="ghost"
               onClick={() => setLocation("/auth")}
-              className="bg-yellow-400 hover:bg-yellow-400 text-white border-none font-medium px-12 py-4 h-auto text-lg rounded-full transition-all duration-200 shadow-lg"
+              className="bg-yellow-400 hover:bg-yellow-500 text-black border-none font-medium px-8 py-3 h-auto text-sm rounded-full transition-all duration-200 shadow-lg font-system tracking-tight"
             >
               Start Your Transformation
-              <ArrowRight className="ml-2 h-5 w-5 text-white" />
+              <ArrowRight className="ml-2 h-4 w-4 text-black" />
             </Button>
           </motion.div>
         </div>

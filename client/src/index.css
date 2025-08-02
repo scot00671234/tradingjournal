@@ -78,6 +78,11 @@
     transform: translateY(-1px) !important;
   }
 
+  /* Font system utility */
+  .font-system {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  }
+
   /* Dialog z-index fixes */
   [data-radix-dialog-content] {
     z-index: 9999 !important;

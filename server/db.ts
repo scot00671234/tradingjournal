@@ -9,6 +9,9 @@ const DATABASE_URL = process.env.DATABASE_URL ||
                     process.env.POSTGRES_URL;
 
 if (!DATABASE_URL) {
+  console.error('DATABASE_URL environment variable is required');
+  console.error('Available environment variables:', Object.keys(process.env).filter(k => !k.includes('PASSWORD')));
+  console.error('NODE_ENV:', process.env.NODE_ENV);
   throw new Error('DATABASE_URL environment variable is required');
 }
 

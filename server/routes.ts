@@ -59,15 +59,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(200).json({ 
         status: "healthy", 
         timestamp: new Date().toISOString(),
-        uptime: process.uptime()
+        uptime: process.uptime(),
+        environment: {
+          NODE_ENV: process.env.NODE_ENV,
+          PORT: process.env.PORT,
+          hasDatabase: !!process.env.DATABASE_URL,
+          hasSession: !!process.env.SESSION_SECRET
+        }
       });
     } catch (error: any) {
       res.status(503).json({ 
         status: "unhealthy", 
         error: error.message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        environment: {
+          NODE_ENV: process.env.NODE_ENV,
+          PORT: process.env.PORT,
+          hasDatabase: !!process.env.DATABASE_URL,
+          hasSession: !!process.env.SESSION_SECRET
+        }
       });
     }
+  });
+
+  // Debug endpoint to check environment (remove in production)
+  app.get("/api/debug/env", (req, res) => {
+    res.json({
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT,
+      hasDatabase: !!process.env.DATABASE_URL,
+      hasSession: !!process.env.SESSION_SECRET,
+      databaseUrlPrefix: process.env.DATABASE_URL ? process.env.DATABASE_URL.split('://')[0] + '://' : 'missing'
+    });
   });
 
   // Setup authentication routes

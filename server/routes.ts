@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { setupAuth } from "./auth";
 import { storage } from "./storage";
-import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, notes, tradingAccounts, insertNoteSchema, updateNoteSchema, insertTradingAccountSchema, updateTradingAccountSchema, type BillingInfo, SUBSCRIPTION_PLANS, type Note, type TradingAccount } from "@shared/schema";
+import { insertTradeSchema, updateTradeSchema, updateCurrencySchema, users, trades, notes, tradingAccounts, insertNoteSchema, updateNoteSchema, insertTradingAccountSchema, updateTradingAccountSchema, type BillingInfo, SUBSCRIPTION_PLANS, type Note, type TradingAccount } from "../shared/schema.js";
 import { z } from "zod";
 import Stripe from "stripe";
 import { db } from "./db";

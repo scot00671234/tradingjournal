@@ -16,7 +16,7 @@ import {
   type TradingAccount,
   type InsertTradingAccount,
   type UpdateTradingAccount
-} from "@shared/schema";
+} from "../shared/schema.js";
 import { db } from "./db";
 import { eq, desc, and, count, sum, avg, lt } from "drizzle-orm";
 import session from "express-session";

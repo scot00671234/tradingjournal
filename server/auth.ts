@@ -12,7 +12,7 @@ import {
   forgotPasswordSchema, 
   resetPasswordSchema,
   updateProfileSchema
-} from "@shared/schema";
+} from "../shared/schema.js";
 import { z } from "zod";
 import { emailService, generateSecureToken } from "./email";
 

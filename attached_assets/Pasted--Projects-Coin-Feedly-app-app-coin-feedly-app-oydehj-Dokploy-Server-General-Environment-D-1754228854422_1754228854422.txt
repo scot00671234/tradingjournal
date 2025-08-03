@@ -1,0 +1,175 @@
+
+Projects
+Coin Feedly
+app
+
+app
+coin-feedly-app-oydehj
+Dokploy Server
+General
+Environment
+Domains
+Preview Deployments
+Schedules
+Deployments
+Logs
+Monitoring
+Advanced
+Deployments
+See all the 10 last deployments for this application
+
+If you want to re-deploy this application use this URL in the config of your git provider or docker
+Webhook URL:
+http://147.93.87.98:3000/api/deploy/-IbYnKnkon0k1V1xIF6dE
+
+1. done
+Improve deployment reliability and provide detailed troubleshooting steps Adds comprehensive troubleshooting guide, fixes database connections, and standardizes environment variables. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 146a9346-a37b-41a8-a8be-9d149902a617 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/adb03a75-9ec1-4874-b100-8740db733ff3/146a9346-a37b-41a8-a8be-9d149902a617/TUV8IX5
+Hash: 7559255e7e4ef0f4fe07cf188c8a88bb9330dbe9
+
+2 minutes ago
+1m 18s
+2. done
+Manual deployment
+
+about 20 hours ago
+5s
+3. done
+Manual deployment
+
+about 20 hours ago
+5s
+4. done
+Manual deployment
+
+about 20 hours ago
+3s
+5. done
+Manual deployment
+
+about 20 hours ago
+7s
+6. done
+Manual deployment
+
+about 20 hours ago
+4s
+7. done
+Manual deployment
+
+about 20 hours ago
+5s
+8. done
+Add visual aids to help diagnose and resolve potential configuration issues Add troubleshooting images to assist in debugging environment variable configurations. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 332fdeac-8648-47b4-9b4a-750e582dda30 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/f3f7ab7b-c1f0-4129-8d81-73dbdfe31e74/332fdeac-8648-47b4-9b4a-750e582dda30/AKaGnay
+Hash: 71400870c5227817960f7e098e4bd8a63735bc5d
+
+about 20 hours ago
+55s
+9. done
+Manual deployment
+
+about 20 hours ago
+5s
+10. done
+Ensure the application deploys correctly by updating asset handling Refactors asset imports to use public assets and updates .dockerignore for Vite build compatibility. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 332fdeac-8648-47b4-9b4a-750e582dda30 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/f3f7ab7b-c1f0-4129-8d81-73dbdfe31e74/332fdeac-8648-47b4-9b4a-750e582dda30/AKaGnay
+Hash: fff5418b615e35cd5777bba69903a8cee45fa8c6
+
+about 20 hours ago
+1m 3s
+11. error
+Add image asset to enhance visual appeal and user experience Adds a new image asset: attached_assets/image_1754154479572.png. Replit-Commit-Author: Agent Replit-Commit-Session-Id: 332fdeac-8648-47b4-9b4a-750e582dda30 Replit-Commit-Checkpoint-Type: full_checkpoint Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/f3f7ab7b-c1f0-4129-8d81-73dbdfe31e74/332fdeac-8648-47b4-9b4a-750e582dda30/AKaGnay
+Hash: 8dda308579c891f5c1c6e08708609cc76903f002
+
+about 21 hours ago
+18s
+Application: app - Coin Feedly | Dokploy
+Deployment
+See all the details of this deployment | 
+
+Initializing deployment
+Clonning Repo github.com/scot00671234/tradingjournal.git to /etc/dokploy/applications/coin-feedly-app-oydehj/code: ✅
+Cloning into '/etc/dokploy/applications/coin-feedly-app-oydehj/code'...
+remote: Enumerating objects: 367, done.
+Cloned github.com/scot00671234/tradingjournal.git: ✅
+Build dockerfile: ✅
+Source Type: github: ✅
+#0 building with "default" instance using docker driver
+#1 [internal] load build definition from Dockerfile.web
+#1 transferring dockerfile: 34B 0.1s
+#1 transferring dockerfile: 1.63kB 0.2s done
+#1 DONE 0.2s
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#2 DONE 0.9s
+#3 [internal] load .dockerignore
+#3 transferring context: 718B 0.0s done
+#3 DONE 0.0s
+#4 [builder 1/6] FROM docker.io/library/node:20-alpine@sha256:df02558528d3d3d0d621f112e232611aecfee7cbc654f6b375765f72bb262799
+#4 DONE 0.0s
+#5 [internal] load build context
+#5 transferring context: 48.34MB 0.7s done
+#5 DONE 0.7s
+#6 [builder 2/6] WORKDIR /app
+#6 CACHED
+#7 [builder 3/6] COPY package*.json ./
+#7 CACHED
+#8 [builder 4/6] RUN npm ci --verbose
+#8 CACHED
+#9 [builder 5/6] COPY . .
+#9 DONE 0.9s
+#10 [builder 6/6] RUN npm run build
+#10 1.024
+#10 1.024 > rest-express@1.0.0 build
+#10 1.024 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+#10 1.024
+#10 2.255 vite v5.4.19 building for production...
+#10 2.599 transforming...
+#10 6.412 Browserslist: browsers data (caniuse-lite) is 10 months old. Please run:
+#10 6.412   npx update-browserslist-db@latest
+#10 6.412   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+#10 50.27 ✓ 4275 modules transformed.
+#10 53.41 rendering chunks...
+#10 55.69 computing gzip size...
+#10 55.76 ../dist/public/index.html                              1.74 kB │ gzip:   0.73 kB
+#10 55.76 ../dist/public/assets/index-CLnf8Rwz.css             130.20 kB │ gzip:  19.89 kB
+#10 55.76 ../dist/public/assets/purify.es-BFmuJLeH.js           21.93 kB │ gzip:   8.62 kB
+#10 55.76 ../dist/public/assets/index.es-DjdtSdCi.js           150.53 kB │ gzip:  51.48 kB
+#10 55.76 ../dist/public/assets/html2canvas.esm-CBrSDip1.js    201.42 kB │ gzip:  48.03 kB
+#10 55.76
+#10 55.76 (!) Some chunks are larger than 500 kB after minification. Consider:
+#10 55.76 - Using dynamic import() to code-split the application
+#10 55.76 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+#10 55.76 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+#10 55.76 ../dist/public/assets/index-C_5zPLZl.js            1,803.94 kB │ gzip: 529.62 kB
+#10 55.76 ✓ built in 53.35s
+#10 55.94
+#10 55.94   dist/index.js  67.0kb
+#10 55.94
+#10 55.94 ⚡ Done in 22ms
+#10 DONE 56.0s
+#11 [production  3/12] RUN addgroup -g 1001 -S nodejs &&     adduser -S coinfeedly -u 1001
+#11 CACHED
+#12 [production  4/12] WORKDIR /app
+#12 CACHED
+#13 [production  5/12] COPY package*.json ./
+#13 CACHED
+#14 [production  2/12] RUN apk add --no-cache dumb-init curl
+#14 CACHED
+#15 [production  6/12] RUN npm ci --only=production --verbose && npm cache clean --force
+#15 CACHED
+#16 [production  7/12] COPY --from=builder --chown=coinfeedly:nodejs /app/dist ./dist
+#16 DONE 0.2s
+#17 [production  8/12] COPY --from=builder --chown=coinfeedly:nodejs /app/shared ./shared
+#17 DONE 0.0s
+#18 [production  9/12] COPY --chown=coinfeedly:nodejs drizzle.config.ts ./
+#18 DONE 0.0s
+#19 [production 10/12] COPY --chown=coinfeedly:nodejs start-production.sh ./
+#19 DONE 0.0s
+#20 [production 11/12] RUN chmod +x start-production.sh
+#20 DONE 0.2s
+#21 [production 12/12] RUN mkdir -p uploads && chown -R coinfeedly:nodejs uploads
+#21 DONE 0.2s
+#22 exporting to image
+#22 exporting layers 0.1s done
+#22 writing image sha256:33b0c91c9c1917c6b4dec4771c1a1d02e9256621dde29a439ebe48a3e1564279 done
+#22 naming to docker.io/library/coin-feedly-app-oydehj done
+#22 DONE 0.1s
+Docker Deployed: ✅

@@ -32,8 +32,10 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production --verbose && npm cache clean --force
+# Install production dependencies plus drizzle-kit for migrations
+RUN npm ci --only=production --verbose && \
+    npm install drizzle-kit@^0.30.4 --save && \
+    npm cache clean --force
 
 # Copy built application from builder stage
 COPY --from=builder --chown=coinfeedly:nodejs /app/dist ./dist
@@ -41,6 +43,7 @@ COPY --from=builder --chown=coinfeedly:nodejs /app/shared ./shared
 
 # Copy configuration files
 COPY --chown=coinfeedly:nodejs drizzle.config.ts ./
+COPY --chown=coinfeedly:nodejs package*.json ./
 COPY --chown=coinfeedly:nodejs start-production.sh ./
 
 # Make startup script executable

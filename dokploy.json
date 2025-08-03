@@ -18,6 +18,10 @@
     {
       "name": "SESSION_SECRET",
       "value": "your-production-session-secret-here"
+    },
+    {
+      "name": "DATABASE_URL",
+      "value": "{{project.DATABASE_URL}}"
     }
   ],
   "mounts": [

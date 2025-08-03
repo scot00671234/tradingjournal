@@ -11,10 +11,14 @@ export PORT=${PORT:-3000}
 if [ -n "$DATABASE_URL" ]; then
   echo "Waiting for database connection..."
   until node -e "
-  import { Pool } from 'pg';
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const { Pool } = require('pg');
+  const pool = new Pool({ 
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  });
   pool.query('SELECT 1').then(() => {
     console.log('Database connected');
+    pool.end();
     process.exit(0);
   }).catch((err) => {
     console.log('Database not ready:', err.message);

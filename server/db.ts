@@ -15,9 +15,22 @@ if (!DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required');
 }
 
+console.log('Database connection info:', {
+  url: DATABASE_URL.replace(/:[^:@]*@/, ':****@'), // Hide password
+  isProduction: process.env.NODE_ENV === 'production'
+});
+
 const pool = new Pool({ 
   connectionString: DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  // Add connection timeout and retry settings for production
+  connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 30000,
+  max: 10,
+  ...(process.env.NODE_ENV === 'production' && {
+    retryDelayMillis: 2000,
+    acquireTimeoutMillis: 60000
+  })
 });
 
 export const db = drizzle(pool, { schema });

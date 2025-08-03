@@ -21,19 +21,25 @@ if [ -n "$DATABASE_URL" ]; then
   
   until node -e "
   const { Pool } = require('pg');
+  console.log('Testing database connection...');
+  console.log('DATABASE_URL format:', process.env.DATABASE_URL.replace(/:[^:@]*@/, ':****@'));
   const pool = new Pool({ 
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    connectionTimeoutMillis: 5000
   });
-  pool.query('SELECT 1').then(() => {
-    console.log('Database connected successfully');
+  pool.query('SELECT 1 as test').then((result) => {
+    console.log('Database connected successfully, result:', result.rows[0]);
     pool.end();
     process.exit(0);
   }).catch((err) => {
-    console.log('Database connection failed:', err.message);
+    console.log('Database connection failed:');
+    console.log('  Error:', err.message);
+    console.log('  Code:', err.code);
+    console.log('  Detail:', err.detail || 'No additional details');
     process.exit(1);
   });
-  " 2>/dev/null; do
+  " 2>&1; do
     RETRY_COUNT=$((RETRY_COUNT + 1))
     if [ $RETRY_COUNT -gt $MAX_RETRIES ]; then
       echo "Database connection failed after $MAX_RETRIES attempts. Exiting."
@@ -59,7 +65,12 @@ echo "Starting application on port $PORT..."
 echo "Checking if dist/index.js exists..."
 if [ -f "dist/index.js" ]; then
   echo "dist/index.js found, starting application..."
-  exec node dist/index.js
+  echo "Environment check before start:"
+  echo "  NODE_ENV: $NODE_ENV"
+  echo "  PORT: $PORT"
+  echo "  DATABASE_URL: ${DATABASE_URL:0:20}..."
+  echo "  SESSION_SECRET: ${SESSION_SECRET:0:10}..."
+  exec node --trace-warnings dist/index.js
 else
   echo "ERROR: dist/index.js not found!"
   ls -la dist/ || echo "dist directory not found"

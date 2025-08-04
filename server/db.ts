@@ -15,14 +15,41 @@ if (!DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required');
 }
 
+// Determine SSL configuration based on deployment platform
+const getSSLConfig = () => {
+  // Disable SSL for local Docker environments (like Dokploy)
+  if (DATABASE_URL.includes('localhost') || 
+      DATABASE_URL.includes('127.0.0.1') || 
+      DATABASE_URL.includes('coin-feedly-database') ||
+      process.env.DISABLE_SSL === 'true') {
+    return false;
+  }
+  
+  // Enable SSL for cloud providers (Neon, Supabase, Railway, etc.)
+  if (process.env.NODE_ENV === 'production' && 
+      (DATABASE_URL.includes('neon.tech') || 
+       DATABASE_URL.includes('supabase.co') || 
+       DATABASE_URL.includes('railway.app') ||
+       DATABASE_URL.includes('?sslmode=require'))) {
+    return { rejectUnauthorized: false };
+  }
+  
+  return false;
+};
+
 console.log('Database connection info:', {
   url: DATABASE_URL.replace(/:[^:@]*@/, ':****@'), // Hide password
-  isProduction: process.env.NODE_ENV === 'production'
+  isProduction: process.env.NODE_ENV === 'production',
+  sslEnabled: getSSLConfig() !== false,
+  platform: DATABASE_URL.includes('neon.tech') ? 'Neon' : 
+           DATABASE_URL.includes('supabase.co') ? 'Supabase' :
+           DATABASE_URL.includes('railway.app') ? 'Railway' :
+           DATABASE_URL.includes('coin-feedly-database') ? 'Dokploy' : 'Other'
 });
 
 const pool = new Pool({ 
   connectionString: DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  ssl: getSSLConfig(),
   // Add connection timeout and retry settings for production
   connectionTimeoutMillis: 10000,
   idleTimeoutMillis: 30000,

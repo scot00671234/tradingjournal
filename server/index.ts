@@ -2,13 +2,21 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
+// Enhanced environment variable logging for production debugging
+console.log('🔧 Environment check:');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('PORT:', process.env.PORT);
+console.log('SESSION_SECRET present:', !!process.env.SESSION_SECRET);
+console.log('DATABASE_URL present:', !!process.env.DATABASE_URL);
+
 // Set default session secret if not provided
 if (!process.env.SESSION_SECRET) {
   if (process.env.NODE_ENV === 'production') {
-    console.error('SESSION_SECRET environment variable is required in production');
-    console.error('Available environment variables:', Object.keys(process.env).filter(k => !k.includes('PASSWORD')));
+    console.error('❌ SESSION_SECRET environment variable is required in production');
+    console.error('Available environment variables:', Object.keys(process.env).filter(k => !k.includes('PASSWORD') && !k.includes('SECRET')));
     throw new Error('SESSION_SECRET environment variable is required in production');
   }
+  console.log('⚠️  Using default session secret for development');
   process.env.SESSION_SECRET = 'default-session-secret-for-development';
 }
 
@@ -68,10 +76,27 @@ app.use((req, res, next) => {
 
   // Use PORT environment variable, fallback to 5000 for development and 3000 for production
   const port = parseInt(process.env.PORT || (process.env.NODE_ENV === 'production' ? '3000' : '5000'));
+  
   server.listen(port, "0.0.0.0", () => {
     console.log(`🚀 CoinFeedly server running on http://0.0.0.0:${port}`);
     console.log(`Environment: ${process.env.NODE_ENV}`);
     console.log(`Port: ${port}`);
+    console.log(`PID: ${process.pid}`);
     log(`serving on port ${port}`);
+  });
+
+  // Graceful shutdown handlers
+  process.on('SIGTERM', () => {
+    console.log('⏹️  SIGTERM received, shutting down gracefully');
+    server.close(() => {
+      console.log('✅ Process terminated');
+    });
+  });
+
+  process.on('SIGINT', () => {
+    console.log('⏹️  SIGINT received, shutting down gracefully');
+    server.close(() => {
+      console.log('✅ Process terminated');
+    });
   });
 })();

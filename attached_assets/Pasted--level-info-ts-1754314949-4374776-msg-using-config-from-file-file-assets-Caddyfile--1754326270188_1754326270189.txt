@@ -1,0 +1,76 @@
+{"level":"info","ts":1754314949.4374776,"msg":"using config from file","file":"/assets/Caddyfile"}
+{"level":"info","ts":1754314949.43909,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1754314949.4395177,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1754314949.4397855,"logger":"http.auto_https","msg":"automatic HTTPS is completely disabled for server","server_name":"srv0"}
+{"level":"info","ts":1754314949.4403138,"logger":"http.log","msg":"server running","name":"srv0","protocols":["h1","h2","h3"]}
+{"level":"info","ts":1754314949.4404254,"msg":"serving initial configuration"}
+{"level":"info","ts":1754314949.4414585,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0xc0000f5580"}
+{"level":"info","ts":1754314949.4437408,"logger":"tls","msg":"cleaning storage unit","storage":"FileStorage:/root/.local/share/caddy"}
+{"level":"info","ts":1754314949.4440718,"logger":"tls","msg":"finished cleaning storage units"}
+{"level":"info","ts":1754314960.8128989,"logger":"http.log.access.log0","msg":"handled request","request":{"remote_ip":"10.0.1.10","remote_port":"44912","client_ip":"77.241.128.23","proto":"HTTP/1.1","method":"GET","host":"coinfeedly.com","uri":"/","headers":{"Upgrade-Insecure-Requests":["1"],"X-Forwarded-For":["77.241.128.23"],"Sec-Ch-Ua-Platform":["\"Windows\""],"Sec-Ch-Ua-Mobile":["?0"],"Sec-Fetch-Dest":["document"],"Sec-Fetch-Mode":["navigate"],"Sec-Fetch-Site":["cross-site"],"X-Forwarded-Host":["coinfeedly.com"],"X-Forwarded-Server":["4ce6ebd863db"],"Accept-Language":["en-US,en;q=0.9,da;q=0.8"],"Accept-Encoding":["gzip, deflate, br, zstd"],"X-Forwarded-Proto":["https"],"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"],"User-Agent":["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0"],"Priority":["u=0, i"],"Referer":["http://147.93.87.98:3000/"],"Sec-Ch-Ua":["\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Microsoft Edge\";v=\"138\""],"Sec-Fetch-User":["?1"],"X-Forwarded-Port":["443"],"X-Real-Ip":["77.241.128.23"]}},"bytes_read":0,"user_id":"","duration":0.000353739,"size":0,"status":404,"resp_headers":{"Server":["Caddy"]}} - what is wrong
+
+
+ChatGPT said:
+You're getting a 404 (status":404) error from Caddy, which means the request reached your server, but Caddy couldn't find a matching route for / on coinfeedly.com.
+
+Let's break it down:
+
+✅ What’s Working
+Caddy is running: server running, serving initial configuration.
+
+TLS/HTTPS setup is disabled on purpose, but that’s fine if intentional:
+"automatic HTTPS is completely disabled for server".
+
+Caddy is serving requests: The log shows an actual GET request to coinfeedly.com/.
+
+❌ What’s Wrong
+1. Caddy Returned 404
+json
+Copy
+Edit
+"status":404
+This means: request was received, but there's no handler in your Caddyfile configured to serve the / path for coinfeedly.com.
+
+🔎 What You Need to Check
+1. Your /assets/Caddyfile — it’s likely missing a proper route like this:
+caddy
+Copy
+Edit
+coinfeedly.com {
+    root * /path/to/your/site
+    file_server
+}
+Or for a reverse proxy setup (e.g., if you’re forwarding to a Node.js backend):
+
+caddy
+Copy
+Edit
+coinfeedly.com {
+    reverse_proxy localhost:3000
+}
+IMPORTANT: Make sure the domain in your Caddyfile matches exactly: coinfeedly.com (not www.coinfeedly.com unless both are handled).
+
+2. Check File Paths
+If you’re using root * /some/path, make sure:
+
+That path exists.
+
+It contains index.html or whatever should be served.
+
+3. No handle_path, route, or try_files defined
+If you’re using advanced routing and forgot try_files, Caddy won’t know what to do. Minimal file server setup example:
+
+caddy
+Copy
+Edit
+coinfeedly.com {
+    root * /srv/coinfeedly/frontend
+    file_server
+}
+✅ Fix Example: Reverse Proxy for Node.js (assuming it’s listening on port 3000)
+caddy
+Copy
+Edit
+coinfeedly.com {
+    reverse_proxy localhost:3000
+}

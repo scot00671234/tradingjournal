@@ -23,9 +23,41 @@ if [ -n "$DATABASE_URL" ]; then
   const { Pool } = require('pg');
   console.log('Testing database connection...');
   console.log('DATABASE_URL format:', process.env.DATABASE_URL.replace(/:[^:@]*@/, ':****@'));
+  
+  // Smart SSL detection - same logic as server/db.ts
+  const getSSLConfig = () => {
+    const dbUrl = process.env.DATABASE_URL;
+    // Disable SSL for local Docker environments (like Dokploy)
+    if (dbUrl.includes('localhost') || 
+        dbUrl.includes('127.0.0.1') || 
+        dbUrl.includes('coin-feedly-database') ||
+        process.env.DISABLE_SSL === 'true') {
+      return false;
+    }
+    
+    // Enable SSL for cloud providers (Neon, Supabase, Railway, etc.)
+    if (process.env.NODE_ENV === 'production' && 
+        (dbUrl.includes('neon.tech') || 
+         dbUrl.includes('supabase.co') || 
+         dbUrl.includes('railway.app') ||
+         dbUrl.includes('?sslmode=require'))) {
+      return { rejectUnauthorized: false };
+    }
+    
+    return false;
+  };
+  
+  const sslConfig = getSSLConfig();
+  console.log('SSL Configuration:', sslConfig === false ? 'disabled' : 'enabled');
+  console.log('Detected Platform:', 
+    process.env.DATABASE_URL.includes('neon.tech') ? 'Neon' : 
+    process.env.DATABASE_URL.includes('supabase.co') ? 'Supabase' :
+    process.env.DATABASE_URL.includes('railway.app') ? 'Railway' :
+    process.env.DATABASE_URL.includes('coin-feedly-database') ? 'Dokploy' : 'Other');
+  
   const pool = new Pool({ 
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: sslConfig,
     connectionTimeoutMillis: 5000
   });
   pool.query('SELECT 1 as test').then((result) => {

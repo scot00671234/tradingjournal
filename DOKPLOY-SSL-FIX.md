@@ -12,10 +12,11 @@ Detail: No additional details
 The database configuration has been updated to automatically detect the deployment platform and disable SSL for Docker environments like Dokploy.
 
 ### 1. Code Changes Made
-Updated `server/db.ts` to include smart SSL detection:
+Updated both `server/db.ts` and `start-production.sh` to include smart SSL detection:
 - Automatically disables SSL for Dokploy databases (contains `coin-feedly-database`)
 - Keeps SSL enabled for cloud providers (Neon, Supabase, Railway)
 - Adds `DISABLE_SSL=true` environment variable override option
+- Fixed the startup script that was causing SSL errors during database connection testing
 
 ### 2. Dokploy Environment Variables
 In your Dokploy app configuration, make sure you have:
@@ -46,7 +47,14 @@ postgresql://postgres:password@coin-feedly-database-vztqxv:5432/postgres
 4. Check the logs - you should see SSL is disabled for Dokploy platform
 
 ### 5. Verification
-In the application logs, you should see:
+In the startup logs, you should see:
+```
+SSL Configuration: disabled
+Detected Platform: Dokploy
+Database connected successfully
+```
+
+And in the application logs:
 ```
 Database connection info: {
   url: 'postgresql://postgres:****@coin-feedly-database-vztqxv:5432/postgres',

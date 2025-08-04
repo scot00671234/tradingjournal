@@ -5,12 +5,11 @@ import { setupVite, serveStatic, log } from "./vite";
 // Set default session secret if not provided
 if (!process.env.SESSION_SECRET) {
   if (process.env.NODE_ENV === 'production') {
-    console.warn('⚠️  SESSION_SECRET not set in production - using temporary secret');
-    console.log('Please set SESSION_SECRET environment variable for security');
-    process.env.SESSION_SECRET = 'temp-production-secret-please-change-this-' + Date.now();
-  } else {
-    process.env.SESSION_SECRET = 'default-session-secret-for-development';
+    console.error('SESSION_SECRET environment variable is required in production');
+    console.error('Available environment variables:', Object.keys(process.env).filter(k => !k.includes('PASSWORD')));
+    throw new Error('SESSION_SECRET environment variable is required in production');
   }
+  process.env.SESSION_SECRET = 'default-session-secret-for-development';
 }
 
 const app = express();

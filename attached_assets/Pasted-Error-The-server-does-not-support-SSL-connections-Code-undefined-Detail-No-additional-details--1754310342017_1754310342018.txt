@@ -1,0 +1,140 @@
+Error: The server does not support SSL connections
+Code: undefined
+Detail: No additional details
+Database unavailable (attempt 9/30) - sleeping 2s
+Testing database connection...
+DATABASE_URL format: postgresql://postgres:****@coin-feedly-database-vztqxv:5432/postgres
+Database connection failed:
+Error: The server does not support SSL connections
+Code: undefined
+Detail: No additional details
+Database unavailable (attempt 10/30) - sleeping 2s
+Testing database connection...
+DATABASE_URL format: postgresql://postgres:****@coin-feedly-database-vztqxv:5432/postgres
+Database connection failed:
+Error: The server does not support SSL connections
+Code: undefined
+Detail: No additional details
+Database unavailable (attempt 11/30) - sleeping 2s
+Testing database connection...
+DATABASE_URL format: postgresql://postgres:****@coin-feedly-database-vztqxv:5432/postgres
+Database connection failed:
+Error: The server does not support SSL connections
+Code: undefined
+Detail: No additional details
+Database unavailable (attempt 12/30) - sleeping 2swtf
+
+
+ChatGPT said:
+That error means your app is trying to connect to the PostgreSQL database using SSL, but the database server doesn’t support SSL connections.
+
+What to do — fix this “server does not support SSL” error:
+1. Disable SSL in your database client config
+Depending on your setup and client library, you need to explicitly turn off SSL.
+
+If you’re using Node.js with pg (node-postgres):
+Modify your connection code like this:
+
+js
+Copy
+Edit
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: false  // <----- disable SSL
+});
+
+client.connect();
+2. Or if you’re using connection string directly and your client supports ?sslmode=disable:
+Add ?sslmode=disable at the end of your connection string:
+
+bash
+Copy
+Edit
+postgresql://postgres:password@host:5432/dbname?sslmode=disable
+Set your DATABASE_URL env var to that.
+
+3. Check Dokploy docs or DB config
+If your Dokploy database offers an option to enable/disable SSL, confirm it matches.
+
+Why this happens:
+Some managed DBs require SSL (e.g., Supabase).
+
+Dokploy’s DB may not have SSL enabled by default.
+
+Your client assumes SSL by default, causing the mismatch.
+
+Quick fix:
+Change your DATABASE_URL in App ENV to:
+
+bash
+Copy
+Edit
+postgresql://postgres:iejsqljziimlqnyn@coin-feedly-database-vztqxv:5432/postgres?sslmode=disable
+Then redeploy your app.
+
+If you want, send me your exact app stack and DB client, I can tailor the fix precisely.
+
+
+
+
+
+
+
+
+You said:
+how do i turn off ssl
+
+
+ChatGPT said:
+You don’t “turn off SSL” on the server (Dokploy DB) side — you control this from your app’s database client configuration.
+
+Here’s how to disable SSL in your app connection, depending on your setup:
+1. If using Node.js with pg (node-postgres):
+js
+Copy
+Edit
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: false  // Disable SSL here
+});
+
+client.connect();
+2. If using a connection string directly:
+Add this to your DATABASE_URL env var:
+
+bash
+Copy
+Edit
+?sslmode=disable
+Example:
+
+bash
+Copy
+Edit
+postgresql://user:password@host:5432/dbname?sslmode=disable
+3. If using Prisma (Node.js ORM):
+In your schema.prisma, add to the datasource block:
+
+prisma
+Copy
+Edit
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  sslmode  = "disable"
+}
+Or in .env, add ?sslmode=disable to the URL.
+
+4. If using other clients:
+Look for SSL config option or use the ?sslmode=disable query param.
+
+Summary
+You disable SSL in your app, not in Dokploy DB.
+
+Adjust your app’s DB connection config accordingly.
+
+Update DATABASE_URL or client config to disable SSL.

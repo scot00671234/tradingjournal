@@ -108,7 +108,7 @@ export default function LandingPage() {
         "Dedicated support",
         "White-label options"
       ],
-      buttonText: "Contact Sales",
+      buttonText: "Start for free now",
       popular: false
     }
   ];

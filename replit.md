@@ -61,3 +61,4 @@ Preferred communication style: Simple, everyday language.
 - **Trading Accounts**: Added multi-account functionality with subscription-based limits
 - **Database Schema**: Extended to include trading_accounts table with proper relations
 - **Stripe Integration**: Enhanced with production-ready configuration and API versioning
+- **Emergency Deployment Fix**: Fixed critical issue where Caddy was running but Node.js app wasn't starting in production. Created comprehensive startup script (start.sh) and Nixpacks configuration to ensure both services start correctly. Added emergency troubleshooting guides and proper Caddyfile configuration for coinfeedly.com domain routing.

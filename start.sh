@@ -1,22 +1,52 @@
 #!/bin/bash
+set -e
 
-set -eu
+echo "🚀 Starting CoinFeedly Production Server..."
 
-echo "Starting CoinFeedly..."
+# Ensure we're in the right directory
+cd /app
 
-# Set environment variables for Cloudron
-export NODE_ENV=production
-export PORT=3000
+# Show environment info
+echo "Environment: $NODE_ENV"
+echo "Port: $PORT"
+echo "Database URL present: $([[ -n "$DATABASE_URL" ]] && echo "Yes" || echo "No")"
 
-# Use Cloudron PostgreSQL if available
-if [ -n "${CLOUDRON_POSTGRESQL_URL:-}" ]; then
-    export DATABASE_URL="$CLOUDRON_POSTGRESQL_URL"
+# Start Node.js application in background
+echo "📱 Starting Node.js application..."
+NODE_ENV=production PORT=3000 node dist/index.js &
+NODE_PID=$!
+
+# Give Node.js app time to start
+sleep 5
+
+# Check if Node.js app is running
+if ps -p $NODE_PID > /dev/null; then
+    echo "✅ Node.js application started successfully (PID: $NODE_PID)"
+else
+    echo "❌ Node.js application failed to start"
+    exit 1
 fi
 
-# Push database schema changes
-echo "Setting up database..."
-npm run db:push
+# Test if Node.js app is responding
+echo "🔍 Testing Node.js application..."
+for i in {1..10}; do
+    if curl -s http://localhost:3000/api/health > /dev/null; then
+        echo "✅ Node.js application is responding on port 3000"
+        break
+    fi
+    if [ $i -eq 10 ]; then
+        echo "❌ Node.js application is not responding after 10 attempts"
+        kill $NODE_PID
+        exit 1
+    fi
+    echo "⏳ Waiting for Node.js app to respond (attempt $i/10)..."
+    sleep 2
+done
 
-# Start the application
-echo "Starting application on port $PORT..."
-exec npm start
+# Start Caddy in foreground
+echo "🌐 Starting Caddy reverse proxy..."
+exec caddy run --config /assets/Caddyfile --adapter caddyfile
+
+# If we get here, something went wrong
+echo "❌ Startup script ended unexpectedly"
+exit 1

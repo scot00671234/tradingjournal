@@ -11,17 +11,17 @@ import {
   Sparkles
 } from "lucide-react";
 import { motion } from "framer-motion";
-// Use placeholder images for production builds to avoid asset import issues
-const luxuryCar = "https://images.unsplash.com/photo-1493238792000-8113da705763?w=400&h=300&fit=crop&crop=faces";
-const luxuryRoom = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop&crop=faces";
-const watchCollection = "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=400&h=300&fit=crop&crop=faces";
-const penthouseView = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=300&fit=crop&crop=faces";
-const tradingCharts = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop&crop=faces";
-const bmwTrading = "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=300&fit=crop&crop=faces";
-const modernVilla = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop&crop=faces";
-const rolexWatch = "https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=400&h=300&fit=crop&crop=faces";
-const porscheSports = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop&crop=faces";
-const tropicalVilla = "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=400&h=300&fit=crop&crop=faces";
+// Use original luxury lifestyle images
+const luxuryCar = "/bmw-trading.jpg";
+const luxuryRoom = "/luxury-room.jpg";
+const watchCollection = "/watch-collection.jpg";
+const penthouseView = "/ocean-view.jpg";
+const tradingCharts = "/trading-charts.jpg";
+const bmwTrading = "/bmw-trading.jpg";
+const modernVilla = "/luxury-villa.jpg";
+const rolexWatch = "/luxury-watch.jpg";
+const porscheSports = "/porsche-sports.jpg";
+const tropicalVilla = "/luxury-villa.jpg";
 const heroVideo = "/hero-video.mp4";
 const coinFeedlyLogo = "/coinfeedly-logo.png";
 

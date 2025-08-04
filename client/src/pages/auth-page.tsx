@@ -11,7 +11,7 @@ import { insertUserSchema, type InsertUser } from "@shared/schema";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 // Use public asset for production builds
-const coinFeedlyLogo = "/coinfeedly-logo.svg";
+const coinFeedlyLogo = "/coinfeedly-logo.png";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),

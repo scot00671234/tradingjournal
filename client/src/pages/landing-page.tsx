@@ -22,8 +22,8 @@ const modernVilla = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a
 const rolexWatch = "https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=400&h=300&fit=crop&crop=faces";
 const porscheSports = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop&crop=faces";
 const tropicalVilla = "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=400&h=300&fit=crop&crop=faces";
-const heroVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-const coinFeedlyLogo = "/coinfeedly-logo.svg";
+const heroVideo = "/hero-video.mp4";
+const coinFeedlyLogo = "/coinfeedly-logo.png";
 
 export default function LandingPage() {
   const [, setLocation] = useLocation();

@@ -15,7 +15,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 // Use public asset for production builds
-const coinFeedlyLogo = "/coinfeedly-logo.svg";
+const coinFeedlyLogo = "/coinfeedly-logo.png";
 
 const updateProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),

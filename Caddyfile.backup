@@ -1,0 +1,20 @@
+# Alternative Caddyfile if standard config doesn't work
+
+coinfeedly.com {
+    # Try different ports based on your Node.js configuration
+    # Development: port 5000, Production: port 3000
+    
+    # First try port 3000 (production)
+    reverse_proxy localhost:3000
+    
+    # If that fails, uncomment the line below and comment the line above
+    # reverse_proxy localhost:5000
+    
+    # Basic configuration without advanced features
+    log
+}
+
+# Simple www redirect
+www.coinfeedly.com {
+    redir https://coinfeedly.com{uri}
+}

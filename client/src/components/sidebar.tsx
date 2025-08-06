@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import type { SubscriptionStatus } from "@shared/schema";
 import {
-  TrendingUp,
   Home,
   Plus,
   History,
@@ -17,6 +16,7 @@ import {
   Crown,
   LogOut,
 } from "lucide-react";
+import { SiBitcoin } from "react-icons/si";
 
 export function Sidebar() {
   const [location, setLocation] = useLocation();
@@ -51,8 +51,8 @@ export function Sidebar() {
       {/* Logo */}
       <div className="p-6">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <TrendingUp className="w-6 h-6 text-primary-foreground" />
+          <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+            <SiBitcoin className="w-6 h-6 text-white" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">CoinFeedly</h1>

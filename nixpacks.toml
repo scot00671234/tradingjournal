@@ -1,24 +1,15 @@
-# FORCE DISABLE CADDY COMPLETELY
-[providers]
-node = true
-
-# EXPLICITLY DISABLE ALL OTHER PROVIDERS
+# Force Node.js only deployment - NO CADDY
 [variables]
 NODE_ENV = "production"
 PORT = "3000"
-NO_CADDY = "true"
 
-# OVERRIDE ALL PHASES TO PREVENT CADDY
 [phases.setup]
 nixPkgs = ["nodejs_20", "npm-9_x"]
-
-[phases.caddy]
-# DISABLE CADDY PHASE COMPLETELY
 
 [phases.install]
 cmds = ["npm ci"]
 
-[phases.build] 
+[phases.build]
 cmds = ["npm run build"]
 
 [start]

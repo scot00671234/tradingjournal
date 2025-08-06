@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema, type InsertUser } from "@shared/schema";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { SiBitcoin } from "react-icons/si";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -82,9 +81,7 @@ export default function AuthPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-              <SiBitcoin className="w-5 h-5 text-white" />
-            </div>
+            <img src="/coinfeedly-logo.png" alt="CoinFeedly" className="w-8 h-8" />
             <span className="text-2xl font-bold text-gray-900 dark:text-white">CoinFeedly</span>
           </div>
           <p className="text-gray-600 dark:text-gray-400">Track your trades. Analyze your performance.</p>

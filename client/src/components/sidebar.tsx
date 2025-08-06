@@ -16,7 +16,6 @@ import {
   Crown,
   LogOut,
 } from "lucide-react";
-import { SiBitcoin } from "react-icons/si";
 
 export function Sidebar() {
   const [location, setLocation] = useLocation();
@@ -51,9 +50,7 @@ export function Sidebar() {
       {/* Logo */}
       <div className="p-6">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-            <SiBitcoin className="w-6 h-6 text-white" />
-          </div>
+          <img src="/coinfeedly-logo.png" alt="CoinFeedly" className="w-10 h-10" />
           <div>
             <h1 className="text-xl font-bold text-foreground">CoinFeedly</h1>
             <span className="text-xs text-muted-foreground">Trading Journal</span>

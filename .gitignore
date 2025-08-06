@@ -6,11 +6,8 @@ vite.config.ts.*
 *.tar.gz
 
 # Build system files that conflict with Docker
-nixpacks.toml
 .buildpacks
-Procfile
 docker-compose.yml
 CloudronManifest.json
 build-cloudron.sh
 README-CLOUDRON.md
-Dockerfile
